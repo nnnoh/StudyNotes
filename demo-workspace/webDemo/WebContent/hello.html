@@ -1,0 +1,53 @@
+<html>
+<head>
+</head>
+<body>
+<!-- <form> -->
+A£º<input type="text" id="A1">
+B: <input type="text" id="B1">
+<br>
+<input type="radio" value="+" name="ra">+
+<input type="radio" value="-" name="ra">-
+<input type="radio" value="*" name="ra">*
+<input type="radio" value="/" name="ra">/
+<br>
+<button  onclick="display()">submit</button>
+<p id="out"></p>
+<script>
+	function display(){
+		var ra=document.getElementsByName("ra");
+		var i=0;
+		for(i=0;i<ra.length;i++){
+			if(ra[i].checked){
+				break;
+			}
+		}
+		var a1=Number(document.getElementById("A1").value); 
+		var b1=Number(document.getElementById("B1").value);
+		switch(i){
+		case 0:
+			document.getElementById("out").innerHTML=a1+b1;
+			console.log(a1+b1);
+			//alert(a1+b1);
+			break;
+		case 1:
+			document.getElementById("out").innerHTML=a1-b1;
+			//alert(a1-b1);
+			break;
+		case 2:
+			document.getElementById("out").innerHTML=a1*b1;
+			//alert(a1*b1);
+			break;
+		case 3:
+			document.getElementById("out").innerHTML=a1/b1;
+			//alert(a1/b1);
+			break;
+		default:
+			document.getElementById("out").innerHTML=Date();
+			alert("NULL");
+			break;
+		}
+	}
+</script>
+</body>
+</html>
