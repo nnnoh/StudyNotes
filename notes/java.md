@@ -2997,6 +2997,8 @@ BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入�
 
 close()
 
+jdk jre
+
 序列化
 
 https://blog.csdn.net/qq_40670946/article/details/88106817

@@ -380,25 +380,48 @@ web 项目路径
 
 ## Tomcat
 
-https://blog.csdn.net/zs20082012/article/details/79138204
+### Install
+
+> Tomcat 有安装版和解压版两种
+
+#### 目录结构
+
+bin：目录存放一些启动运行Tomcat的可执行程序和相关内容。
+conf：存放关于Tomcat服务器的全局配置。
+lib：目录存放Tomcat运行或者站点运行所需的jar包，所有在此Tomcat上的站点共享这些jar包。
+logs： 存放日志文件。
+temp:  存放临时文件。
+wabapps：目默认的站点根目录，可以更改。当服务器启动时，会加载所有这个目录下的应用。
+work：目录用于在服务器运行时过度资源，简单来说，就是存储jsp、servlet翻译、编译后的结果。
+
+#### 配置环境变量
+
+1. 新建变量名：CATALINA_HOME，变量值：D:\WorkSpaceByJava\DevtTools\Apache-Tomcat-8.0.23
+
+2. 打开 PATH，添加变量值：%CATALINA_HOME%\lib;%CATALINA_HOME%\bin
+
+3. CMD 转入到 Tomcat 的 bin 目录。（CMD cd 到其他盘: cd /d e:\）
+
+   执行 service.bat install
+
+service.bat remove 可以移除注册服务
+
+启动服务 net start Tomcat8	管理员身份运行
+关闭服务 net stop  Tomcat8
+
+> Tomcat8 即刚刚注册的 Tomcat 服务名称
+
+[Eclipse开发JavaWeb项目配置Tomcat](https://blog.csdn.net/zs20082012/article/details/79138204)
+
+### 部署
+
+Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署。
 
 https://www.cnblogs.com/purplestone/p/3964207.html
-
-Install
-
-> CMD切换目录到其他盘: cd /d e:\
-
-
-
-
-
-
 
 ## JSP
 
 页面跳转
-
-
 
 ## Servlet
 
@@ -409,8 +432,6 @@ web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页
 > XML 标签 大小写敏感。
 
 https://www.cnblogs.com/yqskj/articles/2233061.html
-
-
 
 ```java
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -488,8 +509,6 @@ minIdle=1
 maxWait=30000
 ```
 
-
-
 ## Maven
 
 [Maven-易百教程](https://www.yiibai.com/maven)
@@ -500,13 +519,13 @@ maxWait=30000
 
 ### 创建Java项目
 
-**mvn archetype:generate** 
+**mvn archetype:generate**
 
 ```powershell
 mvn archetype:generate -DgroupId={project-packaging} -DartifactId={project-name}-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 ```
 
-> e.g.  mvn archetype:generate -DgroupId=com.mycompany.bigproject -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+> e.g. mvn archetype:generate -DgroupId=com.mycompany.bigproject -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 >
 > powershell会error，CMD没问题。
 
@@ -515,8 +534,8 @@ mvn archetype:generate -DgroupId={project-packaging} -DartifactId={project-name}
 - **-DgourpId**: 组织标识（包名）
 - **-DartifactId**: 项目名称
 - **-DarchetypeArtifactId**: 指定 ArchetypeId；
-  - maven-archetype-quickstart	创建一个简单的 Java 应用
-  - maven-archetype-webapp        创建一个Web Project
+  - maven-archetype-quickstart 创建一个简单的 Java 应用
+  - maven-archetype-webapp 创建一个Web Project
 - **-DinteractiveMode**: 是否使用交互模式
 
 Maven 创建好项目后还需要手动创建 src/main/resources (存放项目开发中用到的配置文件，如存放 log4j.properties 等)和 src/test/resources (存放测试时用到的配置文件)。
@@ -537,7 +556,7 @@ Maven 创建好项目后还需要手动创建 src/main/resources (存放项目�
 
 **运行**	java -cp target\myapp-1.0-SNAPSHOT.jar com.mycompany.app.App
 
-> q: Maven [ERROR\] 不再支持源选项 5。请使用 6 或更高版本tml)
+> q: Maven [ERROR] 不再支持源选项 5。请使用 6 或更高版本tml)
 >
 > a: 在settings.xml文件或项目的pom.xml文件中填加下列代码指定jdk版本
 >
@@ -558,6 +577,8 @@ Maven 创建好项目后还需要手动创建 src/main/resources (存放项目�
 > \<properties>元素是根元素\<project>的子元素
 
 ### POM
+
+pom.xml文件的节点元素说明：
 
 pom.xml文件的节点元素说明：
 
@@ -585,21 +606,32 @@ Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的�
 **优点:**
 
 1. 方便解耦，简化开发
+
    Spring就是一个大工厂，可以将所有对象创建和依赖的关系维护，交给Spring管理。
+
 2. AOP编程的支持
+
    Spring提供面向切面编程，可以方便的实现对程序进行权限拦截、运行监控等功能。
+
 3. 声明式事务的支持
+
    只需要通过配置就可以完成对事务的管理，而无需手动编程。
+
 4. 方便程序的测试
+
    Spring对Junit4支持，可以通过注解方便的测试Spring程序。
+
 5. 方便集成各种优秀框架
+
    Spring不排斥各种优秀的开源框架，其内部提供了对各种优秀框架的直接支持（如：Struts、Hibernate、MyBatis等）。
+
 6. 降低JavaEE API的使用难度
+
    Spring对JavaEE开发中非常难用的一些API（JDBC、JavaMail、远程调用等），都提供了封装，使这些API应用难度大大降低。
 
 ### Spring体系结构
 
-![img](D:\Knowledge\Notes\java_project.assets\480452-20190318225849216-2097896352.png)
+![img](.\java_project.assets\480452-20190318225849216-2097896352.png)
 
 Spring框架至今已集成了20多个模块，这些模块分布在以下模块中：
 
@@ -631,7 +663,7 @@ Spring的核心容器是其他模块建立的基础，有Spring-core、Spring-be
 
 Spring4.0以后新增了消息（Spring-messaging）模块，该模块提供了对消息传递体系结构和协议的支持。
 
-4. 数据访问/集成
+#### 数据访问/集成
 
 数据访问/集成层由JDBC、ORM、OXM、JMS和事务模块组成。
 
@@ -656,9 +688,7 @@ Spring-test模块支持使用JUnit或TestNG对Spring组件进行单元测试和�
 
 ### IoC (Inversion of Control)
 
-![IoC&AOP](D:\Knowledge\Notes\java_project.assets\1765294-ee3aa36a4b45150f.png)
-
-https://www.jianshu.com/p/4b31dacf3a63
+![IoC&AOP](.\java_project.assets\1765294-ee3aa36a4b45150f.png)
 
 Ioc，即控制反转，是一种设计思想。传统应用程序都是由我们在类内部主动创建依赖对象，从而导致类与类之间高耦合，难于测试；而 IoC 把创建和查找依赖对象的控制权交给了 IoC 容器，由容器进行注入组合对象，所以对象与对象之间是松散耦合，这样也方便测试，利于功能复用，更重要的是使得程序的整个体系结构变得非常灵活。
 
@@ -675,10 +705,9 @@ IoC 的一个重点是在系统运行中，动态的向某个对象提供它所�
 Spring 的 IoC 容器在实现控制反转和依赖注入的过程中,可以划分为两个阶段:
 
 - 容器启动阶段
-
 - Bean 实例化阶段
 
-![img](D:\Knowledge\Notes\java_project.assets\4476195-aca580cea9d63bb8.webp)
+![img](.\java_project.assets\4476195-aca580cea9d63bb8.webp)
 
 #### 容器启动阶段
 
@@ -686,7 +715,7 @@ Spring 的 IoC 容器在实现控制反转和依赖注入的过程中,可以划�
 
 - **接口注入**。从注入方式的使用上来说，接口注入是现在不甚提倡的一种方式，基本处于“退役状态”。因为它强制被注入对象实现不必要的接口，带有侵入性。而构造方法注入和 setter 方法注入则不需要如此。
 - **构造方法注入**。这种注入方式的优点就是，对象在构造完成之后，即已进入就绪状态，可以马上使用。缺点就是，当依赖对象比较多的时候，构造方法的参数列表会比较长。而通过反射构造对象的时候，对相同类型的参数的处理会比较困难，维护和使用上也比较麻烦。而且在Java中，构造方法无法被继承，无法设置默认值。对于非必须的依赖处理，可能需要引入多个构造方法，而参数数量的变动可能造成维护上的不便。
--  **setter 方法注入**。因为方法可以命名，所以 setter 方法注入在描述性上要比构造方法注入好一些。 另外， setter 方法可以被继承，允许设置默认值，而且有良好的 IDE 支持。缺点当然就是对象无法在构造完成后马上进入就绪状态。
+- **setter 方法注入**。因为方法可以命名，所以 setter 方法注入在描述性上要比构造方法注入好一些。 另外， setter 方法可以被继承，允许设置默认值，而且有良好的 IDE 支持。缺点当然就是对象无法在构造完成后马上进入就绪状态。
 
 ##### IoC 容器
 
@@ -698,7 +727,6 @@ Spring中提供了两种IoC容器：
 ApplicationContext 是 BeanFactory 的子类，所以，ApplicationContext 可以看做更强大的 BeanFactory，他们两个之间的区别如下：
 
 - BeanFactory。基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认采用延迟初始化策略（lazy-load）。只有当客户端对象需要访问容器中的某个受管对象的时候，才对该受管对象进行初始化以及依赖注入操作。所以，相对来说，容器启动初期速度较快，所需要的资源有限。对于资源有限，并且功能要求不是很严格的场景，BeanFactory是比较合适的IoC容器选择。
-
 - ApplicationContext。ApplicationContext在BeanFactory的基础上构建，是相对比较高级的容器实现，除了拥有BeanFactory的所有支持，ApplicationContext还提供了其他高级特性，比如事件发布、国际化信息支持等，ApplicationContext所管理的对象，在该类型容器启动之后，默认全部初始化并绑定完成。所以，相对于BeanFactory来说，ApplicationContext要求更多的系统资源，同时，因为在启动时就完成所有初始化，容器启动时间较之BeanFactory也会长一些。在那些系统资源充足，并且要求更多功能的场景中，ApplicationContext类型的容器是比较合适的选择。
 
 记录依赖关系的方式：
@@ -718,7 +746,7 @@ AOP，即面向切面编程，是一种通过预编译方式和运行期动态�
 
 AOP 将涉及多业务流程的通用功能抽取并单独封装，形成独立的切面，在合适的时机将这些切面横向切入到业务流程指定的位置中。利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
-![用户登录功能切入到业务流程示意图](D:\Knowledge\Notes\java_project.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
+![用户登录功能切入到业务流程示意图](.\java_project.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
 
 AOP实现可分为两类：
 
@@ -737,12 +765,13 @@ AOP实现可分为两类：
 
 **Pointcut**（切点）：表示一组 joint point，这些 joint point 或是通过逻辑关系组合起来，或是通过通配、正则表达式等方式集中起来，它定义了相应的 Advice 将要发生的地方。
 
-**Advice**（增强）：Advice 定义了在 Pointcut 里面定义的程序点具体要做的操作，它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。
-Target（目标对象）：织入 Advice 的目标对象.。
+**Advice**（增强）：Advice 定义了在 Pointcut 里面定义的程序点具体要做的操作，它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。 
+
+**Target**（目标对象）：织入 Advice 的目标对象。
 
 **Weaving**（织入）：将 Aspect 和其他对象连接起来, 并创建 Adviced object 的过程
 
-![AOP各概念关系图](D:\Knowledge\Notes\java_project.assets\20180530175605692.png)
+![AOP各概念关系图](.\java_project.assets\20180530175605692.png)
 
 #### 其他
 
@@ -765,17 +794,15 @@ https://www.cnblogs.com/hongwz/p/5764917.html
 
 https://my.oschina.net/guangshan/blog/1797461#comments
 
-
-
 ## Spring MVC
 
 Spring 框架提供了构建 **Web** 应用程序的全功能 MVC 模块。使用 Spring 可插入的 MVC 架构，可以选择是使用内置的 Spring Web 框架还是 Struts 这样的 Web 框架。通过策略接口，Spring 框架是高度可配置的，而且包含多种视图技术，例如 JavaServer Pages（JSP）技术、Velocity、Tiles、iText 和 POI。Spring MVC 分离了控制器、模型对象、分派器以及处理程序对象的角色，这种分离让它们更容易进行定制。
 
 **优点：**
 
-- 容易和其它View框架（Titles等）无缝集成，采用IOC便于测试。 
-- 它是一个典型的教科书式的mvc构架，而不像struts等都是变种或者不是完全基于mvc系统的框架，spring适用于初学者或者想了解mvc的人。 
-- 它和tapestry一样是一个纯正的servlet系统，这也是它和tapestry相比 struts所没有的优势。而且框架本身有代码，而且看起来也不费劲比较简单可以理解。 
+- 容易和其它View框架（Titles等）无缝集成，采用IOC便于测试。
+- 它是一个典型的教科书式的mvc构架，而不像struts等都是变种或者不是完全基于mvc系统的框架，spring适用于初学者或者想了解mvc的人。
+- 它和tapestry一样是一个纯正的servlet系统，这也是它和tapestry相比 struts所没有的优势。而且框架本身有代码，而且看起来也不费劲比较简单可以理解。
 
 **运行原理：**
 
@@ -801,7 +828,7 @@ q: The superclass "javax.servlet.http.HttpServlet" was not found on the Java Bui
         </dependency> 
 ```
 
-#### web.xml 
+#### web.xml
 
 url-pattern
 
