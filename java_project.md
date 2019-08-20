@@ -9,6 +9,8 @@
 HTML 文档由 4 个主要标记组成，
 
 > 没有标签结尾的，默认标签结尾在下一个标签开头前
+>
+> HTML 标签 不区分大小写
 
 
 
@@ -26,19 +28,349 @@ name id 区别
 
 编码规范
 
-## JavaScript
+> " ' ' "
+
+## CSS
+
+CSS 指层叠样式表 (Cascading Style Sheets)。
+
+- 样式定义**如何显示** HTML 元素；样式通常存储在**样式表**中
+- 把样式添加到 HTML 中，是为了**解决内容与表现分离的问题**
+- **外部样式表**可以极大提高工作效率，外部样式表存储在 **.css 文件**中
+- 多个样式定义可**层叠**为一
+- 样式对网页中元素位置的排版进行像素级精确控制
+
+### 样式表
+
+- 外部样式表
+
+  当样式需要应用于很多页面时，外部样式表将是理想的选择。样式表以 .css 扩展名进行保存。
+
+  每个页面使用标签链接到样式表。
+
+  `<head> <link rel="stylesheet" type="text/css" href="mystyle.css"> </head>` 
+
+- 内部样式表
+
+  当单个文档需要特殊的样式时，就应该使用内部样式表。可以使用 `<style>` 标签在文档头部 `<head>` 定义内部样式表
+
+- 内联样式
+
+  当样式仅需要在一个元素上应用一次时。将表现和内容混杂在一起，内联样式会损失掉样式表的许多优势。
+
+  要使用内联样式，需在相关的标签内使用样式（style）属性。style 属性可以包含任何 CSS 属性。
+
+  `<p style="color:sienna;margin-left:20px">这是一个段落。</p>`
+
+#### 样式层叠
+
+样式层叠就是对一个元素多次设置同一个样式，将使用最后一次设置的属性值。对于不同样式将叠加到元素上。
+
+一般而言，所有的样式会根据下面的规则层叠于一个新的虚拟样式表中，其中数字 4 拥有最高的优先权。
+
+1. 浏览器缺省设置
+2. 外部样式表
+3. 内部样式表（位于 \<head> 标签内部）
+4. 内联样式（在 HTML 元素内部）
+
+#### 多重样式优先级
+
+选择器优先级列表，其中数字 7 拥有最高的优先权：
+
+1. 通用选择器（*）
+2. 元素(类型)选择器
+3. 类选择器
+4. 属性选择器
+5. 伪类
+6. ID 选择器
+7. 内联样式
+
+##### !important 
+
+当 !important 规则被应用在一个样式声明中时，该样式声明会覆盖CSS中任何其他的声明，无论它处在声明列表中的哪里。
+
+使用 !important 不是一个好习惯，因为它改变了样式表本来的级联规则，从而使其难以调试。
+
+###### Tips
+
+- Always 要优化考虑使用样式规则的优先级来解决问题而不是 !important
+- Only 只在需要覆盖全站或外部 css（例如引用的 ExtJs 或者 YUI ）的特定页面中使用 !important
+- Never 永远不要在全站范围的 css 上使用 !important
+- Never 永远不要在你的插件中使用 !important
+
+##### 权重计算
+
+- 内联样式表的权值最高 1000
+- ID 选择器的权值为 100
+- Class 类选择器的权值为 10
+- HTML 标签选择器的权值为 1
+
+示例：
+
+```css
+<html>    
+<head>    
+<style type="text/css">    
+#redP p {    
+/* 权值 = 100+1=101 */    
+color:#F00;  /* 红色 */    
+}    
+#redP .red em {    
+/* 权值 = 100+10+1=111 */    
+color:#00F; /* 蓝色 */    
+}    
+#redP p span em {    
+/* 权值 = 100+1+1+1=103 */    
+color:#FF0;/*黄色*/    
+}    
+</style>    
+</head>    
+<body>    
+<div id="redP">   
+<p class="red">red   
+<span><em>em red</em></span>    <!-- em 显示蓝色 -->
+</p>    
+<p>red</p>    
+</div>    
+</body>   
+</html>
+```
+
+##### CSS 优先级法则
+
+- 选择器都有一个权值，权值越大越优先；
+- 当权值相等时，后出现的样式表设置要优于先出现的样式表设置；
+- 创作者的规则高于浏览者：即网页编写者设置的CSS 样式的优先权高于浏览器所设置的样式；
+- 继承的CSS 样式不如后来指定的CSS 样式；
+- 在同一组属性设置中标有"!important"规则的优先级最大；
 
 ### 语法
+
+CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明:
+
+![selector](D:\Github\StudyNotes\java_project.assets\selector.gif)
+
+- 选择器通常是需要改变样式的 HTML 元素。
+- 每条声明由一个属性和一个值组成。
+
+CSS 注释以 "/\*" 开始, 以 "*/" 结束。
+
+### 选择器
+
+要在 HTML 元素中设置 CSS 样式，需要在元素中设置选择器。
+
+[CSS3选择器归类整理](https://www.w3cschool.cn/css3/css3-selector.html)
+
+#### 基本选择器
+
+##### id 选择器
+
+id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。
+
+HTML元素以 id 属性来设置 id 选择器，CSS 中 id 选择器以 "#" 来定义。
+
+```css
+#para1
+{
+	text-align:center;
+	color:red;
+}
+```
+
+-  id 属性不要以数字开头，数字开头的 id 在 Mozilla/Firefox 浏览器中不起作用。
+- id 属性只能在每个 HTML 文档中出现一次。
+
+##### class 选择器
+
+class 选择器用于描述一组元素的样式。class 选择器有别于 id 选择器，class可以在多个元素中使用。
+
+class 选择器在 HTML 中以 class 属性表示, 在 CSS 中，类选择器以一个点"."号显示。
+
+```css
+.center {text-align:center;}
+/*可以指定特定的HTML元素使用class*/
+p.center {text-align:center;}
+```
+
+- 类名的第一个字符不能使用数字，它无法在 Mozilla 或 Firefox 中起作用。
+
+### 属性
+
+> 不要在属性值与单位之间留有空格。
+
+#### 颜色值
+
+color 属性定义元素的字体颜色。
+
+CSS 中颜色值表示方式：
+
+- 使用十六进制的颜色值： `p { color: #ff0000;}`
+
+  使用 CSS 的缩写形式：`p { color: #f00;}`
+
+- 使用 RGB 值。
+
+  像素形式（不需要 px 单位）：`p { color: rgb(255,0,0); }`
+
+  百分比形式（必须要 %）： `p { color: rgb(100%,0%,0%); }`
+  
+- 使用颜色名称：`p { color: red;}`
+
+#### 背景
+
+使用简写属性时，属性值的顺序为：:
+
+- background-color
+- background-image
+- background-repeat
+- background-attachment
+- background-position
+
+以上属性无需全部使用，可以按照页面的实际需要使用。
+
+示例：`body {background:#ffffff url('img_tree.png') no-repeat right top;}`
+
+##### background-color
+
+background-color 属性定义了元素的背景颜色。
+
+background-color 不能继承，其默认值是 transparent。即，如果一个元素没有指定背景色，那么背景就是透明的，这样其父元素的背景才可见。
+
+##### background-image
+
+background-image 属性描述了元素的背景图像.
+
+默认情况下，背景图像进行平铺重复显示，以覆盖整个元素实体.
+
+`body {background-image:url('path');}`
+
+##### background-repeat
+
+默认情况下 background-image 属性会在页面的水平/垂直方向平铺。
+
+background-repeat 使图片只在水平方向平铺 （repeat-x）或垂直方向（repeat-y）回不平铺（no-repeat）
+
+```css
+body { 
+background-image:url('/path/logo.png'); /* www.xxx.com/path/logo.png */
+background-repeat:repeat-x; 
+}
+```
+
+##### background-position
+
+background-position 属性改变图像在背景中的位置:
+
+background-position 属性值：
+
+- 关键字 top、bottom、left、right 和 center
+
+  使用两个关键字设置位置：一个对应水平方向，另一个对应垂直方向。如果只有一个关键字，则会默认另一个关键字为 center。
+
+- 百分数值
+
+  一个对应水平方向，另一个对应垂直方向。默认 50%（居中）。以图像中心为偏移点，在元素范围内。如，放在水平方向 2/3、垂直方向 1/3 处。`background-position:66% 33%;`
+
+- 长度值
+
+  长度值是元素内边距区左上角的偏移，偏移点是图像的左上角。
+
+  单位可以是 px、cm（通过 ppi 换算）
+
+#### 文本
+
+##### color
+
+color 属性设置文字的颜色。
+
+对于W3C标准的CSS：如果定义了颜色属性，还必须定义背景色属性。
+
+##### text-align
+
+设置文本的水平对齐方式。
+
+值：left、center、right、justify
+
+justify 使每一行宽度相等，左，右外边距对齐。
+
+> 如果想把一个行内元素的第一行“缩进”，可以用左内边距或外边距创造这种效果。
+
+##### text-decoration 
+
+设置或删除文本的装饰。
+
+值：overline（上划线）、line-through（删除线）、underline（下划线）
+
+##### text-transform
+
+指定在一个文本中字母的大小写。
+
+值：uppercase（大写）、lowercase（小写）、capitalize（首字母大写，其他不变）
+
+##### text-indent
+
+指定文本的第一行的缩进。
+
+值：长度值（px）、百分数
+
+##### word-spacing 
+
+改变字（单词）之间的标准间隔。其默认值 normal 相当于 0px。
+
+## JavaScript
+
+- **HTML** 定义了网页的内容
+
+- **CSS** 描述了网页的布局
+- **JavaScript** 网页的行为
+
+[JavaScript 知识图谱](https://www.w3cschool.cn/javascript/javascript-skillmap.html)
+
+JavaScript 脚本位置
+
+- HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
+
+  通常的做法是把函数放入 `<head>` 部分中，或者放在页面底部。
+
+- 保存到外部文件中，扩展名为 .js。
+
+  在 HTML 中使用 `<script>` 标签的 src 属性设置 js 文件
+
+  `<script src="/statics/demosource/myscript.js"></script>`
+
+JavaScript 语句会在页面加载时执行。
+
+### 语法
+
+### 常用函数
+
+#### 输出
+
+- 使用 **window.alert()** 弹出警告框显示消息。
+
+- 使用 **document.write()** 方法将内容显示到 HTML 界面中。
+
+  如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖。
+
+- 使用 **innerHTML** 在 HTML 元素上显示信息。
+
+  `document.getElementById("demo").innerHTML = "段落已修改。";`
+
+- 使用 **console.log()** 输出信息到浏览器的控制台。
+
+  浏览器中使用 F12 来启用调试模式， 在调试窗口中点击 Console 菜单查看控制台输出。
+
+
 
 ### DOM
 
 
 
-https://www.w3cschool.cn/javascript/javascript-skillmap.html
-
-> " ' ' "
 
 
+
+
+web 项目路径
 
 
 
@@ -62,9 +394,99 @@ Install
 
 
 
-## jsp
+## JSP
 
 页面跳转
+
+
+
+## Servlet
+
+### web.xml
+
+web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页面、servlet、servlet-mapping、filter、listener、启动加载级别等。
+
+> XML 标签 大小写敏感。
+
+https://www.cnblogs.com/yqskj/articles/2233061.html
+
+
+
+```java
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try{
+            Properties properties=new Properties();
+            properties.load(getServletContext().getResourceAsStream("/WEB-INF/dbcp.properties"));
+            DataSource dataSource = BasicDataSourceFactory.createDataSource(properties);
+            Connection conn = dataSource.getConnection();
+            System.out.println(conn.toString());
+            String sql = "select 1+1 as result;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int result = rs.getInt("result");
+                out.println("result: " + result);
+                System.out.println("result: " + result);
+            }
+
+            rs.close();
+            pstmt.close();
+            conn.close();
+        }catch (Exception ex) {
+            out.println(ex.getMessage());
+        }
+    	
+    	// DispatcherServlet
+//    	response.setContentType("text/plain;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            out.println("context: " + request.getContextPath());
+//            out.println("request uri: " + request.getRequestURI());
+//            out.println("params: " + request.getParameterMap());
+//        }
+    	
+//    	response.setContentType("text/html;charset=UTF-8");
+        // use jsp file
+//        request.setAttribute("title", "Hello Servlet");
+//        request.setAttribute("content", "你好");
+//        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp");
+//        rd.forward(request, response);
+        
+        // try-with-resource
+//        try (PrintWriter out = response.getWriter()) {
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet HelloServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet HelloServlet at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+    }
+```
+
+## 数据库连接
+
+```properties
+# dbcp.properties
+# lib:
+# commons-dbcp2-2.6.0.jar
+# mysql-connector-java-8.0.13.jar
+driverClassName=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mine?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+username=root
+password=123mysql
+initialSize=2
+maxActive=15
+maxIdle=2
+minIdle=1
+maxWait=30000
+```
 
 
 
@@ -97,7 +519,7 @@ mvn archetype:generate -DgroupId={project-packaging} -DartifactId={project-name}
   - maven-archetype-webapp        创建一个Web Project
 - **-DinteractiveMode**: 是否使用交互模式
 
-Maven创建好项目后还需要手动创建src/main/resources(存放项目开发中用到的配置文件，如存放log4j.properties等)和src/test/resources(存放测试时用到的配置文件)。
+Maven 创建好项目后还需要手动创建 src/main/resources (存放项目开发中用到的配置文件，如存放 log4j.properties 等)和 src/test/resources (存放测试时用到的配置文件)。
 
 [Standard Directory Layout](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
 
@@ -177,7 +599,7 @@ Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的�
 
 ### Spring体系结构
 
-![img](.\java_project.assets\480452-20190318225849216-2097896352.png)
+![img](D:\Knowledge\Notes\java_project.assets\480452-20190318225849216-2097896352.png)
 
 Spring框架至今已集成了20多个模块，这些模块分布在以下模块中：
 
@@ -234,7 +656,7 @@ Spring-test模块支持使用JUnit或TestNG对Spring组件进行单元测试和�
 
 ### IoC (Inversion of Control)
 
-![IoC&AOP](.\java_project.assets\1765294-ee3aa36a4b45150f.png)
+![IoC&AOP](D:\Knowledge\Notes\java_project.assets\1765294-ee3aa36a4b45150f.png)
 
 https://www.jianshu.com/p/4b31dacf3a63
 
@@ -256,7 +678,7 @@ Spring 的 IoC 容器在实现控制反转和依赖注入的过程中,可以划�
 
 - Bean 实例化阶段
 
-![img](.\java_project.assets\4476195-aca580cea9d63bb8.webp)
+![img](D:\Knowledge\Notes\java_project.assets\4476195-aca580cea9d63bb8.webp)
 
 #### 容器启动阶段
 
@@ -296,7 +718,7 @@ AOP，即面向切面编程，是一种通过预编译方式和运行期动态�
 
 AOP 将涉及多业务流程的通用功能抽取并单独封装，形成独立的切面，在合适的时机将这些切面横向切入到业务流程指定的位置中。利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
-![用户登录功能切入到业务流程示意图](.\java_project.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
+![用户登录功能切入到业务流程示意图](D:\Knowledge\Notes\java_project.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
 
 AOP实现可分为两类：
 
@@ -320,7 +742,7 @@ Target（目标对象）：织入 Advice 的目标对象.。
 
 **Weaving**（织入）：将 Aspect 和其他对象连接起来, 并创建 Adviced object 的过程
 
-![AOP各概念关系图](.\java_project.assets\20180530175605692.png)
+![AOP各概念关系图](D:\Knowledge\Notes\java_project.assets\20180530175605692.png)
 
 #### 其他
 
@@ -385,14 +807,6 @@ url-pattern
 
 https://www.cnblogs.com/fangjian0423/p/servletContainer-tomcat-urlPattern.html#springmvc
 
-
-
-
-
-## SSM
-
-https://www.jianshu.com/p/c01f0f499715?utm_campaign=haruki&utm_content=note&utm_medium=reader_share&utm_source=weixin
-
 ## 日志
 
 日志系统，负责输出日志：
@@ -422,3 +836,5 @@ q: Project facet Java 12 is not supported by target runtime Apache Tomcat v8.5.
 q: failed to load the JNI shared library
 
 q: preference no server
+
+q: use utf-8; default gbk
