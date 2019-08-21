@@ -84,3 +84,22 @@ https://www.w3cschool.cn/mysql/mysql-administration.html
 
 ### Others
 
+
+
+## 数据库连接
+
+```properties
+# dbcp.properties
+# lib:
+# commons-dbcp2-2.6.0.jar
+# mysql-connector-java-8.0.13.jar
+driverClassName=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mine?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+username=root
+password=123mysql
+initialSize=2
+maxActive=15
+maxIdle=2
+minIdle=1
+maxWait=30000
+```

@@ -1,5 +1,26 @@
 # Git
 
+
+
+## Tips
+
+### 添加空目录
+
+git 不能提交一个空的文件夹，因此可以在空目录下创建 .gitkeep 文件或 README 文件。
+
+eclipse 会自动忽略了后缀为gitkepp的文件。
+
+.gitkeep 中可添加如下内容。
+
+```
+# Ignore everything in this directory 
+* 
+# Except this file 
+!.gitkeep 
+```
+
+
+
 ## Question
 
 **Q1:**
