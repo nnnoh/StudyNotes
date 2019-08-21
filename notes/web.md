@@ -378,8 +378,6 @@ JavaScript 语句会在页面加载时执行。
 
 
 
-
-
 web 项目路径
 
 目录结构
@@ -395,8 +393,6 @@ f12 的使用
 
 
 ## HTTP
-
-
 
 URI URL
 
@@ -477,8 +473,6 @@ Transfer-Encoding: chunked
 4. 实体首部字段（Entity Header Fields）
 
    针对请求和响应报文的实体部分使用的首部，补充资源内容更新时间等郁实体有关的信息。
-
-
 
 
 
@@ -596,7 +590,21 @@ getSession(boolen isNew)
 
 设置 session 会话过期时间：`public void setMaxInactiveInterval(int interval) `
 
+
+
 https://www.jianshu.com/p/2f7031a69f43
+
+https://blog.csdn.net/weixin_41910244/article/details/80287527
+
+cookie应用场景：①判断用户是否登录过网站； ②用来记录购物车或者记录用户使用偏好来制定推送；
+
+session应用场景：①登录验证信息。
+
+
+
+servlet 监听器
+
+
 
 ### web.xml
 
@@ -663,3 +671,4 @@ https://www.cnblogs.com/yqskj/articles/2233061.html
 //        }
     }
 ```
+
