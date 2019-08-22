@@ -378,11 +378,13 @@ JavaScript 语句会在页面加载时执行。
 
 
 
+实时保存表单数据
+
 web 项目路径
 
 目录结构
 
-WebRoot/WebContent
+WebRoot/WebContent	Web应用的根 "/"
 
 ![JavaWeb目录结构](.\web.assets\172304056712920.png)
 
@@ -517,9 +519,19 @@ Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署
 
 https://www.cnblogs.com/purplestone/p/3964207.html
 
+换端口
+
 ## JSP
 
 页面跳转
+
+
+
+```jsp
+<%@ page import="servlet.CountServlet"%>
+```
+
+引入 servlet 类使用其提供的功能。
 
 ## Servlet
 
@@ -602,9 +614,45 @@ session应用场景：①登录验证信息。
 
 
 
+forward sendRedirect
+
+https://www.cnblogs.com/lesleysbw/p/6246546.html
+
+https://www.cnblogs.com/wangshen31/p/8335343.html 注意分辨对错
+
 servlet 监听器
 
+https://blog.csdn.net/hbtj_1216/article/details/83015670
 
+补充 https://www.cnblogs.com/zhangyanran/p/10082180.html
+
+servlet 容器
+
+servlet jsp 区别
+
+https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
+
+各对象生命周期
+
+### Tips
+
+#### 统计在线人数
+
+1. 使用 HttpSessionListener
+
+   HttpSession 创建/删除时更新人数。
+
+   使用 ServletContext 存储在线人数属性值。
+
+   `event.getSession().getServletContext()`
+
+2. 使用 ServletContextListener, HttpSessionAttributeListener, HttpSessionListener
+
+   HttpSession 创建/删除时设置/移除用户名属性。
+
+   HttpSessionAttributeListener 中维护用户列表。
+   
+   ServletContextListener 创建用户列表。
 
 ### web.xml
 
@@ -613,6 +661,20 @@ web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页
 > XML 标签 大小写敏感。
 
 https://www.cnblogs.com/yqskj/articles/2233061.html
+
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+</web-app>
+```
+
+
 
 ```java
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
