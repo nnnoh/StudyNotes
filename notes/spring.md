@@ -501,3 +501,55 @@ AOP
 如果要重用通用功能的话，最常见的面向对象技术是继承（inheritance）或委托（delegation）。但是，如果在整个应用中都使用相同的基类，继承往往会导致一个脆弱的对象体系；而使用委托可能需要对委托对象进行复杂的调用。
 
 切面提供了取代继承和委托的另一种可选方案，而且在很多场景下更清晰简洁。在使用面向切面编程时，我们仍然在一个地方定义通用功能，但是可以通过声明的方式定义这个功能要以何种方式在何处应用，而无需修改受影响的类。横切关注点可以被模块化为特殊的类，这些类被称为切面（aspect）。这样做有两个好处：首先，现在每个关注点都集中于一个地方，而不是分散到多处代码中；其次，服务模块更简洁，因为它们只包主要关注点（或核心功能）的代码，而次要关注点的代码被转移到切面中了。
+
+AspectJ切面是由AspectJ在运行期创建的。等到Spring有机会为CriticAspect注入CriticismEngine时，CriticAspect已经被实例化了。
+
+Spring 各功能依赖 
+
+> JUnit
+>
+> ```java
+> log.clearLog(); // clears debug that occurred for some reason in log output
+> // maybe failure
+> assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles\n",
+>              log.getLog());
+> // yes
+> final String newLine = System.lineSeparator();
+> assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles" 
+>              + newLine, log.getLog());
+> // or
+> import org.junit.contrib.java.lang.system.SystemOutRule;
+> //system-rules-1.16.0.jar
+> public final SystemOutRule log = new SystemOutRule().enableLog();  
+> assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles\n",
+>              log.getLogWithNormalizedLineSeparator());
+> ```
+>
+> System.out.println 在日志消息的末尾添加了一个换行符，而不同系统换行符可能不同。
+
+
+
+Spring mvc
+
+view /WEB-INF/views/xxx.jsp
+
+MockMvc
+
+> EqualsBuilder
+>
+> HashCodeBuilder
+
+RPC
+
+面向资源
+
+在处理 POST 类型的请求完成后，最好进行一下重定向
+
+
+
+tomcat add and remove no available
+
+project facets -> Dynamic Web Module
+
+eclipse validate 验证项目中的文件中代码有没有不规范的地方。该功能用于检测代码存在的“潜在”问题，比如：JSP文件的语法错误，XML中的schema错误等。
+
