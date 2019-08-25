@@ -2999,6 +2999,8 @@ close()
 
 jdk jre
 
+https://zhuanlan.zhihu.com/p/79527556
+
 序列化
 
 https://blog.csdn.net/qq_40670946/article/details/88106817

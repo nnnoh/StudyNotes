@@ -90,6 +90,23 @@ https://www.jellythink.com/archives/510
 
 gradle 区别
 
+### Tips
+
+#### 修改仓库
+
+修改 Maven 根目录下 conf/setting.xml 文件。在 `<mirrors>` 标签中添加下列内容。然后 update  setting。
+
+```xml
+	<mirror>
+	  <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>
+	</mirror>
+```
+
+
+
 
 
 ## Spring Boot
@@ -373,11 +390,33 @@ q: Project facet Java 12 is not supported by target runtime Apache Tomcat v8.5.
 
 q: failed to load the JNI shared library
 
-q: preference no server
+### q: preference no server
 
-q: use utf-8; default gbk
+1. Help -> Install New Software 
+2. Add "Kepler" repository(http://download.eclipse.org/releases/kepler)
+3. Web,XML, Java EE and OSGi Enterprise Development -> JST Server AdaptersExtensions 勾选
+4. （可选）取消 Contact all update sites during install to find required software 
+5. Next 
 
+### q: use utf-8; default gbk
 
+**工作空间**
+
+Window -> Preferences -> General -> Workspace -> Text file encoding
+
+**文件类型**
+
+Window -> Preferences -> General -> Workspace -> File associations / Default encoding
+
+**项目/文件** 
+
+Properties -> Resource -> Text file encoding
+
+> 可直接输入编码方式
+
+> 锟斤拷
+>
+> 烫烫烫
 
 ## Spring 实战
 
