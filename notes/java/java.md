@@ -907,7 +907,9 @@ for循环的初始化部分声明的变量，其作用范围在整个循环。
 
 switch 表达式的值决定选择哪个 case 分支，当表达式的值与case表达式常量的值**都不匹配**时，就运行default子句。default 子句不是必要的。进入分支后运行至 break 语句才跳出 switch 。
 
-switch(A) 括号中 A 的取值只能是整型或者可以转换为整型的数值类型，比如 byte、short、int、char、还有枚举。long 和 String 类型是不能作用在switch语句上的。
+switch(A) 括号中 A 的取值只能是整型或者可以转换为整型的数值类型，比如 byte、short、int、char。long 等类型是不能作用在switch语句上的。
+
+在 jdk1.7 后，String 和枚举类型也是可以的。switch 通过调用 string.hashCode()，将 string 转换为 int 从而进行判断。
 
 case 后跟常量表达式（final）或者int、byte、short、char，如果需要在此处写一个表达式或者变量，那么就要加上单引号。
 
@@ -1327,7 +1329,7 @@ abstract 关键字同样可以用来声明抽象方法，抽象方法只包含�
 
 4. 构造方法，类方法（用 static 修饰的方法）不能声明为抽象方法。
 
-5. 抽象类的子类必须给出抽象类中的抽象方法的具体实现，除非该子类也是抽象类
+5. 抽象类的子类必须给出抽象类中的抽象方法的具体实现，除非该子类也是抽象类。
 
 ### 接口
 
@@ -1356,8 +1358,12 @@ abstract 关键字同样可以用来声明抽象方法，抽象方法只包含�
 #### 接口特性
 
 - 接口中每一个方法也是隐式抽象的,接口中的方法会被隐式的指定为 **public abstract**（只能是 public abstract，其他修饰符都会报错）。
+
 - 接口中可以含有变量，但是接口中的变量会被隐式的指定为 **public static final** 变量（并且只能是 public，用 private 修饰会报编译错误）。
+
 - 接口中的方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法。
+
+  JDK1.8中为了加强接口的能力，使得接口可以存在具体的方法，前提是方法需要被 default 或 static 关键字所修饰。
 
 #### 抽象类和接口的区别
 
@@ -2186,10 +2192,10 @@ Vector(Collection c)
 
 一个标准的后进先出的栈。
 
-堆栈只定义了默认构造函数 `Stack()`，用来创建一个空栈。 堆栈除了包括由 Vector 定义的所有方法，也定义了自己的一些方法。
+Stack 只定义了默认构造函数 `Stack()`，用来创建一个空栈。 Stack 是 Vector 的子类，除了包括由 Vector 定义的所有方法，也定义了自己的一些方法。
 
 - add() & push()，stack 是将最后一个 element 作为栈顶的，所以这两个方法对 stack 而言是没什么区别的，但是，它们的返回值不一样，add() 返回boolean；push() 返回的是你添加的元素。为了可读性，推荐使用push。
-- peek() & pop()，这两个方法都能得到栈顶元素，区别是peek()只是读取，对原栈没有什么影响；pop()，出栈，所以原栈的栈顶元素就没了。
+- peek() & pop()，这两个方法都能得到栈顶元素，区别是 peek() 只是读取，对原栈没有什么影响；pop()，出栈，所以原栈的栈顶元素就没了。
 
 ### Hashtable
 
@@ -2275,7 +2281,7 @@ public interface Collection<E>{
 }
 ```
 
-- add 方法用于向集合中添加元素。如果添加元素确实改变了集合就返回true，否则返回false。
+- add 方法用于向集合中添加元素。如果添加元素确实改变了集合就返回 true，否则返回 false。
 - iterator 方法用于返回一个实现了Iterator接口的对象。
 
 #### 迭代器
@@ -2394,7 +2400,7 @@ ListIterator 的 add 方法只依赖迭代器的位置，而 remove 方法依赖
 
 #### 树集
 
-**TreeSet** 类是一个有序集合。在对其进行遍历时，每个值将自动地按照排序后的顺序呈现。其排序使用的是红黑树实现。
+**TreeSet** 类是一个有序集合。在对其进行遍历时，每个值将自动地按照排序后的顺序（默认从小到大）呈现。其排序使用的是红黑树实现。
 
 TreeSet 添加元素到树中要比添加到散列表中慢，与检查数组或链表中重复元素相比要快很多。
 
@@ -2404,9 +2410,9 @@ TreeSet 添加元素到树中要比添加到散列表中慢，与检查数组或
 
 Set 实现类 TreeSet, LinkedHashSet and HashSet
 
-- TreeSet的主要功能用于排序
-- LinkedHashSet的主要功能用于保证FIFO即有序的集合(先进先出)
-- HashSet只是通用的存储数据的集合
+- TreeSet 的主要功能用于排序。
+- LinkedHashSet 的主要功能用于保证FIFO即有序的集合(先进先出)。
+- HashSet 只是通用的存储数据的集合，无序。
 
 **相同点：**
 
@@ -2415,8 +2421,8 @@ Set 实现类 TreeSet, LinkedHashSet and HashSet
 
 **不同点：**
 
-- Performance and Speed: HashSet 插入数据最快，其次 LinkHashSet ，最慢的是TreeSet因为内部实现排序
-- Ordering: HashSet 不保证有序，LinkHashSet 保证 FIFO 即按插入顺序排序，TreeSet 安装内部实现排序，也可以自定义排序规则
+- Performance and Speed: HashSet 插入数据最快，其次 LinkHashSet ，最慢的是 TreeSet 因为内部实现排序
+- Ordering: HashSet 不保证有序，LinkHashSet 保证 FIFO 即按插入顺序排序，TreeSet 内部实现排序，也可以自定义排序规则
 - null: HashSet 和 LinkHashSet 允许存在 null 数据，但是 TreeSet 中插入 null 数据时会报 NullPointerException
 
 #### 队列与双端队列
@@ -2424,14 +2430,24 @@ Set 实现类 TreeSet, LinkedHashSet and HashSet
 **ArrayDeque** 和 **LinkedList** 类实现 Deque 接口都提供双端队列。
 
 - 循环数组 ArrayDeque，优先选择，更高效。
-
 - 链表 LinkedList，存储的对象数量没有上限时选择。
+
+offer() 添加元素，poll() 移除元素。
+
+通常不允许插入 null 元素。
 
 #### 优先级队列
 
 **PriorityQueue** 使用堆实现。堆是一个可以自我调整的二叉树，对堆执行add和remove操作，可以让最小的元素移动到根，而不必花费时间对元素进行排序。
 
 要使用 PriorityQueue  必须实现 Comparable 接口或者构造集时提供一个 Comparator 。
+
+***待 重新整理，按接口顺序介绍***
+
+#### 基本操作
+
+- add()
+- remove()
 
 #### 总结
 
@@ -2460,22 +2476,26 @@ Set 实现类 TreeSet, LinkedHashSet and HashSet
     1. 由链表保证元素有序
     2. 由哈希表保证元素唯一
   - TreeSet
-    底层数据结构是红黑树。(唯一，有序)
+    底层数据结构是红黑树。(唯一，自动排序)
     1. 如何保证元素排序的呢?
        自然排序
        比较器排序
     2. 如何保证元素唯一性的呢?
-       根据比较的返回值是否是0来决定
+       根据比较的返回值是否是 0 来决定
 
-> 无序，即与插入顺序不一样
+> 有序（ordered），按一定规则（如添加顺序）排列。
+>
+> 无序，与添加顺序不一样
 
 ### 映射
 
 Java 类库为映射(键/值对)提供了两个通用的实现: HashMap 和 TreeMap。在 Map 中，key 是不能重复的，而 value 可以重复。
 
 > 在 Java 2 重构的 Hashtable 也实现了Map接口。
+>
+> LinkedHashMap FIFO
 
-基本操作：
+#### 基本操作
 
 - put(K key, V value) 	
 
@@ -2515,11 +2535,11 @@ Iterator<?> iter = map.entrySet().iterator();
 
 #### 区别
 
-- TreeMap 是有序的（按键排序，默认升序），HashMap 和 HashTable 是无序的。
+- TreeMap 是有序的（按键升序排序），HashMap 和 HashTable 是无序的。
 
 - 父类不同：Hashtable 的父类是 Dictionary，HashMap 的父类是 AbstractMap。
 
-- Hashtable不允许 null 值，HashMap允许 null 值（key和value都允许）。
+- Hashtable 不允许 null 值，HashMap 允许 null 值（key 和 value 都允许）。
 
 - Hashtable 的方法是同步的，HashMap的方法不是同步的。这是两者最主要的区别。
 
@@ -2980,6 +3000,10 @@ BufferedReader 相对于 Scanner 有足够大的缓冲区内存。
 Scanner 有很少的缓冲区(1KB 字符缓冲)相对于 BufferedReader(8KB字节缓冲)，但是这是绰绰有余的。
 
 BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入数据进行类解析，而 BufferedReader 只是简单地读取字符序列。
+
+
+
+new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuchElementException。
 
 ### 泛型
 

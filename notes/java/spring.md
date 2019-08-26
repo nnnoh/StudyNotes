@@ -105,9 +105,69 @@ gradle 区别
 	</mirror>
 ```
 
+#### Gradle 项目转 Maven
 
+1. 项目根目录执行 gradle init；
 
+2. 在 build.gradle 添加如下内容：
 
+   ```
+   apply plugin: 'java'
+   apply plugin: 'maven'
+     
+   group = 'com.bazlur.app'
+   // artifactId is taken by default, from folder name
+   version = '0.1-SNAPSHOT'
+     
+   dependencies {
+   compile 'commons-lang:commons-lang:2.3'
+   }
+   ```
+
+3. gradle install
+
+4. 在 build/poms 下生成了 pom-default.xml，把它修改为 pom.xml，放到项目根目录下。
+
+#### pom.xml Error
+
+##### web.xml is missing and \<failOnMissingWebXml> is set to true
+
+因为 `<packaging>war</packaging>`，老版本 Maven 认为 web 应用需要 web.xml。而如今在 web 应用中 web.xml 配置文件不是必须。
+
+**不创建 web.xml**
+
+在 pom.xml 文件中手动添加如下配置。
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+在更新的版本的Maven中不存在web.xml文件缺失的问题，只需要处理 `<failOnMissingWebXml>`。
+
+```xml
+<properties>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+</properties>
+```
+
+**创建 web.xml**
+
+Eclipse 中，项目右键菜单 javaee tools -> generator deployment descriptor stub，生成 web.xml。
+
+在创建 Dynamic Web Project 时勾选 “Generate web.xml deployment descriptor ”，也可在项目的 WEB-INF 下创建web.xml。
+
+如果报错，则需要对 src/main/webapp 文件进行运行时的路径部署。作用是在运行时将相应的 resource 复制到 web 服务器的相应目录下（通过Deploy Path指定），保证web应用正常运行。
 
 ## Spring Boot
 
@@ -384,6 +444,12 @@ https://blog.csdn.net/chinabestchina/article/details/85108585
 
 https://www.cnblogs.com/songxingzhu/p/8867817.html
 
+sfl4j
+
+log4j2
+
+logback
+
 ## eclipse
 
 q: Project facet Java 12 is not supported by target runtime Apache Tomcat v8.5.
@@ -417,6 +483,32 @@ Properties -> Resource -> Text file encoding
 > 锟斤拷
 >
 > 烫烫烫
+
+### q: java 版本修改
+
+关于java版本有三处需要修改统一。
+
+1. 在 Java Build Path 的 Libraries 中修改
+2. 在 Java Compiler 中修改
+3. 在 Project Facets 中修改
+
+如果使用了 Maven 构建项目，最好在 pom.xml 文件中的 build 标签中加入如下代码。
+
+```xml
+<build>
+  <plugins>
+       <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-compiler-plugin</artifactId>
+             <version>3.1</version>
+             <configuration>
+                 <source>1.8</source>
+                 <target>1.8</target>
+             </configuration>
+       </plugin>
+  </plugins>
+</build>
+```
 
 ## Spring 实战
 
