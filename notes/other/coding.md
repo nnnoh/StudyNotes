@@ -7,6 +7,8 @@ Language: Java
 | [1](https://leetcode-cn.com/problems/two-sum/)               | 两数之和             | 在两数组中找出和为目标值的那两个整数     | 数组、哈希表                   | 暴力for；哈希表查找                               |
 | [2](https://leetcode-cn.com/problems/add-two-numbers/)       | 两数相加             | 将两个链表表示的非负的整数相加，返回链表 | 链表、数学                     | 链表遍历                                          |
 | [3](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/) | 无重复字符的最长子串 | 找出不含有重复字符的最长子串的长度。     | 哈希、双指针、字符串、滑动窗口 | 暴力for；滑动窗口，使用 HashSet/ HashMap 判断重复 |
+|                                                              |                      |                                          |                                |                                                   |
+|                                                              |                      |                                          |                                |                                                   |
 
 ## 考虑特殊输入情况!!!
 
@@ -67,3 +69,32 @@ public class ListNode {
 从一端滑动到另一端的时间复杂度：O(n)。
 
 滑动窗口时，针对有关**不重复**的问题，可借助 HashSet / HashMap 解决。
+
+```java
+public static void main(String[] args) {
+		int[] nums1={1,2,7};
+		int[] nums2={8,9};
+		System.out.println(findMedianSortedArrays(nums1,nums2));
+	}
+	public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+		// 两边收缩 可行？
+		// nums length not 0?
+		int mid=(nums1.length+nums2.length)/2;
+		boolean two=(nums1.length+nums2.length)%2==0;
+		int i=0,j=0,p=0,c;
+		while(p<mid) {		//out bound
+			if(nums1[i]>nums2[j])
+				j++;
+			else
+				i++;
+			p++;
+		}
+		if(two) {
+			return 0;
+		}
+		else {
+			return nums1[i]>nums2[j]?nums2[j]:nums1[i];
+		}
+	}
+```
+

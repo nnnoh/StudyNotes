@@ -72,6 +72,24 @@ https://www.nowcoder.com/questionTerminal/970cdaaa4a114cbf9fef82213a7dabca
 
 
 
+### first
+
+SQL 
+ count(*)
+ truncate
+ 注入 $#{}
+ 查询返回结构类型
+多线程
+ 线程状态变化的条件
+Collection 继承关系
+编码规范 （java、数据库、日志输出）
+exception 处理规范
+基本输入输出读写方法返回值
+标识 （//TODO）
+
+线程同步
+全排列
+
 
 
 <details>
