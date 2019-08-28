@@ -2341,6 +2341,12 @@ Properties(Properties propDefault)
 >
 > 集合中存储的是对象的引用。
 
+> Collection 接口使用了泛型，在指定了存储数据的类型后，其 add 方法只能接收对应的类型对象。
+>
+> 如果没有显式指定类型，其存储数据的类型被识别为其存储对象（add）的公有父类/接口。
+>
+> 比如：依次 add true 、123、"abc"，类型会被认为是 Comparable<?>。而如果指定类型为 String，将编译错误。
+
 #### Collection接口
 
 在Java类库中，集合类的基本接口是Collection接口。
@@ -2927,6 +2933,10 @@ listFiles(FilenameFilter filter) 是先用字符串匹配，匹配成功后创�
 
 list 疑惑 黑人问号*？？？*
 
+### RandomAccessFile
+
+
+
 ### IO流
 
 ![字节流](.\java.assets\20180513165849464.png)
@@ -3043,6 +3053,38 @@ http://tutorials.jenkov.com/java-nio/files.html
 
 ## 多线程编程
 
+进程与线程的区别
+
+线程状态
+
+睡眠 x 挂起 x 阻塞
+
+https://www.zhihu.com/question/42962803
+
+
+
+概念
+
+- 原子性。原子操作是指相应的操作是单一不可分割的操作。例如：count++就不是原子操作，因为该操作分为三步，1）读取count的值，2）count做++运算，3）把运算后的值赋予count。在多线程环境下，该操作可能会收到其他线程的干扰，导致我们不能得到想要的结果。
+- 内存可见性。CPU在执行代码的时候，为了减少变量访问的时间消耗，可能会将代码中访问的变量的值缓存到该CPU的缓存区。因此代码访问或者写入的变量，可能只是在缓存区而不是主内存。这就导致了一个CPU对变量的操作可能无法被其他CPU感知。
+- 重排序。编译器和CPU为了提高指令的执行效率可能会进行指令重排序，意思是一段代码的实际执行顺序会被重新排序。例如：People p = new People()；正常地执行流程为：1）创建People的实例，2）将实例赋予变量p。但是由于指令重排的作用，实际实行顺序可能是：1）分配一段用于储存People实例的内存空间，2）将对该空间的引用赋值给变量p，3）创建People的实例。因此，当其他线程访问变量p时，可能此时p实例的初始化尚未完成。
+
+volatile x synchronized
+
+- synchronized关键字实现操作原子性的本质是通过该关键字所包括的临界区的排他性保证在同一时刻只有一个线程能执行临界区中的代码。该操作保证了原子性和内存可见性。
+- volatile关键字保证了内存可见性，即，一个线程对一个volatile关键字修饰的变量的值的更改对于其他访问该变量的线程总是可见的。其核心机制为当一个线程更改了volatile关键字修饰的变量的值时，该值会被写入主内存而不仅仅时该线程的CPU缓存区，而其他CPU的缓存区中储存的该变量的值就会失效。这就保证了当任意线程访问一个volatile修饰的值时，那一刻得到的值一定是最新的。但是如果在读取后，有线程对其进行了修改，就无法保证操作的原子性了。volatile关键字的另一个作用是它禁止了指令重排序。
+- synchronized关键字技能保证操作的原子性，也能保证内存可见性，但是会导致上下文切换。volatile关键字仅能保证内存可见性。
+
+线程池
+
+DCL (单例模式)缺点
+
+wait / notify
+
+https://www.cnblogs.com/moongeek/p/7631447.html
+
+方法抛出的异常总结
+
 
 
 ## 新特性
@@ -3091,6 +3133,8 @@ BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入�
 
 ### 泛型
 
+<?>
+
 ### Functional Interface
 
 ## Tips
@@ -3122,3 +3166,7 @@ https://zhuanlan.zhihu.com/p/79527556
 https://blog.csdn.net/qq_40670946/article/details/88106817
 
 https://blog.csdn.net/yuyulover/article/details/4427527#commentBox
+
+happens-before
+
+jconsole
