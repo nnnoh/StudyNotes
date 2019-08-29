@@ -592,7 +592,7 @@ Java语言支持的变量类型有：
 - 与实例变量具有相似的可见性。但为了对类的使用者（外部）可见，大多数静态变量声明为public类型。
 - 默认值和实例变量一样。变量的值可以在声明的时候指定，也可以在构造方法中指定。此外，静态变量还可以在静态语句块中初始化。
 - 静态变量可以通过：ClassName.VariableName 的方式访问。
-- 类变量被声明为public static final类型时，类变量名称必须使用大写字母。如果静态变量不是public和final类型，其命名方式与实例变量以及局部变量的命名方式一致。
+- 类变量被声明为 public static final 类型时，类变量名称必须使用大写字母。如果静态变量不是public和final类型，其命名方式与实例变量以及局部变量的命名方式一致。
 
 #### 常量
 
@@ -1556,22 +1556,6 @@ public class Car {
 ## 常用类
 
 [Java API文档](http://www.matools.com/api/java8)
-
-### Object 类
-
-toString
-
-```java
-public String toString() {
-	return getClass().getName() + "@" + Integer.toHexString(hashCode());
-}
-```
-
-对象没有重写 toString 方法时，toString() 将返回 "类型@哈希值"。
-
-> 当 print 检测到输出的是一个对象而不是字符或者数字时，那么它会去调用这个对象类里面的 toString 方法。
-
-Object 类的 clone() 只实现了浅拷贝。
 
 ### Number 类
 
@@ -3087,7 +3071,31 @@ https://www.cnblogs.com/moongeek/p/7631447.html
 
 https://www.jianshu.com/p/46728d6bc6b2
 
+https://www.cnblogs.com/CarpenterLee/p/9558026.html
 
+## 异常
+
+非检查型
+
+## 特殊类
+
+### Object 类
+
+toString
+
+```java
+public String toString() {
+	return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+```
+
+对象没有重写 toString 方法时，toString() 将返回 "类型@哈希值"。
+
+> 当 print 检测到输出的是一个对象而不是字符或者数字时，那么它会去调用这个对象类里面的 toString 方法。
+
+Object 类的 clone() 只实现了浅拷贝。
+
+### Class
 
 ## 新特性
 
@@ -3122,6 +3130,8 @@ new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuch
 - 
 
 对于 int 等基本数据类型，在输入之前最好先使用 **hasNextXxx()** 方法进行验证，再使用 **nextXxx()** 来读取。
+
+hasNextXxx() next nexLine 空 回车后 
 
 #### 与 BufferedReader 的区别
 

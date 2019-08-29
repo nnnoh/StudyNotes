@@ -533,6 +533,10 @@ Transfer-Encoding: chunked
 
 
 
+Http请求时，URL中作为参数值的中文字符等会被编码
+
+URLEncode
+
 ## Tomcat
 
 ### Install
