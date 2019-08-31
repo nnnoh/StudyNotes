@@ -369,7 +369,6 @@ justify 使每一行宽度相等，左，右外边距对齐。
 
 - 流动模型（Flow）
 - 浮动模型 (Float)
-
 - 层模型（Layer）
 
 ## JavaScript
@@ -435,13 +434,27 @@ JavaScript 语句会在页面加载时执行。
 
 实时保存表单数据
 
+
+
 web 项目路径
+
+localhost:8080/项目名
+
+即在 Tomcat 下部署的文件名
+
+修改
+
+- 在 Server 视图打开 Tomcat，Modules 中修改部署的项目信息。
+
+> 或 项目右键 properties -> Web Project Settings -> Context root。
 
 目录结构
 
 WebRoot/WebContent	Web应用的根 "/"
 
 ![JavaWeb目录结构](.\web.assets\172304056712920.png)
+
+浏览器或页面直接访问的资源不能放在 WEB-INF 内。
 
 
 
@@ -587,6 +600,12 @@ CATALINA_HOME与CATALINA_BASE
 ## JSP
 
 页面跳转
+
+
+
+<%@page isELIgnored="false"%>
+
+${pageContext.request.contextPath}
 
 
 

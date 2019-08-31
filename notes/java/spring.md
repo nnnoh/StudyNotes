@@ -128,7 +128,7 @@ gradle 区别
 
 4. 在 build/poms 下生成了 pom-default.xml，把它修改为 pom.xml，放到项目根目录下。
 
-#### pom.xml Error
+#### pom.xml Errors/Warnings
 
 ##### web.xml is missing and \<failOnMissingWebXml> is set to true
 
@@ -168,6 +168,26 @@ Eclipse 中，项目右键菜单 javaee tools -> generator deployment descriptor
 在创建 Dynamic Web Project 时勾选 “Generate web.xml deployment descriptor ”，也可在项目的 WEB-INF 下创建web.xml。
 
 如果报错，则需要对 src/main/webapp 文件进行运行时的路径部署。作用是在运行时将相应的 resource 复制到 web 服务器的相应目录下（通过Deploy Path指定），保证web应用正常运行。
+
+##### Build path specifies execution environment J2SE-1.5. There are no JREs installed in the workspace that are strictly compatible with this environment. 
+
+update Maven 后修改 jdk 版本操作无效，可在 pom.xml 中添加下列内容。
+
+```xml
+<build>
+    <finalName>messageboard</finalName> 
+    <plugins>  
+      <plugin>    
+      <groupId>org.apache.maven.plugins</groupId>    
+      <artifactId>maven-compiler-plugin</artifactId>    
+      <configuration>    
+          <source>1.8</source>    
+          <target>1.8</target>    
+      </configuration>    
+      </plugin>  
+    </plugins>  
+  </build>
+```
 
 ## Spring Boot
 
@@ -684,3 +704,12 @@ project facets -> Dynamic Web Module
 
 eclipse validate 验证项目中的文件中代码有没有不规范的地方。该功能用于检测代码存在的“潜在”问题，比如：JSP文件的语法错误，XML中的schema错误等。
 
+
+
+.setSingleView(new InternalResourceView("/WEB-INF/views/home.jsp"))
+
+Circular view path [spittles]: would dispatch back to the current handler URL [/spittles] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
+
+classpath？
+
+id name 外键 区别

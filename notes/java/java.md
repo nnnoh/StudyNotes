@@ -1493,7 +1493,7 @@ public interface EventListener {}
 
 Java 中的包：
 
-- **java.lang**-打包基础的类（不需要手动import）
+- **java.lang**-基础的类（不需要手动import）
 - **java.io**-包含输入输出功能的函数
 
 当你自己完成类的实现之后，将相关的类分组，可以让其他的编程者更容易地确定哪些类、接口、枚举和注释等是相关的。
@@ -1520,7 +1520,12 @@ import package1[.package2…].(classname|*);
 
 #### import static
 
+import static 用于导入类的静态方法或静态属性，并允许在没有类限定的情况下使用。
 
+**总结**
+
+- import 导入包中的类或接口
+- import static 导入类的静态成员
 
 #### 包的目录结构
 
