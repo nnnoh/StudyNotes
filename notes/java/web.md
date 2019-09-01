@@ -382,20 +382,54 @@ justify 使每一行宽度相等，左，右外边距对齐。
 JavaScript 脚本位置
 
 - HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
-
-  通常的做法是把函数放入 `<head>` 部分中，或者放在页面底部。
-
+  
+浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
+  
 - 保存到外部文件中，扩展名为 .js。
-
-  在 HTML 中使用 `<script>` 标签的 src 属性设置 js 文件
-
+  
+  JS 文件不能直接运行，需嵌入到 HTML 文件中执行。HTML 使用 `<script>` 标签的 src 属性设置 js 文件
+  
   `<script src="/statics/demosource/myscript.js"></script>`
+  
+  在 JS 文件中可直接编写 JavaScript 代码不需要\<script>标签。
 
 JavaScript 语句会在页面加载时执行。
 
+通常在语句的结尾后加上一个分号`";"`来表示语句的结束。
+
+单行注释，在注释内容前加符号 “//”；多行注释以"/\*"开始，以"\*/"结束。
+
 ### 语法
 
-### 常用函数
+#### 变量
+
+定义变量：`var 变量名;`
+
+1. 变量必须使用字母、下划线(_)或者美元符($)开始。_
+2. 然后可以使用任意多个英文字母、数字、下划线(_)或者美元符($)组成。字母区分大小写。
+3. 不能使用JavaScript关键词与JavaScript保留字。
+
+> 变量虽然也可以不声明，直接使用，但不规范，需要先声明，后使用。
+
+#### if 语句
+
+```javascript
+if(条件)
+{ 条件成立时执行的代码 }
+else
+{ 条件不成立时执行的代码 }
+```
+
+#### 函数
+
+```javascript
+function 函数名()
+{
+     函数代码;
+}
+```
+
+### 常用方法
 
 #### 输出
 
@@ -413,13 +447,76 @@ JavaScript 语句会在页面加载时执行。
 
   浏览器中使用 F12 来启用调试模式， 在调试窗口中点击 Console 菜单查看控制台输出。
 
+#### 消息框
 
+- `alert(str);  ` 警告框，包含一个确定按钮。
+
+- `confirm(str);` 确认框，包含确定和取消按钮。
+
+  点击"确定"按钮时，返回true；点击"取消"按钮时，返回false。
+
+- `prompt(str1, str2);` 提问框，包含一个确定按钮、取消按钮与一个文本输入框。
+
+  str1：要显示在消息对话框中的文本；str2：文本框中的内容，对文本框内容的修改不会改变 str2 的值。
+
+  点击确定按钮，文本框中的内容将作为函数返回值；点击取消按钮，将返回null。
+
+> 这些消息对话框是排它的。
+
+#### 打开/关闭窗口
+
+`window.open([URL], [窗口名称], [参数字符串])`
+
+查找一个已经存在或者新建的浏览器窗口。返回值为对应窗口对象。
+
+- URL：可选参数，在窗口中要显示网页的网址或路径。如果省略这个参数，或者它的值是空字符串，那么窗口就不显示任何文档。
+
+- 窗口名称：可选参数，被打开窗口的名称。
+
+  1. 该名称由字母、数字和下划线字符组成。
+  2. "\_top"、"\_blank"、"_self"具有特殊意义的名称。
+     _blank：在新窗口显示目标网页
+     _self：在当前窗口显示目标网页
+     _top：框架网页中在上部窗口中显示目标网页
+  3. 相同 name 的窗口只能创建一个，要想创建多个窗口则 name 不能相同。
+  4. .name 不能包含有空格。
+
+- 参数字符串：可选参数，设置窗口参数，各参数用逗号隔开。
+
+  | 参数       | 值      | 说明                         |
+  | ---------- | ------- | ---------------------------- |
+  | top        | Number  | 窗口顶部离开屏幕顶部的像素数 |
+  | left       | Number  | 窗口左端离开屏幕左端的像素数 |
+  | width      | Number  | 窗口的宽度                   |
+  | height     | Number  | 窗口的高度                   |
+  | menubar    | yes, no | 窗口有没有菜单               |
+  | toolbar    | yes, no | 窗口有没有工具条             |
+  | scrollbars | yes, no | 窗口有没有滚动条             |
+  | status     | yes, no | 窗口有没有状态栏             |
+
+`window.close();` 关闭本窗口。
+
+`<窗口对象>.close();` 关闭指定的窗口。
 
 ### DOM
 
+文档对象模型 DOM（Document Object Model）定义访问和处理 HTML 文档的标准方法。DOM 将 HTML 文档呈现为带有元素、属性和文本的节点树结构。
 
+三种常见的DOM节点：
 
-```java
+1. 元素节点：即标签。
+2. 文本节点：向用户展示的内容。
+3. 属性节点：元素属性。
+
+#### 获取元素
+
+` document.getElementById("id") `
+
+返回 null 或 [object HTMLParagraphElement]。
+
+通过元素对象的属性或方法对元素进行操作。
+
+```javascript
 /* radio */
 		var ra = document.getElementsByName("ra");
 		var i = 0;
@@ -430,174 +527,62 @@ JavaScript 语句会在页面加载时执行。
 		}
 ```
 
+#### 元素属性
 
+> `Object.attribute`
+
+- `innerHTML` 属性用于获取或替换 HTML 元素的内容（标签头尾间的字符串）。
+
+- `style.[property]` HTML 元素的 CSS 样式属性。赋的值须使用 `""` 。 
+
+  使用示例：`objmychar.style.fontSize="20";` 
+
+  `obj.style="color:red;background-color:#CCC";`
+
+- `style.display ` 控制元素显示或隐藏。
+
+  值：`"none"` 隐藏；`"block"`显示为块级元素。
+
+- `className` 属性设置或返回元素的 class 属性。
+
+  可为网页内的某个元素指定一个css样式（类选择器）来更改该元素的外观。
+
+#### 元素方法
+
+- `removeAttribute(str)` 移除属性
+
+  示例：`element.removeAttribute("style");` 移除元素的样式属性。
+
+### Tips
+
+#### JS 输出空格
+
+1. 使用 html 标签`"&nbsp;"`
+2. 使用CSS样式 `"<span style='white-space:pre;'>"`
 
 实时保存表单数据
 
-
-
-web 项目路径
-
-localhost:8080/项目名
-
-即在 Tomcat 下部署的文件名
-
-修改
-
-- 在 Server 视图打开 Tomcat，Modules 中修改部署的项目信息。
-
-> 或 项目右键 properties -> Web Project Settings -> Context root。
-
-目录结构
-
-WebRoot/WebContent	Web应用的根 "/"
-
-![JavaWeb目录结构](.\web.assets\172304056712920.png)
-
-浏览器或页面直接访问的资源不能放在 WEB-INF 内。
-
-
-
-f12 的使用
-
-
-
-## HTTP
-
-URI URL
-
-### HTTP 报文首部
-
-首部内容为客户端和服务器分别处理请求和响应提供的所需要的信息。
-
-#### 请求报文
-
-在请求中，HTTP 报文由方法、URI、HTTP 版本、HTTP首部字段等部分组成。
-
-```http
-GET / HTTP/1.1
-Host: www.baidu.com
-Connection: keep-alive
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-Sec-Fetch-Site: none
-Accept-Encoding: gzip, deflate, br
-Accept-Language: zh-CN,zh;q=0.9
-Cookie: BAIDUID=D11CD3FFD082C12C66B3B81ED5E9A029:FG=1; BIDUPSID=D11CD3FFD082C12C66B3B81ED5E9A029; PSTM=1562305725; BD_UPN=12314753; sugstore=1; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; H_PS_PSSID=1436_21116_29523_29518_29099_29567_29221_29460_22160; delPer=0; BD_CK_SAM=1; BD_HOME=0; pgv_pvi=1048900608; pgv_si=s1115573248; PSINO=5; COOKIE_SESSION=3677_0_9_9_27_113_0_4_9_8_967_23_0_0_2896_0_1566290217_0_1566352161%7C9%230_2_1564737807%7C1; H_PS_645EC=716d8pfa%2FmJsNN0HQRU3LkAqYBRNphh5R8TWKaiuLdTTtMKVf%2FjD1ojQJIM
-```
-
-#### 响应报文
-
-在响应中，HTTP 报文由 HTTP 版本、状态码（数字和原因短语）、HTTP首部字段 3 部分构成。
-
-```http
-HTTP/1.1 200 OK
-Bdpagetype: 1
-Bdqid: 0xcbec3da800039cd1
-Cache-Control: private
-Connection: Keep-Alive
-Content-Encoding: gzip
-Content-Type: text/html
-Cxy_all: baidu+9ad5c3ed247641f2cfbbd9665600887b
-Date: Wed, 21 Aug 2019 02:21:20 GMT
-Expires: Wed, 21 Aug 2019 02:20:53 GMT
-Server: BWS/1.1
-Set-Cookie: delPer=0; path=/; domain=.baidu.com
-Set-Cookie: BDSVRTM=0; path=/
-Set-Cookie: BD_HOME=0; path=/
-Set-Cookie: H_PS_PSSID=1436_21116_29523_29518_29099_29567_29221_29460_22160; path=/; domain=.baidu.com
-Strict-Transport-Security: max-age=172800
-Vary: Accept-Encoding
-X-Ua-Compatible: IE=Edge,chrome=1
-Transfer-Encoding: chunked
-```
-
-#### HTTP 首部字段
-
-> HTTP/1.1 及常用的首部字段
-
-##### 首部字段结构
-
-`首部字段名: 字段值`
-
-当 HTTP 首部字段重复时，会根据浏览器内部处理逻辑优先处理第一次或最后出现的首部字段。
-
-##### 首部字段类型
-
-1. 通用首部字段（General Header Fields）
-
-   请求和响应报文都会使用的首部。
-
-2. 请求首部字段（Request Header Fields）
-
-   补充请求的附加内容、客户端信息、响应内容相关优先级等信息。
-
-3. 响应首部字段（Response Header Fields）
-
-   补充响应的附加内容，也会要求客户端附加额外的内容信息。
-
-4. 实体首部字段（Entity Header Fields）
-
-   针对请求和响应报文的实体部分使用的首部，补充资源内容更新时间等郁实体有关的信息。
-
-
-
-Http请求时，URL中作为参数值的中文字符等会被编码
-
-URLEncode
-
-## Tomcat
-
-### Install
-
-> Tomcat 有安装版和解压版两种
-
-#### 目录结构
-
-bin：目录存放一些启动运行Tomcat的可执行程序和相关内容。
-conf：存放关于Tomcat服务器的全局配置。
-lib：目录存放Tomcat运行或者站点运行所需的jar包，所有在此Tomcat上的站点共享这些jar包。
-logs： 存放日志文件。
-temp:  存放临时文件。
-wabapps：目默认的站点根目录，可以更改。当服务器启动时，会加载所有这个目录下的应用。
-work：目录用于在服务器运行时过度资源，简单来说，就是存储jsp、servlet翻译、编译后的结果。
-
-#### 配置环境变量
-
-1. 新建变量名：CATALINA_HOME，变量值：D:\WorkSpaceByJava\DevtTools\Apache-Tomcat-8.0.23
-
-2. 打开 PATH，添加变量值：%CATALINA_HOME%\lib;%CATALINA_HOME%\bin
-
-3. CMD 转入到 Tomcat 的 bin 目录。（CMD cd 到其他盘: cd /d e:\）
-
-   执行 service.bat install
-
-service.bat remove 可以移除注册服务
-
-启动服务 net start Tomcat8	管理员身份运行
-关闭服务 net stop  Tomcat8
-
-> Tomcat8 即刚刚注册的 Tomcat 服务名称
-
-[Eclipse开发JavaWeb项目配置Tomcat](https://blog.csdn.net/zs20082012/article/details/79138204)
-
-### 部署
-
-Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署。
-
-https://www.cnblogs.com/purplestone/p/3964207.html
-
-换端口
-
-CATALINA_HOME与CATALINA_BASE
-
-
-
 ## JSP
+
+JSP，全名为Java Server Pages，其根本就是一个简化的 Servlet 设计，实现了在 Java 当中使用 HTML 标签，JSP 是一种动态网页技术标准也是 JavaEE 标准，JSP 与 Servlet 一样是在服务器端执行的。
+
+**常见动态网站开发技术**
+
+Jsp: java平台，安全性高，适合大型开发，企业级、分布式的Web应用程序
+
+Asp.net: .NET平台，简单易学。但是安全性以及跨平台性差
+
+PHP: 简单，高效，成本低，开发周期短，特别适合中小型企业的Web应用开发(LAMP:Linux+Apache+MySQL+PHP)
+
+JSP等模板引擎作为伪前端技术（实际上是服务器端技术）有如下弊端：
+
+1. 标签库没有统一标准，各大厂商完成不一，常使开发者晕头转向
+
+2. 本身不是一种前端与后端分离的技术，不能实现前端与后端各自的语言独立
+
+3. 不是好的富客户端技术，GWT虽然可以用为富客户端前端技术，但是也是基于Java
+
+4. 前端与后端数据交换XML/JSON支持不够灵活，不是天生支持Ajax
 
 页面跳转
 
@@ -736,7 +721,7 @@ https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
    
    ServletContextListener 创建用户列表。
 
-### web.xml
+## web.xml
 
 web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页面、servlet、servlet-mapping、filter、listener、启动加载级别等。
 
@@ -744,8 +729,25 @@ web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页
 
 https://www.cnblogs.com/yqskj/articles/2233061.html
 
+#### classpath
+
+classpath 指 **WEB-INF/classes/** 这个目录的路径。
+
+示例：
+
+`classpath*:**/mapper/mapping/*Mapper.xml`
+
+`classpath:` 这种前缀，只能代表一个文件。`classpath*:` 则可以代表多个匹配的文件；
+
+双星号 `** `表示在任意目录下，也就是说在 `WEB-INF/classes/` 下任意层的目录，只要符合后面的文件路径，都会被作为资源文件找到。
 
 
+
+```xml
+<welcome-file-list>
+  <welcome-file>/haha.jsp</welcome-file>
+</welcome-file-list>
+```
 version 3.1 -- Tomcat8.5, Servlet 3.1 ok
 
 ```xml
@@ -817,4 +819,213 @@ version 3.1 -- Tomcat8.5, Servlet 3.1 ok
 //        }
     }
 ```
+
+## Tomcat
+
+### Install
+
+> Tomcat 有安装版和解压版两种
+
+#### 配置环境变量
+
+1. 新建变量名：CATALINA_HOME，变量值：D:\WorkSpaceByJava\DevtTools\Apache-Tomcat-8.0.23
+
+2. 打开 PATH，添加变量值：%CATALINA_HOME%\lib;%CATALINA_HOME%\bin
+
+3. CMD 转入到 Tomcat 的 bin 目录。（CMD cd 到其他盘: cd /d e:\）
+
+   执行 service.bat install
+
+service.bat remove 可以移除注册服务
+
+启动服务 net start Tomcat8	管理员身份运行
+关闭服务 net stop  Tomcat8
+
+> Tomcat8 即刚刚注册的 Tomcat 服务名称
+
+[Eclipse开发JavaWeb项目配置Tomcat](https://blog.csdn.net/zs20082012/article/details/79138204)
+
+### 目录结构
+
+bin：目录存放一些启动运行Tomcat的可执行程序和相关内容。
+
+conf：存放关于Tomcat服务器的全局配置。
+
+lib：目录存放Tomcat运行或者站点运行所需的jar包，所有在此Tomcat上的站点共享这些jar包。
+
+logs： 存放日志文件。
+
+temp:  存放临时文件。
+
+wabapps：目默认的站点根目录，可以更改。当服务器启动时，会加载所有这个目录下的应用。
+
+work：目录用于在服务器运行时过度资源，简单来说，就是存储jsp、servlet翻译、编译后的结果。
+
+
+
+WEB-INF目录结构
+
+1，是Java的WEB应用的安全目录。客户端无法访问，只有服务端可以访问。
+
+2，web.xml，项目部署文件
+
+3，classes文件夹，用以放置 *.class文件
+
+4，lib文件夹，用于存放需要的jar包
+
+
+
+wabapp
+
+
+web 项目路径
+
+localhost:8080/项目名
+
+即在 Tomcat 下部署的文件名
+
+修改
+
+- 在 Server 视图打开 Tomcat，Modules 中修改部署的项目信息。
+
+> 或 项目右键 properties -> Web Project Settings -> Context root。
+
+目录结构
+
+WebRoot/WebContent	Web应用的根 "/"
+
+![JavaWeb目录结构](.\web.assets\172304056712920.png)
+
+浏览器或页面直接访问的资源不能放在 WEB-INF 内。
+
+Web 项目中的相对路径
+
+
+### 部署
+
+Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署。
+
+https://www.cnblogs.com/purplestone/p/3964207.html
+
+### Tips
+
+#### 修改 Tomcat 服务器默认端口
+
+修改 `conf/server.xml` 文件如下 `port` 值。
+
+```xml
+<Connector port="8080" protocol="HTTP/1.1"
+           connectionTimeout="20000"
+           redirectPort="8443" />
+```
+
+
+
+CATALINA_HOME与CATALINA_BASE
+
+## HTTP
+
+URI URL
+
+### HTTP 报文首部
+
+首部内容为客户端和服务器分别处理请求和响应提供的所需要的信息。
+
+#### 请求报文
+
+在请求中，HTTP 报文由方法、URI、HTTP 版本、HTTP首部字段等部分组成。
+
+```http
+GET / HTTP/1.1
+Host: www.baidu.com
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: BAIDUID=D11CD3FFD082C12C66B3B81ED5E9A029:FG=1; BIDUPSID=D11CD3FFD082C12C66B3B81ED5E9A029; PSTM=1562305725; BD_UPN=12314753; sugstore=1; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; H_PS_PSSID=1436_21116_29523_29518_29099_29567_29221_29460_22160; delPer=0; BD_CK_SAM=1; BD_HOME=0; pgv_pvi=1048900608; pgv_si=s1115573248; PSINO=5; COOKIE_SESSION=3677_0_9_9_27_113_0_4_9_8_967_23_0_0_2896_0_1566290217_0_1566352161%7C9%230_2_1564737807%7C1; H_PS_645EC=716d8pfa%2FmJsNN0HQRU3LkAqYBRNphh5R8TWKaiuLdTTtMKVf%2FjD1ojQJIM
+```
+
+#### 响应报文
+
+在响应中，HTTP 报文由 HTTP 版本、状态码（数字和原因短语）、HTTP首部字段 3 部分构成。
+
+```http
+HTTP/1.1 200 OK
+Bdpagetype: 1
+Bdqid: 0xcbec3da800039cd1
+Cache-Control: private
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Type: text/html
+Cxy_all: baidu+9ad5c3ed247641f2cfbbd9665600887b
+Date: Wed, 21 Aug 2019 02:21:20 GMT
+Expires: Wed, 21 Aug 2019 02:20:53 GMT
+Server: BWS/1.1
+Set-Cookie: delPer=0; path=/; domain=.baidu.com
+Set-Cookie: BDSVRTM=0; path=/
+Set-Cookie: BD_HOME=0; path=/
+Set-Cookie: H_PS_PSSID=1436_21116_29523_29518_29099_29567_29221_29460_22160; path=/; domain=.baidu.com
+Strict-Transport-Security: max-age=172800
+Vary: Accept-Encoding
+X-Ua-Compatible: IE=Edge,chrome=1
+Transfer-Encoding: chunked
+```
+
+#### HTTP 首部字段
+
+> HTTP/1.1 及常用的首部字段
+
+##### 首部字段结构
+
+`首部字段名: 字段值`
+
+当 HTTP 首部字段重复时，会根据浏览器内部处理逻辑优先处理第一次或最后出现的首部字段。
+
+##### 首部字段类型
+
+1. 通用首部字段（General Header Fields）
+
+   请求和响应报文都会使用的首部。
+
+2. 请求首部字段（Request Header Fields）
+
+   补充请求的附加内容、客户端信息、响应内容相关优先级等信息。
+
+3. 响应首部字段（Response Header Fields）
+
+   补充响应的附加内容，也会要求客户端附加额外的内容信息。
+
+4. 实体首部字段（Entity Header Fields）
+
+   针对请求和响应报文的实体部分使用的首部，补充资源内容更新时间等郁实体有关的信息。
+
+
+
+Http请求时，URL中作为参数值的中文字符等会被编码
+
+URLEncode
+
+## Tips
+
+### 网页
+
+#### 静态网页
+
+表现形式：网页内容是固定的，不会更新。
+
+所需技术：HTML,CSS
+
+#### 动态网页
+
+表现形式：网页中的内容通过程序动态显示的，自动更新。学习制作动态网页。
+
+所需技术：HTML,CSS,XML,Javascript,数据库，高级语言（Java,c#,php）等。主流的动态网页脚本技术（jsp,asp.net,php）
+
+### F12 
 

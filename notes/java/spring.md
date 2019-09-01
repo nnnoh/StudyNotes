@@ -472,16 +472,37 @@ logback
 
 ## eclipse
 
-q: Project facet Java 12 is not supported by target runtime Apache Tomcat v8.5.
+### .classpath 文件
 
-q: failed to load the JNI shared library
+.classpath 文件用于记录项目编译环境的所有信息，包括：源文件路径、编译后 class 文件存放路径、依赖的jar包路径、运行的容器信息、依赖的外部 project 等信息。如果把该文件删除，则 eclipse 不能讲该工程识别为一个正常的 java 工程，仅仅当做普通的文件夹而导致不能正常运行。
+
+文件的所有内容，都是依赖项目中的“Java Build Path”内容改变而改变的，即对“Java Build Path”的所有操作都会反应到文件内容中。 
+
+- 源文件的具体位置（kind=”src”）
+- 运行的系统环境（kind=”con”）
+- 工程的library的具体位置信息(kind=”lib”)
+- 项目的输出目录(kind=”output”)
+
+### Tips
+
+- eclipse validate 验证项目中的文件中代码有没有不规范的地方。该功能用于检测代码存在的“潜在”问题，比如：JSP文件的语法错误，XML中的schema错误等。
+
+### q: tomcat add and remove no available
+
+project facets -> Dynamic Web Module 勾选。
 
 ### q: preference no server
 
 1. Help -> Install New Software 
-2. Add "Kepler" repository(http://download.eclipse.org/releases/kepler)
+
+2. Add "Oxygen" repository(http://download.eclipse.org/releases/oxygen)
+
+   > 注意 "Oxygen" 是Eclipse版本类型
+
 3. Web,XML, Java EE and OSGi Enterprise Development -> JST Server AdaptersExtensions 勾选
+
 4. （可选）取消 Contact all update sites during install to find required software 
+
 5. Next 
 
 ### q: use utf-8; default gbk
@@ -698,11 +719,7 @@ RPC
 
 
 
-tomcat add and remove no available
 
-project facets -> Dynamic Web Module
-
-eclipse validate 验证项目中的文件中代码有没有不规范的地方。该功能用于检测代码存在的“潜在”问题，比如：JSP文件的语法错误，XML中的schema错误等。
 
 
 
@@ -713,3 +730,4 @@ Circular view path [spittles]: would dispatch back to the current handler URL [/
 classpath？
 
 id name 外键 区别
+

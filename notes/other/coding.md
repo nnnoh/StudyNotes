@@ -20,6 +20,7 @@ Language: Java
 - 不重复序列的查找 -> HashSet/Map
 - 连续序列 -> Sliding Window
 - 时间复杂度 -> 二分查找
+- 概念转化为公式
 
 ### Map
 

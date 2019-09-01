@@ -25,7 +25,9 @@ Windows10：
   default-storage-engine=INNODB
   ```
 
-- cmd 跳转路径到 mysql 的 bin 目录下
+- 环境变量 Path : %MYSQL_HOME%\bin
+
+- cmd （管理员权限）跳转路径到 mysql 的 bin 目录下
 
 - mysqld --initialize --user=mysql --console （注意记录临时密码）
 
@@ -45,6 +47,8 @@ Windows10：
 - sc delete mysql //这里的mysql是你要删除的服务名
 
 ### After Installation
+
+Linux:
 
 启动MySQL：systemctl start  mysqld.service
 
