@@ -383,8 +383,9 @@ JavaScript 脚本位置
 
 - HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
   
+
 浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
-  
+
 - 保存到外部文件中，扩展名为 .js。
   
   JS 文件不能直接运行，需嵌入到 HTML 文件中执行。HTML 使用 `<script>` 标签的 src 属性设置 js 文件
@@ -1029,3 +1030,8 @@ URLEncode
 
 ### F12 
 
+https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox
+
+https://www.jianshu.com/p/d01eb74bf06c
+
+bfu

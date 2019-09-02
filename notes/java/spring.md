@@ -551,6 +551,20 @@ Properties -> Resource -> Text file encoding
 </build>
 ```
 
+### q: Cannot change version of project facet Dynamic Web Module to 3.1.
+
+1. 修改项目 .setting 目录的 org.eclipse.wst.common.project.facet.core.xml 文件的 jst.web 的 version。
+
+   eclipse : Filters... -> 取消勾选 .*resources
+
+2. 项目右键 -> Properties -> Project Facets -> Dynamic Web Module 3.1
+
+3. 修改 \WEB-INF\web.xml 中 web-app 标签的 version 和 xsi:schemaLocation。
+
+4. project clean
+
+5. 项目右键 -> Maven -> Update Projects
+
 ## Spring 实战
 
 关键策略 p4
@@ -719,15 +733,13 @@ RPC
 
 
 
-
+verify
 
 
 
 .setSingleView(new InternalResourceView("/WEB-INF/views/home.jsp"))
 
 Circular view path [spittles]: would dispatch back to the current handler URL [/spittles] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
-
-classpath？
 
 id name 外键 区别
 
