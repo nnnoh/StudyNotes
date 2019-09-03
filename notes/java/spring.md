@@ -743,3 +743,10 @@ Circular view path [spittles]: would dispatch back to the current handler URL [/
 
 id name 外键 区别
 
+spring Environment ???
+
+
+
+LDAP JNDI what?
+
+RESTful

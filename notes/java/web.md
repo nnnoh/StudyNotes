@@ -24,7 +24,7 @@ label span 区别
 
 name id 区别
 
-
+herf 路径 相对
 
 编码规范
 
@@ -733,6 +733,11 @@ https://www.cnblogs.com/yqskj/articles/2233061.html
 #### classpath
 
 classpath 指 **WEB-INF/classes/** 这个目录的路径。
+
+classpath 目录下文件：
+
+- src/main/resources 目录下的所有文件。
+- 按包名存放的 class 文件。
 
 示例：
 
