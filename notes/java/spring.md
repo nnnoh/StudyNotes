@@ -743,3 +743,30 @@ Circular view path [spittles]: would dispatch back to the current handler URL [/
 
 id name 外键 区别
 
+spring Environment ???
+
+
+
+LDAP JNDI what?
+
+RESTful
+
+
+
+spring security
+
+```java
+http.authorizeRequests()
+  .formLogin()
+  .loginPage("/").permitAll()　
+  .loginProcessingUrl("/log")　　　　　　　　　　　　　　　　　　//登陆提交的处理url
+  .failureForwardUrl("/?error=true")　　　　　　　　　　　　　　//登陆失败进行转发，这里回到登陆页面，参数error可以告知登陆状态
+  .defaultSuccessUrl("/me")　    //登陆成功的url
+  .logout()
+　.logoutUrl("/logout").permitAll()
+　.logoutSuccessUrl("/?logout=true")
+```
+
+```java
+Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+```
