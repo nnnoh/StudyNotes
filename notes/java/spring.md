@@ -90,6 +90,8 @@ https://www.jellythink.com/archives/510
 
 gradle 区别
 
+项目编译 目录
+
 ### Tips
 
 #### 修改仓库
@@ -564,6 +566,12 @@ Properties -> Resource -> Text file encoding
 4. project clean
 
 5. 项目右键 -> Maven -> Update Projects
+
+q: space 代替 tab
+
+windows -> preferences...
+
+
 
 ## Spring 实战
 

@@ -14,6 +14,10 @@ HTML 文档由 4 个主要标记组成，
 
 
 
+
+
+IFrame, object, include
+
 target
 
 label span 区别
@@ -383,8 +387,7 @@ JavaScript 脚本位置
 
 - HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
   
-
-浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
+  浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
 
 - 保存到外部文件中，扩展名为 .js。
   
@@ -408,7 +411,7 @@ JavaScript 语句会在页面加载时执行。
 
 1. 变量必须使用字母、下划线(_)或者美元符($)开始。_
 2. 然后可以使用任意多个英文字母、数字、下划线(_)或者美元符($)组成。字母区分大小写。
-3. 不能使用JavaScript关键词与JavaScript保留字。
+3. 不能使用 JavaScript 关键词与 JavaScript 保留字。
 
 > 变量虽然也可以不声明，直接使用，但不规范，需要先声明，后使用。
 
@@ -501,13 +504,21 @@ function 函数名()
 
 ### DOM
 
-文档对象模型 DOM（Document Object Model）定义访问和处理 HTML 文档的标准方法。DOM 将 HTML 文档呈现为带有元素、属性和文本的节点树结构。
+文档对象模型 DOM（Document Object Model）定义访问和处理 HTML 文档的标准方法。DOM 将 HTML 文档呈现为带有元素、属性和文本的节点树结构（节点树）。
 
 三种常见的DOM节点：
 
 1. 元素节点：即标签。
 2. 文本节点：向用户展示的内容。
 3. 属性节点：元素属性。
+
+#### 节点属性
+
+- nodeName
+
+#### 节点遍历
+
+#### DOM操作
 
 #### 获取元素
 
@@ -530,19 +541,19 @@ function 函数名()
 
 #### 元素属性
 
-> `Object.attribute`
+> Object.attribute
 
 - `innerHTML` 属性用于获取或替换 HTML 元素的内容（标签头尾间的字符串）。
 
-- `style.[property]` HTML 元素的 CSS 样式属性。赋的值须使用 `""` 。 
+- `style.[property]` HTML 元素的 CSS 样式属性。赋的值须使用 "" 。 
 
-  使用示例：`objmychar.style.fontSize="20";` 
+  使用示例：objmychar.style.fontSize="20"; 
 
-  `obj.style="color:red;background-color:#CCC";`
+  obj.style="color:red;background-color:#CCC";
 
 - `style.display ` 控制元素显示或隐藏。
 
-  值：`"none"` 隐藏；`"block"`显示为块级元素。
+  值："none" 隐藏；"block"显示为块级元素。
 
 - `className` 属性设置或返回元素的 class 属性。
 
@@ -552,7 +563,43 @@ function 函数名()
 
 - `removeAttribute(str)` 移除属性
 
-  示例：`element.removeAttribute("style");` 移除元素的样式属性。
+  示例：element.removeAttribute("style"); 移除元素的样式属性。
+
+### 正则表达式
+
+### 语法
+
+格式：`/正则表达式主体/修饰符[可选]`
+
+#### 修饰符
+
+- i：执行对大小写不敏感的匹配。
+- g：执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。
+- m：执行多行匹配。
+
+#### 正则表达式模式
+
+
+
+
+
+#### 字符串方法
+
+##### search
+
+
+
+##### replace
+
+#### RegExp
+
+##### test
+
+
+
+##### exec
+
+
 
 ### Tips
 
@@ -562,6 +609,10 @@ function 函数名()
 2. 使用CSS样式 `"<span style='white-space:pre;'>"`
 
 实时保存表单数据
+
+## jQuery
+
+
 
 ## JSP
 
@@ -722,54 +773,10 @@ https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
    
    ServletContextListener 创建用户列表。
 
-## web.xml
-
-web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页面、servlet、servlet-mapping、filter、listener、启动加载级别等。
-
-> XML 标签 大小写敏感。
-
-https://www.cnblogs.com/yqskj/articles/2233061.html
-
-#### classpath
-
-classpath 指 **WEB-INF/classes/** 这个目录的路径。
-
-classpath 目录下文件：
-
-- src/main/resources 目录下的所有文件。
-- 按包名存放的 class 文件。
-
-示例：
-
-`classpath*:**/mapper/mapping/*Mapper.xml`
-
-`classpath:` 这种前缀，只能代表一个文件。`classpath*:` 则可以代表多个匹配的文件；
-
-双星号 `** `表示在任意目录下，也就是说在 `WEB-INF/classes/` 下任意层的目录，只要符合后面的文件路径，都会被作为资源文件找到。
-
-
-
-```xml
-<welcome-file-list>
-  <welcome-file>/haha.jsp</welcome-file>
-</welcome-file-list>
-```
-version 3.1 -- Tomcat8.5, Servlet 3.1 ok
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
-</web-app>
-```
-
 
 
 ```java
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -825,6 +832,63 @@ version 3.1 -- Tomcat8.5, Servlet 3.1 ok
 //        }
     }
 ```
+
+## web.xml
+
+web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页面、servlet、servlet-mapping、filter、listener、启动加载级别等。
+
+> XML 标签 大小写敏感。
+
+https://www.cnblogs.com/yqskj/articles/2233061.html
+
+### 路径
+
+#### classpath
+
+classpath 指 **WEB-INF/classes/** 这个目录的路径。
+
+classpath 目录下文件：
+
+- src/main/resources 目录下的所有文件。
+- 按包名存放的 class 文件。
+
+示例：
+
+`classpath*:**/mapper/mapping/*Mapper.xml`
+
+`classpath:` 这种前缀，只能代表一个文件。`classpath*:` 则可以代表多个匹配的文件；
+
+双星号 `** `表示在任意目录下，也就是说在 `WEB-INF/classes/` 下任意层的目录，只要符合后面的文件路径，都会被作为资源文件找到。
+
+
+
+```xml
+<welcome-file-list>
+  <welcome-file>/haha.jsp</welcome-file>
+</welcome-file-list>
+```
+version 3.1 -- Tomcat8.5, Servlet 3.1 ok
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+</web-app>
+```
+
+### 标签
+
+#### load-on-startup
+
+1. load-on-startup 元素标记容器是否应该在web应用程序启动的时候就加载这个servlet，(实例化并调用其init()方法)。
+2. 它的值必须是一个整数，表示servlet被加载的先后顺序。
+3. 如果该元素的值为负数或者没有设置，则容器会当Servlet被请求时再加载。
+4. 如果值为正整数或者0时，表示容器在应用启动时就加载并初始化这个servlet，值越小，servlet的优先级越高，就越先被加载。值相同时，容器就会自己选择顺序来加载。
+
+
 
 ## Tomcat
 
@@ -1039,4 +1103,3 @@ https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox
 
 https://www.jianshu.com/p/d01eb74bf06c
 
-bfu
