@@ -177,7 +177,7 @@ update Maven 后修改 jdk 版本操作无效，可在 pom.xml 中添加下列�
 
 ```xml
 <build>
-    <finalName>messageboard</finalName> 
+    <finalName>xxx</finalName> 
     <plugins>  
       <plugin>    
       <groupId>org.apache.maven.plugins</groupId>    
@@ -777,4 +777,29 @@ http.authorizeRequests()
 
 ```java
 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+```
+
+
+
+```js
+ @Autowired
+ private Environment env;
+```
+
+ java.lang.NullPointerException 
+
+env 自动装配发生的时间稍晚
+
+解决方法是实现`EnvironmentAware`并依赖Spring调用`setEnvironment()`方法
+
+```java
+public class Config implements EnvironmentAware {
+
+    private Environment environment;
+
+    @Override
+    public void setEnvironment(final Environment environment) {
+        this.environment = environment;
+    }
+}
 ```

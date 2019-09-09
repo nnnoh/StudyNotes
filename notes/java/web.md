@@ -34,6 +34,8 @@ herf 路径 相对
 
 > " ' ' "
 
+w3school 知识补充
+
 ## CSS
 
 CSS 指层叠样式表 (Cascading Style Sheets)。
@@ -516,6 +518,16 @@ function 函数名(参数1,参数2){
 }
 ```
 
+##### 匿名函数
+
+```javascript
+
+```
+
+调用局部变量
+
+字符串作为函数调用。
+
 #### 作用域
 
 局部变量：在函数中通过var声明的变量，只能在函数内部访问，在函数执行完毕后销毁。
@@ -728,6 +740,8 @@ BOM，Browser Object Model，即浏览器对象模型。浏览器页面初始化
 
 使用 window 对象的属性和方法时可省略 window。
 
+![window](D:\GitHub\StudyNotes\notes\java\web.assets\1470710607319368.gif)
+
 #### 计时器
 
 ##### 间隔性触发计时器
@@ -765,7 +779,7 @@ location 表示窗口中当前显示的文档的 Web 地址。用于获取或设
 
 ##### 属性
 
-![location](E:\GitHub\StudyNotes\notes\java\web.assets\53605c5a0001b26909900216.jpg)
+![location](.\web.assets\53605c5a0001b26909900216.jpg)
 
 ##### 方法
 
@@ -787,7 +801,7 @@ navigator 对象包含有关浏览器的信息，通常用于检测浏览器与�
 
 #### screen 对象
 
-screen对象用于获取用户的屏幕信息。
+screen 对象用于获取用户的屏幕信息。
 
 ##### 属性
 
@@ -816,6 +830,9 @@ HTML 文档可以说由节点构成的集合，DOM节点有：
 3. 属性节点：元素属性。
 
 #### 获取元素节点
+
+- **document.body** html dom中的body节点 即\<body>
+- **document.documentElement** html dom中的root 节点 即\<html>
 
 - **document.getElementById("id")**  
 
@@ -872,12 +889,7 @@ HTML 文档可以说由节点构成的集合，DOM节点有：
 
 - **previousSibling** 属性可返回某个节点之前紧跟的节点（处于同一树层级中）。
 
-#### DOM操作
-
-##### document 属性
-
-- **document.body** html dom中的body节点 即\<body>
-- **document.documentElement** html dom中的root 节点 即<html>
+#### 节点操作
 
 ##### document 方法
 
@@ -933,6 +945,22 @@ value & innerHTML 区别
 
 > radio： check 属性
 
+Cookie
+
+原型链
+
+Boolean
+
+herf="javascript:;" 之类的
+
+execCommand
+
+debugger 关键字
+
+闭包
+
+https://www.w3cschool.cn/javascript/js-cookies.html
+
 ### 正则表达式
 
 #### 语法
@@ -968,7 +996,92 @@ value & innerHTML 区别
 1. 使用 html 标签`"&nbsp;"`
 2. 使用CSS样式 `"<span style='white-space:pre;'>"`
 
-实时保存表单数据
+#### 浏览器窗口可视区域大小
+
+获得浏览器窗口的尺寸（浏览器的窗口可视区域，不包括工具栏和滚动条）的方法:
+
+1. 对于IE9+、Chrome、Firefox、Opera 以及 Safari：
+   - window.innerHeight - 浏览器窗口的内部高度
+   - window.innerWidth - 浏览器窗口的内部宽度
+   
+2. 对于 Internet Explorer 8、7、6、5：
+
+   - document.documentElement.clientHeight表示HTML文档所在窗口的当前高度。
+
+   - document.documentElement.clientWidth表示HTML文档所在窗口的当前宽度。
+
+   或者，document对象的body属性对应HTML文档的\<body>标签
+
+   - document.body.clientHeight
+
+   - document.body.clientWidth
+
+在不同浏览器都实用的 JavaScript 方案：
+
+```javascript
+var w= document.documentElement.clientWidth
+      || document.body.clientWidth;
+var h= document.documentElement.clientHeight
+      || document.body.clientHeight;
+```
+
+#### 网页尺寸
+
+##### 网页尺寸 scrollHeight 
+
+scrollHeight 和 scrollWidth，获取网页内容高度和宽度。
+
+scrollHeight和scrollWidth还可获取Dom元素中内容实际占用的高度和宽度。
+
+**一、针对IE、Opera:**
+
+scrollHeight 是网页内容实际高度，可以小于 clientHeight。
+
+**二、针对NS、FF:**
+
+scrollHeight 是网页内容高度，不过最小值是 clientHeight。也就是说网页内容实际高度小于 clientHeight 时，scrollHeight 返回 clientHeight 。
+
+**三、浏览器兼容性**
+
+```javascript
+var w=document.documentElement.scrollWidth
+   || document.body.scrollWidth;
+var h=document.documentElement.scrollHeight
+   || document.body.scrollHeight;
+```
+
+##### 网页尺寸offsetHeight
+
+offsetHeight 和 offsetWidth，获取网页内容高度和宽度(包括滚动条等边线，会随窗口的显示大小改变)。
+
+**一、值**
+
+offsetHeight = clientHeight + 滚动条 + 边框。
+
+**二、浏览器兼容性**
+
+```javascript
+var w= document.documentElement.offsetWidth
+    || document.body.offsetWidth;
+var h= document.documentElement.offsetHeight
+    || document.body.offsetHeight;
+```
+
+#### 网页卷去的距离与偏移量
+
+![scroll](D:\GitHub\StudyNotes\notes\java\web.assets\5347b2b10001e1a307520686.jpg)
+
+scrollLeft：设置或获取位于给定对象左边界与窗口中目前可见内容的最左端之间的距离 ，即左边灰色的内容。
+
+scrollTop：设置或获取位于对象最顶端与窗口中可见内容的最顶端之间的距离 ，即上边灰色的内容。
+
+> scrollLeft 和 scrollTop 会随着滑块的滑动而改变。
+
+offsetLeft：获取指定对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置 。
+
+offsetTop：获取指定对象相对于版面或由 offsetParent 属性指定的父坐标的计算顶端位置 。
+
+> offsetParent：布局中设置postion属性(Relative、Absolute、fixed)的父容器，从最近的父节点开始，一层层向上找，直到HTML的body。
 
 ## jQuery
 

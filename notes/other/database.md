@@ -110,5 +110,29 @@ https://www.w3cschool.cn/mysql/mysql-administration.html
 
 #### 数据库操作
 
+规范
+
+### Tips
+
+示例
+
+create_time 设置 DEFAULT CURRENT_TIMESTAMP属性
+
+update_time 设置 DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP属性
+
+datetime timestamp 区别
+
+### ERR
+
+#### 1064
+
+q: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line
+
+sql 语法错误，包含但不限于下列情况：
+
+1. 在 MySQL 中，为了区分 MySQL 的关键字与普通字符，MySQL 引入了反引号将列名称框起来。
+
+   当建表时，使用关键字作为列名称，而没有使用反引号或者使用单引号，将会报这个错误。
+
 ### Others
 
