@@ -1,15 +1,16 @@
-LeetCode - 3/1150
+LeetCode - 5/1150
 
 Language: Java
 
-| #                                                            | 题目                 | 描述                                     | 标签                             | 思路                                              |
-| ------------------------------------------------------------ | -------------------- | ---------------------------------------- | -------------------------------- | ------------------------------------------------- |
-| [1](https://leetcode-cn.com/problems/two-sum/)               | 两数之和             | 在两数组中找出和为目标值的那两个整数     | 数组、哈希表                     | 暴力for；哈希表查找                               |
-| [2](https://leetcode-cn.com/problems/add-two-numbers/)       | 两数相加             | 将两个链表表示的非负的整数相加，返回链表 | 链表、数学                       | 链表遍历                                          |
-| [3](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/) | 无重复字符的最长子串 | 找出不含有重复字符的最长子串的长度       | 哈希、双指针、字符串、滑动窗口   | 暴力for；滑动窗口，使用 HashSet/ HashMap 判断重复 |
-|                                                              |                      |                                          |                                  |                                                   |
-|                                                              |                      |                                          |                                  |                                                   |
-| [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/) | 最长重复子数组       | 返回两数组中公共的长度最长的子数组的长度 | 数组、哈希表、二分查找、动态规划 |                                                   |
+| #                                                            | 题目                 | 描述                                       | 标签                             | 思路                                              |
+| ------------------------------------------------------------ | -------------------- | ------------------------------------------ | -------------------------------- | ------------------------------------------------- |
+| [1](https://leetcode-cn.com/problems/two-sum/)               | 两数之和             | 在两数组中找出和为目标值的那两个整数       | 数组、哈希表                     | 暴力for；哈希表查找                               |
+| [2](https://leetcode-cn.com/problems/add-two-numbers/)       | 两数相加             | 将两个链表表示的非负的整数相加，返回链表   | 链表、数学                       | 链表遍历                                          |
+| [3](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/) | 无重复字符的最长子串 | 找出不含有重复字符的最长子串的长度         | 哈希、双指针、字符串、滑动窗口   | 暴力for；滑动窗口，使用 HashSet/ HashMap 判断重复 |
+|                                                              |                      |                                            |                                  |                                                   |
+|                                                              |                      |                                            |                                  |                                                   |
+| [46](https://leetcode-cn.com/problems/permutations/)         | 全排列               | 返回一个没有重复数字序列所有可能的全排列。 | 回溯算法                         |                                                   |
+| [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/) | 最长重复子数组       | 返回两数组中公共的长度最长的子数组的长度   | 数组、哈希表、二分查找、动态规划 |                                                   |
 
 ## Tips
 
@@ -78,6 +79,10 @@ public class ListNode {
 >     }
 > ```
 
+## Stack
+
+模拟递归
+
 ## Backtracking
 
 即 DFS。
@@ -85,3 +90,4 @@ public class ListNode {
 ## Dynamic programming
 
 思路
+
