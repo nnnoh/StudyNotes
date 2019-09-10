@@ -134,5 +134,13 @@ sql 语法错误，包含但不限于下列情况：
 
    当建表时，使用关键字作为列名称，而没有使用反引号或者使用单引号，将会报这个错误。
 
+#### 1170
+
+q: BLOB/TEXT column 'name' used in key specification without a key length
+
+MySQL 数据库对于 BLOB/TEXT 这样类型的数据结构只能索引前 N 个字符。所以这样的数据类型不能作为主键，也不能是 UNIQUE 的。
+
+可以换成 VARCH，但是 VARCHAR 类型的大小也不能大于 255，当 VARCHAR 类型的字段大小如果大于 255 的时候也会转换成小的 TEXT 来处理。
+
 ### Others
 

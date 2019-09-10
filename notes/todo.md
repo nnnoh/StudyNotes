@@ -4,7 +4,7 @@
 
 ### Want to do
 
-- spring 实现博客系统
+- springboot 实现博客系统
 
 
 

@@ -553,7 +553,7 @@ Properties -> Resource -> Text file encoding
 </build>
 ```
 
-### q: Cannot change version of project facet Dynamic Web Module to 3.1.
+#### q: Cannot change version of project facet Dynamic Web Module to 3.1.
 
 1. 修改项目 .setting 目录的 org.eclipse.wst.common.project.facet.core.xml 文件的 jst.web 的 version。
 
@@ -567,11 +567,23 @@ Properties -> Resource -> Text file encoding
 
 5. 项目右键 -> Maven -> Update Projects
 
-q: space 代替 tab
+### q: Classpath entry org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER will not be exported or published. Runtime ClassNotFoundExceptions may result.  
 
-windows -> preferences...
+项目根目录 .classpath 文件添加下列内容：
 
+```xml
+<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+```
 
+项目 properties -> Java Build Path -> Order and Export -> 勾选 Maven Dependencies
+
+项目 properties -> Deployment Assembly -> add "Maven Dependencies : WEB-INF/lib"
+
+clean -> updata
 
 ## Spring 实战
 

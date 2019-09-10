@@ -147,6 +147,8 @@ spring resource
 
 
 
+
+
 sqlSessionFactoryBeanName要用value而不用ref.
 
 在mybatis-spring1.1.0以前，是通过`<property name="sqlSessionFactory" ref="sqlSessionFactory"/>`将SqlSessionFactory对象注入到sqlSessionFactory，这样做可能会有一个问题，就是在初始化MyBatis时，jdbc.properties文件还没被加载进来，dataSource的属性值没有被替换，就开始构造sqlSessionFactory类，属性值就会加载失败。在1.1.0以后，MapperScannerConfigure提供了String类型的sqlSessionFactoryBeanName，这样将bean name注入到sqlSessionFactoryBeanName，这样就会等到spring初始化完成后，再构建sqlSessionFactory。
