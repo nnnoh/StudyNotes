@@ -530,6 +530,16 @@ function 函数名(参数1,参数2){
 
 this
 
+可变长参数 
+
+arguments
+
+eval
+
+Function
+
+window[]
+
 #### 作用域
 
 局部变量：在函数中通过var声明的变量，只能在函数内部访问，在函数执行完毕后销毁。
@@ -553,6 +563,16 @@ this
 | onblur      | 光标离开（失焦） |
 | onload      | 页面加载         |
 | onunload    | 页面关闭         |
+
+#### 特别事件
+
+form
+
+- onsubmit
+
+  示例：`<form onsubmit="return checkForm()">`
+
+#### 事件绑定与解绑
 
 ### 常用方法
 
@@ -774,6 +794,10 @@ history 对象记录了用户曾经浏览过的页面(URL)，并可以实现浏�
 - **back()** 加载 history 列表中的前一个 URL。等同于点击浏览器的后退按钮。
 - **forward()** 加载 history 列表中的下一个 URL。等同于前进按钮。
 - **go(number)** 根据当前所处的页面，加载 history 列表中相对当前页面偏移 number 的页面。即，0：当前页面；1：forward()；-1：back()。
+
+#### sessionStorage 对象
+
+#### localStorage 对象
 
 #### location 对象
 
@@ -1552,25 +1576,13 @@ Transfer-Encoding: chunked
 
 
 
+### Cookie
+
 Http请求时，URL中作为参数值的中文字符等会被编码
 
 URLEncode
 
 ## Tips
-
-### 网页
-
-#### 静态网页
-
-表现形式：网页内容是固定的，不会更新。
-
-所需技术：HTML,CSS
-
-#### 动态网页
-
-表现形式：网页中的内容通过程序动态显示的，自动更新。学习制作动态网页。
-
-所需技术：HTML,CSS,XML,Javascript,数据库，高级语言（Java,c#,php）等。主流的动态网页脚本技术（jsp,asp.net,php）
 
 ### F12 
 

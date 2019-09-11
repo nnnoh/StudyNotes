@@ -100,7 +100,9 @@ https://www.cnblogs.com/ivictor/p/5142809.html
 6. use mysql
 7. update user set authentication_string=password('PASSWORD') where user='root';
 8. 删除skip-grant-tables
-9. 重启MySQL
+9. 重启MySQL 
+
+数据类型
 
 ### Command
 
@@ -108,9 +110,27 @@ https://blog.csdn.net/michaelehome/article/details/79469239
 
 https://www.w3cschool.cn/mysql/mysql-administration.html
 
-#### 数据库操作
+命令类型
+
+#### Database
+
+
+
+#### Table
+
+##### ALTER
+
+
+
+#### Data
+
+
+
+
 
 规范
+
+区分下mysql 和 sql
 
 ### Tips
 
@@ -143,4 +163,45 @@ MySQL 数据库对于 BLOB/TEXT 这样类型的数据结构只能索引前 N 个
 可以换成 VARCH，但是 VARCHAR 类型的大小也不能大于 255，当 VARCHAR 类型的字段大小如果大于 255 的时候也会转换成小的 TEXT 来处理。
 
 ### Others
+
+# Cache（暂）
+
+## Redis
+
+### Installation
+
+Download, extract and compile Redis with:
+
+```shell
+$ wget http://download.redis.io/releases/redis-5.0.5.tar.gz
+$ tar xzf redis-5.0.5.tar.gz
+$ cd redis-5.0.5
+$ make
+```
+
+The binaries that are now compiled are available in the `src` directory. Run Redis with:
+
+```shell
+$ src/redis-server
+```
+
+You can interact with Redis using the built-in client:
+
+```sh
+$ src/redis-cli
+redis> set foo bar
+OK
+redis> get foo
+"bar"
+```
+
+
+
+
+
+
+
+
+
+
 
