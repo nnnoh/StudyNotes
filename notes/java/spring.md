@@ -94,6 +94,10 @@ gradle 区别
 
 ### Tips
 
+setting.xml
+
+eclipse -> Preferences -> Maven -> User Setting 确认路径无误。
+
 #### 修改仓库
 
 修改 Maven 根目录下 conf/setting.xml 文件。在 `<mirrors>` 标签中添加下列内容。然后 update  setting。
@@ -129,6 +133,25 @@ gradle 区别
 3. gradle install
 
 4. 在 build/poms 下生成了 pom-default.xml，把它修改为 pom.xml，放到项目根目录下。
+
+#### 修改 eclipse 建立 maven 项目时 JDK 的版本
+
+在 settings.xml 文件的 profiles 标签里增加 profile 节点。
+
+```xml
+<profile>  
+      <id>jdk-1.8</id>  
+	  <activation>  
+	    <activeByDefault>true</activeByDefault>  
+	    <jdk>1.8</jdk>  
+	  </activation>  
+	  <properties>  
+	    <maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>  
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>  
+	  </properties>  
+	</profile>
+```
 
 #### pom.xml Errors/Warnings
 
