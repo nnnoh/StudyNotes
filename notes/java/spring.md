@@ -838,3 +838,7 @@ public class Config implements EnvironmentAware {
     }
 }
 ```
+
+
+
+如果使用了spring mvc后，如果把<aop:aspectj-autoproxy proxy-target-class="true"/>放在application.xml文件中可能会aop无效，最好把它放在dispatcher-servlet.xml文件中
