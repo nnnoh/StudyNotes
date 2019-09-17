@@ -842,3 +842,11 @@ public class Config implements EnvironmentAware {
 
 
 如果使用了spring mvc后，如果把<aop:aspectj-autoproxy proxy-target-class="true"/>放在application.xml文件中可能会aop无效，最好把它放在dispatcher-servlet.xml文件中
+
+
+
+spring 的环绕通知和前置通知，后置通知有着很大的区别，主要有两个重要的区别：
+
+1） 目标方法的调用由环绕通知决定，即你可以决定是否调用目标方法，而前置和后置通知   是不能决定的，他们只是在方法的调用前后执行通知而已，即目标方法肯定是要执行的。
+
+2）  环绕通知可以控制返回对象，即你可以返回一个与目标对象完全不同的返回值，虽然这很危险，但是你却可以办到。而后置方法是无法办到的，因为他是在目标方法返回值后调用

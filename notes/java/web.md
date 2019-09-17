@@ -12,9 +12,13 @@ HTML 文档由 4 个主要标记组成，
 >
 > HTML 标签 不区分大小写
 
+\<!DOCTYPE html>
 
 
 
+img alt
+
+块元素 内联元素
 
 IFrame, object, include
 
@@ -22,7 +26,7 @@ target
 
 label span 区别
 
-
+https://blog.csdn.net/qq_41511151/article/details/98586981
 
 \<form> botton 会跳转 get 
 
@@ -67,6 +71,8 @@ CSS 指层叠样式表 (Cascading Style Sheets)。
   要使用内联样式，需在相关的标签内使用样式（style）属性。style 属性可以包含任何 CSS 属性。
 
   `<p style="color:sienna;margin-left:20px">这是一个段落。</p>`
+
+> 属性值不需要 "" 包含。
 
 #### 样式层叠
 
@@ -199,6 +205,67 @@ p.center {text-align:center;}
 ```
 
 - 类名的第一个字符不能使用数字，它无法在 Mozilla 或 Firefox 中起作用。
+- 对于`class="a b"`，使用 `.a.b{}` 选中。
+
+##### 元素选择器
+
+input 元素可以使用 `input[type=xxx]{}` 指定输入框类型。
+
+#### 层次选择器语法
+
+| **选择器** | **类型**                 | **功能描述**                                                 |
+| ---------- | ------------------------ | ------------------------------------------------------------ |
+| E  F       | 后代选择器（包含选择器） | 选择匹配的F元素，且匹配的F元素被包含在匹配的E元素内          |
+| E>F        | 子选择器                 | 选择匹配的F元素，且匹配的F元素所匹配的E元素的子元素（仅下一个层级） |
+| E+F        | 相邻兄弟选择器           | 选择匹配的F元素，且匹配的F元素紧位于匹配的E元素的后面        |
+| E~F        | 通用选择器               | 选择匹配的F元素，且位于匹配的E元素后的所有匹配的F元素        |
+
+> 选择器中空格为后代选择器，因此注意不要添加无用空格
+
+#### 动态伪类选择器
+
+| **选择器** | **类型**       | **功能描述**                                                 |
+| ---------- | -------------- | ------------------------------------------------------------ |
+| E:link     | 链接伪类选择器 | 选择匹配的E元素，而且匹配元素被定义了超链接并未被访问过。常用于链接描点上 |
+| E:visited  | 链接伪类选择器 | 选择匹配的E元素，而且匹配元素被定义了超链接并已被访问过。常用于链接描点上 |
+| E:active   | 用户行为选择器 | 选择匹配的E元素，且匹配元素被激活。常用于链接描点和按钮上    |
+| E:hover    | 用户行为选择器 | 选择匹配的E元素，且用户鼠标停留在元素E上。IE6及以下浏览器仅支持a:hover |
+| E:focus    | 用户行为选择器 | 选择匹配的E元素，而且匹配元素获取焦点                        |
+
+#### 否定伪类选择器
+
+- **E:not(F)**  匹配所有除元素F外的E元素
+
+#### 结构伪类选择器
+
+| **选择器**            | **功能描述**                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| E:first-child         | 作为父元素的第一个子元素的元素E。与E:nth-child(1)等同        |
+| E:last-child          | 作为父元素的最后一个子元素的元素E。与E:nth-last-child(1)等同 |
+| E:root                | 选择匹配元素E所在文档的根元素。在HTML文档中，根元素始终是html，此时该选择器与html类型选择器匹配的内容相同 |
+| E F:nth-child(n)      | 选择父元素E的第n个子元素F。其中n可以是整数（1，2，3）、关键字（even，odd）、可以是公式（2n+1）,而且n值起始值为1，而不是0. |
+| E F:nth-last-child(n) | 选择父元素E的倒数第n个子元素F。此选择器与E:nth-child(n)选择器计算顺序刚好相反，但使用方法都是一样的，其中：nth-last-child(1)始终匹配最后一个元素，与last-child等同 |
+| E:nth-of-type(n)      | 选择父元素内具有指定类型的第n个E元素                         |
+| E:nth-last-of-type(n) | 选择父元素内具有指定类型的倒数第n个E元素                     |
+| E:first-of-type       | 选择父元素内具有指定类型的第一个E元素，与E:nth-of-type(1)等同 |
+| E:last-of-type        | 选择父元素内具有指定类型的最后一个E元素，与E:nth-last-of-type(1)等同 |
+| E:only-child          | 选择父元素只包含一个子元素，且该子元素匹配E元素              |
+| E:only-of-type        | 选择父元素只包含一个同类型子元素，且该子元素匹配E元素        |
+| E:empty               | 选择没有子元素的元素，而且该元素也不包含任何文本节点         |
+
+- `ul>li:nth-child(3)` 表达的并不是一定选择列表ul元素中的第3个子元素li，仅有列表ul中第3个li元素前不存在其他的元素，命题才有意义，否则不会改变列表第3个li元素的样式。
+- `:nth-child(n)`  中参数只能是n，不可以用其他字母代替。
+- `:nth-child(odd)` 选择的是奇数项，而使用:nth-last-child(odd) 选择的却是偶数项
+
+::before 
+
+::after
+
+https://www.cnblogs.com/wonyun/p/5807191.html 有错？
+
+: :: 区别
+
+分组选择器 嵌套选择器
 
 ### 属性
 
@@ -323,7 +390,7 @@ justify 使每一行宽度相等，左，右外边距对齐。
 
 改变字（单词）之间的标准间隔。其默认值 normal 相当于 0px。
 
-#### 表格
+#### 边框
 
 ##### border
 
@@ -371,13 +438,167 @@ justify 使每一行宽度相等，左，右外边距对齐。
 
 设置边框的颜色。只有当边框样式不是 none 时才起作用。
 
-### 布局
+#### Box Model
+
+- **Margin（外边距）** - 清除边框区域。Margin没有背景颜色，它是完全透明
+- **Border（边框）** - 边框周围的填充和内容。边框是受到盒子的背景颜色影响
+- **Padding（内边距）** - 清除内容周围的区域。会受到框中填充的背景颜色影响
+- **Content（内容）** - 盒子的内容，显示文本和图像
+
+一个盒子实际所占有的宽度（或高度）是由“内容+左右内边距+左右边框+左右外边距”组成的。在CSS中可以通过设置width和height的值来控制内容所占矩形的大小。
+
+##### 浏览器的兼容性问题
+
+根据 W3C 的规范，元素内容占据的空间是由 width 属性设置的，而内容周围的 padding 和 border 值是另外计算的。不幸的是，IE5.X 和 6 在怪异模式中使用自己的非标准模型。这些浏览器的 width 属性不是内容的宽度，而是内容、内边距和边框的宽度的总和。
+
+虽然有方法解决这个问题。但是目前最好的解决方案是回避这个问题。也就是，不要给元素添加具有指定宽度的内边距，而是尝试将内边距或外边距添加到元素的父元素和子元素。
+
+IE8 及更早IE版本不支持 填充的宽度和边框的宽度属性设。
+
+解决IE8及更早版本不兼容问题可以在HTML页面声明 \<!DOCTYPE html>即可。
+
+list:
+
+top/bottom  left/right
+
+display (block?)
+
+position 是否占据原空间
+
+float
+
+overflow
+
+box-shadow
+
+cursor
+
+clear
+
+box-sizing
+
+boder-radius
+
+width:auto block
+
+float 对 block 的影响
+
+ width:100% 会独占一行
+
+对齐 参照物
+
+https://zhidao.baidu.com/question/384080665.html
+
+> 只有当该元素的宽度小于父元素的宽度时候，才能看出左对齐，右对齐和居中对齐的效果。?
+
+当该元素被设为浮动时，该元素的width就变成了内容的宽度了，由内容撑开，也就是所谓的有了包裹性。
+
+> 浮动元素会自动生成一个块级框。
+
+overflow |   position:absolute | float:left/right都可以产生包裹性，替换元素也同样具有包裹性。
+
+*|position:relavtive|相对定位      占原来的位置，不能实现模式的转化，即不具有包裹性。
+
+所以在具有包裹性的元素上不可以利用width : auto；来让元素宽度自适应浏览器宽。
+
+https://blog.csdn.net/liangde123/article/details/51974724
+
+https://www.jb51.net/css/594769.html
+
+https://www.jianshu.com/p/091b4ffb10b0
+
+https://blog.csdn.net/tt_twilight/article/details/72804104#commentBox
+
+
+
+z-index
+
+zoom:1
+
+display:inline-block元素间会产生多余空白。解决方法：父元素定义font-size:0 去掉行内块元素水平方向空白；子元素定义vertical-align 属性去掉行内块元素垂直方向空白
+
+### 布局模型
 
 - 流动模型（Flow）
 - 浮动模型 (Float)
 - 层模型（Layer）
 
+display	
+float	
+clear	
+visibility
+overflow	
+overflow-x
+overflow-y
 
+@media
+
+### 动画
+
+transtion
+
+### 函数
+
+attr(attribute-name)
+
+
+
+-moz- 代表firefox浏览器私有属性
+
+-ms- 代表ie浏览器私有属性
+
+-webkit- 代表safari、chrome私有属性
+
+-o- 代表Opera
+
+css 标准文本流
+
+对齐方式
+
+line-height
+
+transform
+
+vertical-align
+
+
+
+浏览器默认样式 user agent stylesheet
+
+不同浏览器甚至同一浏览器不同版本的默认样式是不同的 。
+
+解决方法为引入**reset.css**或**normalize.css**
+**reset.css**是将**所有**的浏览器样式重置，保证各个浏览器样式渲染的一致性。
+地址: https://meyerweb.com/eric/tools/css/reset/
+**normalize.css**保留不同浏览器同标签相同的默认值，只重置不同默认样式的差异，可理解为reset.css的升级版。
+github地址:https://github.com/necolas/normalize.css
+
+### Tips
+
+##### 标签 a
+
+改变 a 标签样式，可实现在鼠标移动到选项时，修改背景颜色。
+
+背景颜色添加到链接中显示链接的区域
+
+注意,整个区域是可点击的链接,而不仅仅是文本
+
+示例：
+
+```css
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+ 
+/* 鼠标移动到选项上修改背景颜色 */
+li a:hover {
+    background-color: #555;
+    color: white;
+}
+```
 
 
 
@@ -986,6 +1207,8 @@ herf="javascript:;" 之类的
 execCommand
 
 debugger 关键字
+
+json
 
 闭包
 
