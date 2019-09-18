@@ -610,11 +610,7 @@ li a:hover {
 
 [JavaScript 知识图谱](https://www.w3cschool.cn/javascript/javascript-skillmap.html)
 
-JavaScript 脚本位置
-
-- HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
-  
-  浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
+**JavaScript 脚本位置**
 
 - 保存到外部文件中，扩展名为 .js。
   
@@ -623,6 +619,14 @@ JavaScript 脚本位置
   `<script src="/statics/demosource/myscript.js"></script>`
   
   在 JS 文件中可直接编写 JavaScript 代码不需要\<script>标签。
+  
+- HTML 中的脚本必须位于 `<script>` 与 `</script>` 标签之间，可放置在 `<body>` 或 `<head>` 部分中。
+
+  浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
+
+  放在 head 中的 JS 代码会在页面加载完成之前就读取，此时 body 还未被解析，其相关的代码会返回空（在 head 使用 `window.onload=function(){;};` 解决此问题）。而放在 body 中的 JS 代码，会在整个页面加载完成之后读取。
+
+  通常，需调用才执行的脚本或事件触发执行的脚本放在HTML的head部分中；当页面被加载时执行的脚本放在HTML的body部分的最后面。
 
 JavaScript 语句会在页面加载时执行。
 
@@ -644,11 +648,27 @@ JavaScript 语句会在页面加载时执行。
 >
 > 变量可以存储数值，字符串，布尔值等。
 
-#### 操作符
+#### 运算符
 
 **操作符之间的优先级（高到低）:**
 
 算术操作符 → 比较操作符 → 逻辑操作符 → "="赋值符号
+
+##### typeof
+
+##### instanceof
+
+#### 数据类型
+
+基本数据类型：Number、String、Boolean、Null、 Undefined、Symbol（ES6）
+
+引用（复杂）数据类型：Object（除了基本数据类型以外的都属于 Object 类型）
+
+基本数据类型把数据名和值直接存储在栈当中
+
+复杂数据类型在栈中存储数据名和一个堆的地址，在堆中存储属性及值，访问时先从栈中获取地址，再到堆中拿出相应的值
+
+https://www.cnblogs.com/c2016c/articles/9328725.html
 
 #### 数组<a name="Array"></a>
 
@@ -734,6 +754,39 @@ do {
 - **break**  退出当前循环。
 - **continue**  仅仅跳过本次循环，而整个循环体继续执行
 
+#### 自定义对象/键值对
+
+**创建对象**：
+
+```javascript
+//new Object创建对象，然后添加属性和方法。
+var obj1 = new Object();
+obj1.property1=value1;
+//使用字面量创建对象
+var obj2 = {key1:value1,keyN:valueN};
+```
+
+如果属性名包含特殊字符，就必须用 ' ' 括起来，并且访问时必须用 ['xxx'] 来访问。
+
+实际上，JavaScript对象的所有属性都是字符串，属性对应的值可以是任何数据类型。
+
+**定义属性**：
+
+- 直接 obj.property
+- **Object.defineProperty(obj, prop, descriptor)** 
+
+https://www.cnblogs.com/xiaoliwang/p/9043876.html
+
+https://blog.csdn.net/qq_31214097/article/details/85861006
+
+Object 方法
+
+#### 原型链
+
+js的原型链和java的class的区别就在，js没有class的概念，所有的对象都是实例，所谓继承关系只不过是把一个对象的原型指向另一个对象。
+
+https://www.w3cschool.cn/javascript/javascript-5isn2lax.html
+
 #### 函数
 
 ```javascript
@@ -743,21 +796,91 @@ function 函数名(参数1,参数2){
 }
 ```
 
+JavaScript 支持嵌套函数。
+
+**变量**
+
+在 JavaScript 中，所有函数都能访问它们上层的作用域（作用域继承）。
+
+如果当前 {} 中创建了同名的局部变量，则访问的是该局部变量，而不是上层同名局部变量，无论前后顺序，即在创建前使用会出现 undefined。
+
+**传参**
+
+函数传参规则与 Java 类似。所有函数的参数都是按值传递的。
+
+对于基本数据类型，传递变量值；对于引用数据类型，传地址值，也称 “按共享传递”。
+
 ##### 匿名函数
 
 ```javascript
 
 ```
 
-调用局部变量
+自执行函数写法（即匿名函数直接执行）。
 
-字符串作为函数调用。
+1. 
+2. !
+3. ()
 
-this
+##### 闭包
+
+闭包是可访问上一层函数作用域里变量的函数，即便上一层函数已经关闭。
+
+闭包使得函数拥有私有变量变成可能。局部变量受匿名函数的作用域保护，只能通过该方法修改。示例：
+
+```javascript
+var add = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+
+add();
+add(); //2
+```
+
+##### 回调函数
+
+定义：A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.
+
+示例：
+
+```javascript
+function func(callback,arg){
+    if(typeof callback === "function"){
+        callback(arg);
+    }
+}
+```
+
+常用回调方法：
+
+- 异步调用（例如读取文件，进行HTTP请求，等等）
+- 事件监听器/处理器
+- setTimeout和setInterval方法
+
+#### this
+
+##### new
+
+##### 隐式绑定
+
+##### 绑定规则
+
+1. 是否在new中调用(new绑定)？如果是的话this绑定的是新创建的对象。
+2. 是否通过call、apply(显式绑定)或者硬绑定调用？如果是的话，this绑定的是 指定的对象。
+3. 是否在某个上下文对象中调用(隐式绑定)？如果是的话，this绑定的是那个上下文对象。
+4. 如果都不是的话，无论是否为嵌套函数，都使用默认绑定。
+5. 如果在严格模式下，就绑定到undefined，否则绑定到全局对象。
+
+https://blog.csdn.net/cjgeng88/article/details/79846670
+
+块级作用域
 
 可变长参数 
 
 arguments
+
+字符串作为函数调用。
 
 eval
 
@@ -773,7 +896,7 @@ window[]
 
 没有声明就使用的变量，默认为全局变量，不论这个变量在哪被使用。
 
-在 HTML 中, 全局变量是 window 对象，所有数据变量都属于 window 对象。
+在 HTML 中, 所有全局数据变量都属于 window 对象。
 
 ### 事件
 
@@ -797,7 +920,15 @@ form
 
   示例：`<form onsubmit="return checkForm()">`
 
-#### 事件绑定与解绑
+#### 事件监听器
+
+window.addEventListener();
+
+document.addEventListener();
+
+事件绑定与解绑 
+
+readystatechange
 
 ### 常用方法
 
@@ -1196,6 +1327,14 @@ value & innerHTML 区别
 
 > radio： check 属性
 
+#### document 属性
+
+- **readyState** 属性描述了文档的加载状态。
+
+  当该属性值发生变化时，会在document 对象上触发readystatechange事件。
+
+  值：**loading**（正在加载）、**interactive**（文档已被解析，"正在加载"状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。）、**complete**（文档和所有子资源已完成加载。表示 `load` 状态的事件即将被触发。）。
+
 Cookie
 
 原型链
@@ -1210,9 +1349,14 @@ debugger 关键字
 
 json
 
-闭包
+严格模式
 
 https://www.w3cschool.cn/javascript/js-cookies.html
+
+### JSON
+
+- JSON.parse(text[, reviver])  用于将一个 JSON 字符串转换为 JavaScript 对象。
+- JSON.stringify(value[, replacer[, space]])  用于将 JavaScript 值转换为 JSON 字符串。
 
 ### 正则表达式
 
@@ -1253,6 +1397,14 @@ var str=" token=-1223249887; username=user".match(/(^| )username=([^;]*)(;|$)/);
 ```
 
 > 使用Cookie似乎不比使用字符串方法直接分析字符串性能好。
+
+### 新增
+
+let
+
+const
+
+块级作用域
 
 ### Tips
 
