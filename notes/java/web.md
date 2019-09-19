@@ -475,7 +475,7 @@ float
 
 overflow
 
-box-shadow
+box-shadow 和 border 区别
 
 cursor
 
@@ -1137,6 +1137,8 @@ Math 对象是一个固有的对象，无需创建它，直接把 Math 作为对
   若返回值 <=-1，则表示 a 在排序后的序列中出现在 b 之前。
   若返回值 >-1 && <1，则表示 a 和 b 具有相同的排序顺序。
   若返回值 >=1，则表示 a 在排序后的序列中出现在 b 之后。
+  
+- **forEach(func)** 
 
 ### window 对象
 
