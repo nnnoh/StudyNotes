@@ -16,6 +16,8 @@ HTML 文档由 4 个主要标记组成，
 
 
 
+事件 tabindex
+
 img alt
 
 块元素 内联元素
@@ -209,7 +211,7 @@ p.center {text-align:center;}
 
 ##### 元素选择器
 
-input 元素可以使用 `input[type=xxx]{}` 指定输入框类型。
+
 
 #### 层次选择器语法
 
@@ -266,6 +268,8 @@ https://www.cnblogs.com/wonyun/p/5807191.html 有错？
 : :: 区别
 
 分组选择器 嵌套选择器
+
+#### 属性选择器
 
 ### 属性
 
@@ -349,6 +353,8 @@ background-position 属性值：
   长度值是元素内边距区左上角的偏移，偏移点是图像的左上角。
 
   单位可以是 px、cm（通过 ppi 换算）
+
+##### background-size
 
 #### 文本
 
@@ -573,6 +579,10 @@ vertical-align
 **normalize.css**保留不同浏览器同标签相同的默认值，只重置不同默认样式的差异，可理解为reset.css的升级版。
 github地址:https://github.com/necolas/normalize.css
 
+### 响应式web设计
+
+
+
 ### Tips
 
 ##### 标签 a
@@ -624,8 +634,10 @@ li a:hover {
 
   浏览器解释 html 时是按先后顺序的，因此 script 的执行也是按先后顺序的。
 
-  放在 head 中的 JS 代码会在页面加载完成之前就读取，此时 body 还未被解析，其相关的代码会返回空（在 head 使用 `window.onload=function(){;};` 解决此问题）。而放在 body 中的 JS 代码，会在整个页面加载完成之后读取。
+  放在 head 中的 JS 代码会在页面加载完成之前就读取，此时 body 还未被解析，其相关的代码会返回空；在 head 中嵌入的外部 js 文件同理。使用 `window.onload=function(){;};` 解决此问题。
 
+  而放在 body 中的 JS 代码，会在整个页面加载完成之后读取。
+  
   通常，需调用才执行的脚本或事件触发执行的脚本放在HTML的head部分中；当页面被加载时执行的脚本放在HTML的body部分的最后面。
 
 JavaScript 语句会在页面加载时执行。
@@ -646,11 +658,17 @@ JavaScript 语句会在页面加载时执行。
 
 变量虽然也可以不声明，直接使用（需赋值），但不规范，需要先声明，后使用。
 
-如果不声明，不赋值，直接使用会报 ReferenceError。
-
-如果不赋值，后声明，直接使用则是 undefined。
-
 > 变量可以存储任意数据类型。
+
+##### 变量提升
+
+JavaScript 中，函数及变量的声明都将被提升到函数的最顶部。因此，变量可以在使用后声明，也就是变量可以先使用再声明。
+
+JavaScript 只有声明的变量会提升，初始化不会。
+
+>  如果不声明，不赋值，直接使用会报 ReferenceError。
+>
+> 如果不赋值，后声明，直接使用则是 undefined。
 
 #### 运算符
 
@@ -901,6 +919,12 @@ window[]
 没有声明就使用的变量，默认为全局变量，不论这个变量在哪被使用。
 
 在 HTML 中, 所有全局数据变量都属于 window 对象。
+
+#### 严格模式
+
+"use strict;" 指令在 JavaScript 1.8.5 (ECMAScript5) 中新增。
+
+"use strict" 是一个字面量表达式，在 JavaScript 旧版本中会被忽略，其目的是指定代码在严格条件下执行。
 
 ### 事件
 
@@ -1507,6 +1531,40 @@ offsetTop：获取指定对象相对于版面或由 offsetParent 属性指定的
 ## jQuery
 
 ### 选择器
+
+jQuery 选择器基于元素的 id、类、类型、属性、属性值等"查找"（或选择）HTML 元素。 它基于已经存在的 CSS 选择器，除此之外，它还有一些自定义的选择器。
+
+jQuery 中所有选择器都以美元符号开头：$()。
+
+
+
+通过 \$(":button") 可以选取所有 type="button" 的 \<input> 元素 和 \<button> 元素。
+
+**:** 即为 jQuery 的过滤选择器，语法类似于 css 中的伪类选择器；其过滤选择器大概可以分为基本过滤（p:first 之类）、内容过滤（:empty）、子元素过滤(:first-child)和属性过滤 [href] 选择器。
+
+
+
+模糊匹配
+
+\$. \$().
+
+DOM 事件 load
+
+事件function中使用的$()选择器在每次执行时都会重新选择，可能会选不到想选的元素。在function外层定义变量解决。
+
+
+
+`$('div').attr('width')` 是静态的，从 html 上读的属性值
+
+`$('div').width()` 是动态的，计算出来的值
+
+attr prop 区别
+
+### jQuery HTML
+
+![jQuery Dimensions](D:\GitHub\StudyNotes\notes\java\web.assets\img_jquerydim.gif)
+
+设置了 box-sizing 后，width() 获取的是 css 设置的 width 减去 padding 和 border 的值。
 
 ## Bootstrap
 
