@@ -16,6 +16,12 @@ HTML 文档由 4 个主要标记组成，
 
 
 
+textarea
+
+<code> <pre> 区别
+
+contentediable = "true" 块内所有元素都可被删除
+
 事件 tabindex
 
 img alt
@@ -41,6 +47,8 @@ herf 路径 相对
 > " ' ' "
 
 w3school 知识补充
+
+实现技巧
 
 ## CSS
 
@@ -415,6 +423,8 @@ justify 使每一行宽度相等，左，右外边距对齐。
 - border-bottom
 - border-left
 
+利用 border 属性可绘制简单图形（标签内容为空）。
+
 ##### border-width 
 
 指定所有边框或各边边框宽度。只有当边框样式不是 none 时才起作用。
@@ -458,6 +468,8 @@ justify 使每一行宽度相等，左，右外边距对齐。
 根据 W3C 的规范，元素内容占据的空间是由 width 属性设置的，而内容周围的 padding 和 border 值是另外计算的。不幸的是，IE5.X 和 6 在怪异模式中使用自己的非标准模型。这些浏览器的 width 属性不是内容的宽度，而是内容、内边距和边框的宽度的总和。
 
 虽然有方法解决这个问题。但是目前最好的解决方案是回避这个问题。也就是，不要给元素添加具有指定宽度的内边距，而是尝试将内边距或外边距添加到元素的父元素和子元素。
+
+`box-sizing: border-box;`  用处
 
 IE8 及更早IE版本不支持 填充的宽度和边框的宽度属性设。
 
@@ -882,9 +894,13 @@ function func(callback,arg){
 
 #### this
 
+this 上下文对象。全局的上下文为 window 对象。
+
 ##### new
 
 ##### 隐式绑定
+
+场景 示例
 
 ##### 绑定规则
 
@@ -957,6 +973,8 @@ document.addEventListener();
 事件绑定与解绑 
 
 readystatechange
+
+执行事件方法 blur() 失焦
 
 ### 常用方法
 
@@ -1438,6 +1456,8 @@ const
 
 ### Tips
 
+注意：回调函数中访问的外部变量是会实时更新的。
+
 #### JS 输出空格
 
 1. 使用 html 标签`"&nbsp;"`
@@ -1530,6 +1550,8 @@ offsetTop：获取指定对象相对于版面或由 offsetParent 属性指定的
 
 > offsetParent：布局中设置postion属性(Relative、Absolute、fixed)的父容器，从最近的父节点开始，一层层向上找，直到HTML的body。
 
+https://blog.csdn.net/lx_1024/article/details/78854720
+
 ## jQuery
 
 ### 选择器
@@ -1550,11 +1572,13 @@ jQuery 中所有选择器都以美元符号开头：$()。
 
 \$. \$().
 
+jQuery 对象
+
 DOM 事件 load
 
-事件function中使用的$()选择器在每次执行时都会重新选择，可能会选不到想选的元素。在function外层定义变量解决。
+注意，事件function中使用的$()选择器在每次执行时都会重新选择，可能会选不到想选的元素。在function外层定义变量解决。
 
-
+$()=jquery()
 
 `$('div').attr('width')` 是静态的，从 html 上读的属性值
 
@@ -1562,11 +1586,32 @@ DOM 事件 load
 
 attr prop 区别
 
+this
+
+onclick click 区别
+
+this，表示当前的上下文对象是一个html DOM对象，可以调用html对象所拥有的属性，方法。
+$(this),代表的上下文对象是一个jquery的上下文对象，可以调用jquery的方法和属性值。
+
+var thisObj = $(obj) //js对象转jquery对象
+
+
+
 ### jQuery HTML
 
 ![jQuery Dimensions](D:\GitHub\StudyNotes\notes\java\web.assets\img_jquerydim.gif)
 
 设置了 box-sizing 后，width() 获取的是 css 设置的 width 减去 padding 和 border 的值。
+
+
+
+index()
+
+event window.event  diff \__proto__
+
+光标
+
+键盘
 
 ## Bootstrap
 
@@ -1651,6 +1696,10 @@ bootstrap模板为使IE6、7、8版本（IE9以下版本）浏览器兼容html5�
 了解每句的作用
 
 全局样式 用处
+
+
+
+bootstrap 中 box-sizing: border-box;
 
 ### 导航条
 
