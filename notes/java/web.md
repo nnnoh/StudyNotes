@@ -717,7 +717,7 @@ JavaScript 只有声明的变量会提升，初始化不会。
 
 #### 数据类型
 
-基本数据类型：Number、String、Boolean、Null、 Undefined、Symbol（ES6）
+基本数据类型：number、string、boolean、null、 undefined、symbol（ES6）
 
 引用（复杂）数据类型：Object（除了基本数据类型以外的都属于 Object 类型）
 
@@ -726,6 +726,10 @@ JavaScript 只有声明的变量会提升，初始化不会。
 复杂数据类型在栈中存储数据名和一个堆的地址，在堆中存储属性及值，访问时先从栈中获取地址，再到堆中拿出相应的值
 
 https://www.cnblogs.com/c2016c/articles/9328725.html
+
+常见 Object 类型
+
+
 
 #### 数组<a name="Array"></a>
 
@@ -811,7 +815,7 @@ do {
 - **break**  退出当前循环。
 - **continue**  仅仅跳过本次循环，而整个循环体继续执行
 
-#### 自定义对象/键值对
+#### 对象/键值对
 
 **创建对象**：
 
@@ -821,11 +825,14 @@ var obj1 = new Object();
 obj1.property1=value1;
 //使用字面量创建对象
 var obj2 = {key1:value1,keyN:valueN};
+//使用 new
 ```
 
 如果属性名包含特殊字符，就必须用 ' ' 括起来，并且访问时必须用 ['xxx'] 来访问。
 
 实际上，JavaScript对象的所有属性都是字符串，属性对应的值可以是任何数据类型。
+
+> 使用字面量创建对象时，其属性都被认为是字符串，其属性值则相当于函数传参。
 
 **定义属性**：
 
@@ -921,6 +928,8 @@ this 上下文对象。全局的上下文为 window 对象。
 
 ##### new
 
+创建对象
+
 ##### 隐式绑定
 
 场景 示例
@@ -943,9 +952,15 @@ arguments
 
 字符串作为函数调用。
 
-eval
+eval   的参数不是字符串， `eval()` 会将参数原封不动地返回。
 
-Function
+eval("("+data+")")
+
+eval本身的问题。 由于json是以”{}”的方式来开始以及结束的，在JS中，它会被当成一个语句块来处理，所以必须强制性的将它转换成一种表达式。
+
+eval替代方法  Function
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval
 
 window[]
 
@@ -1100,6 +1115,8 @@ document.write(nDate+"<br>");
 - get/setTime()  返回/设置时间，单位维毫秒 ，计算从 1970 年 1 月 1 日零时到日期对象所指的日期的毫秒数。
 
 #### String
+
+`new String('x')` 与 `'x'` 不是同一类型，前者是 object 类型，后者是 string 类型。
 
 ##### 定义字符串
 
@@ -1418,13 +1435,15 @@ execCommand
 
 debugger 关键字
 
-json
+语法 补全/深入
 
 严格模式
 
 https://www.w3cschool.cn/javascript/js-cookies.html
 
 ### JSON
+
+
 
 - JSON.parse(text[, reviver])  用于将一个 JSON 字符串转换为 JavaScript 对象。
 - JSON.stringify(value[, replacer[, space]])  用于将 JavaScript 值转换为 JSON 字符串。
@@ -1462,7 +1481,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expression
 ##### Cookie
 
 ```javascript
-var str=" token=-1223249887; username=user".match(/(^| )username=([^;]*)(;|$)/);
+var str=unescape("token=-1223249887; username=user".match(/(^| )username=([^;]*)(;|$)/));
 		for(var i=0;i<str.length;i++)
 			document.write(str[i]+"</br>");
 ```
@@ -1678,6 +1697,34 @@ window scroll -> 浏览器窗口滚动条
 Tips
 
 实用方法
+
+## AJAX
+
+js
+
+XMLHttpRequest
+
+jquery
+
+
+
+同源策略
+
+jsonp
+
+json 的一种"使用模式"
+
+跨域失败Orz
+
+`<script type="text/javascript" src=""></script>` 也无法跨域。
+
+spring 
+
+ResponseBody  RequestBody
+
+springMVC4  需引入jakson annotations/core/databind 包 
+
+
 
 ## Bootstrap
 
@@ -2257,3 +2304,7 @@ https://www.jianshu.com/p/d01eb74bf06c
 
 
 ctrl+F5 刷新，不使用缓存
+
+
+
+中文字符
