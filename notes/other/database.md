@@ -124,13 +124,17 @@ https://www.w3cschool.cn/mysql/mysql-administration.html
 
 #### Data
 
+### Concept
 
+schema
+
+关系系统
 
 
 
 规范
 
-区分下mysql 和 sql
+区分 mysql 和 sql
 
 ### Tips
 
@@ -161,8 +165,6 @@ q: BLOB/TEXT column 'name' used in key specification without a key length
 MySQL 数据库对于 BLOB/TEXT 这样类型的数据结构只能索引前 N 个字符。所以这样的数据类型不能作为主键，也不能是 UNIQUE 的。
 
 可以换成 VARCH，但是 VARCHAR 类型的大小也不能大于 255，当 VARCHAR 类型的字段大小如果大于 255 的时候也会转换成小的 TEXT 来处理。
-
-### Others
 
 # Cache（暂）
 

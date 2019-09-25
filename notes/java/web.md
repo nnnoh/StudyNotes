@@ -16,6 +16,8 @@ HTML 文档由 4 个主要标记组成，
 
 
 
+重利用 方式
+
 焦点 标签
 
 textarea
@@ -51,6 +53,12 @@ herf 路径 相对
 w3school 知识补充
 
 实现技巧
+
+HTML5
+
+兼容
+
+语义元素
 
 ## CSS
 
@@ -1109,6 +1117,7 @@ document.write(nDate+"<br>");
 - get/setFullYear()  返回/设置年份，用四位数表示 
 - get/setYear()  返回/设置年份
 - get/setMonth()  返回/设置月份。0：一月，...，11：十二月
+- get/setDay() 返回/设置日。
 - get/setHours()  返回/设置小时，24小时制
 - get/setMinutes()  返回/设置分钟数
 - get/setSeconds()  返回/设置秒钟数
@@ -1196,7 +1205,7 @@ Math 对象是一个固有的对象，无需创建它，直接把 Math 作为对
   若返回值 >-1 && <1，则表示 a 和 b 具有相同的排序顺序。
   若返回值 >=1，则表示 a 在排序后的序列中出现在 b 之后。
   
-- **forEach(func)** 
+- **forEach(function(currentValue, index, arr), thisValue)** 
 
 ### window 对象
 
@@ -2292,6 +2301,12 @@ Transfer-Encoding: chunked
 Http请求时，URL中作为参数值的中文字符等会被编码
 
 URLEncode
+
+
+
+CORS
+
+http://www.ruanyifeng.com/blog/2016/04/cors.html
 
 ## Tips
 
