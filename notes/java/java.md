@@ -873,6 +873,8 @@ public class Car extends Vehicle {
 
 > Java 只有按值传递。
 >
+> arg=new Xxx(); 时参数指向不同对象，不改变原对象。
+>
 > 注意区分，按引用传参和传地址概念。（C/C++）
 
 #### main 方法
@@ -1631,6 +1633,8 @@ public String toString() {
 Object 类的 clone() 只实现了浅拷贝。
 
 ### Class 类
+
+
 
 ### System 类
 

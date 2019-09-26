@@ -8,9 +8,11 @@
 
 HTML 文档由 4 个主要标记组成，
 
+> HTML 标签、属性名不区分大小写
+>
 > 没有标签结尾的，默认标签结尾在下一个标签开头前
 >
-> HTML 标签 不区分大小写
+> 不是所有标签都需要结束标签（body 中的~~基本~~都要，head 中 meta 和 link 不用）
 
 \<!DOCTYPE html>
 
@@ -40,11 +42,30 @@ label span 区别
 
 https://blog.csdn.net/qq_41511151/article/details/98586981
 
+
+
+字符实体（character entities）
+
 \<form> botton 会跳转 get 
+
+form 表单 enctype 属性规定发送到服务器之前应该如何对表单数据进行编码。
+
+- application/x-www-form-urlencoded 
+  在发送前编码所有字符（默认） 
+
+- multipart/form-data 
+  不对字符编码。 在使用包含文件上传控件的表单时，必须使用该值。
+
+- text/plain 
+  空格转换为 "+" 加号，但不对特殊字符编码。
+
+
 
 name id 区别
 
-herf 路径 相对
+href 路径 相对
+
+href="#id"
 
 编码规范
 
@@ -59,6 +80,8 @@ HTML5
 兼容
 
 语义元素
+
+data-* 自定义属性
 
 ## CSS
 
@@ -91,6 +114,10 @@ CSS 指层叠样式表 (Cascading Style Sheets)。
   要使用内联样式，需在相关的标签内使用样式（style）属性。style 属性可以包含任何 CSS 属性。
 
   `<p style="color:sienna;margin-left:20px">这是一个段落。</p>`
+
+**导入样式**
+
+在 .css 文件或 `<style>` 标签中使用 `@import url("css/style.css")` 可引入另一个 css 样式表。
 
 > 属性值不需要 "" 包含。
 
@@ -607,6 +634,8 @@ github地址:https://github.com/necolas/normalize.css
 
 
 
+@
+
 ### Tips
 
 ##### 标签 a
@@ -663,6 +692,10 @@ li a:hover {
   而放在 body 中的 JS 代码，会在整个页面加载完成之后读取。
   
   通常，需调用才执行的脚本或事件触发执行的脚本放在HTML的head部分中；当页面被加载时执行的脚本放在HTML的body部分的最后面。
+
+> `<script>` 写在头部会导致页面加载堵塞等待
+>
+> html 页面加载过程
 
 JavaScript 语句会在页面加载时执行。
 
@@ -727,7 +760,7 @@ JavaScript 只有声明的变量会提升，初始化不会。
 
 基本数据类型：number、string、boolean、null、 undefined、symbol（ES6）
 
-引用（复杂）数据类型：Object（除了基本数据类型以外的都属于 Object 类型）
+引用（复杂）数据类型：object（除了基本数据类型以外的都属于 object 类型）、function
 
 基本数据类型把数据名和值直接存储在栈当中
 
@@ -735,7 +768,7 @@ JavaScript 只有声明的变量会提升，初始化不会。
 
 https://www.cnblogs.com/c2016c/articles/9328725.html
 
-常见 Object 类型
+常见 object 类型
 
 
 
@@ -987,6 +1020,16 @@ window[]
 "use strict;" 指令在 JavaScript 1.8.5 (ECMAScript5) 中新增。
 
 "use strict" 是一个字面量表达式，在 JavaScript 旧版本中会被忽略，其目的是指定代码在严格条件下执行。
+
+关键字
+
+
+
+void
+
+void(表达式)  该操作符指定要计算一个表达式但是不返回其值，返回 undefined。
+
+> `void a+b` 相当于 `void(a)+b`
 
 ### 事件
 
@@ -1450,9 +1493,25 @@ debugger 关键字
 
 https://www.w3cschool.cn/javascript/js-cookies.html
 
+全局函数 777
+
+> 全局函数与内置对象（window）的属性或方法不是一个概念。全局函数它不属于任何一个内置对象。
+
+js 对象/方法 all
+
+
+
+File Blob 
+
+URL
+
+错误处理
+
+throw
+
+try{}catch(err){}
+
 ### JSON
-
-
 
 - JSON.parse(text[, reviver])  用于将一个 JSON 字符串转换为 JavaScript 对象。
 - JSON.stringify(value[, replacer[, space]])  用于将 JavaScript 值转换为 JSON 字符串。
@@ -1508,6 +1567,8 @@ const
 ### Tips
 
 注意：回调函数中访问的外部变量是会实时更新的。
+
+void 0 替代 undefined。
 
 #### JS 输出空格
 
@@ -1603,6 +1664,8 @@ offsetTop：获取指定对象相对于版面或由 offsetParent 属性指定的
 
 https://blog.csdn.net/lx_1024/article/details/78854720
 
+js引擎
+
 ## jQuery
 
 jquery.js
@@ -1644,6 +1707,10 @@ https://www.cnblogs.com/lyzg/p/5347857.html
 keypress 事件不会被某些键（比如 ALT、CTRL、SHIFT、ESC）触发。
 
 事件 命名空间 
+
+e.stopPropagation() 阻止事件冒泡
+
+e.preventDefault() 阻止默认事件
 
 
 
@@ -2323,3 +2390,15 @@ ctrl+F5 刷新，不使用缓存
 
 
 中文字符
+
+
+
+名词 blob
+
+- 在计算机中，BLOB常常是数据库中用来存储 二进制文件 的字段类型。
+- 一种 JavaScript 的对象类型。
+- MYSQL中的BLOB类型就只是个二进制数据容器。
+- HTML5中的Blob对象除了存放二进制数据外还可以设置这个数据的MIME类型，这相当于对文件的储存。
+- 一个Blob对象就是一个包含有只读原始数据的类文件对象。
+
+https://www.jianshu.com/p/b322c2d5d778
