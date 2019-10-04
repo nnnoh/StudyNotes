@@ -75,12 +75,12 @@ https://www.nowcoder.com/questionTerminal/970cdaaa4a114cbf9fef82213a7dabca
 ### first
 
 SQL 
- count(*)
- truncate
- 注入 $#{}
- 查询返回结构类型
+count(*)
+truncate
+注入 $#{}
+查询返回结构类型
 多线程
- 线程状态变化的条件
+线程状态变化的条件
 Collection 继承关系
 编码规范 （java、数据库、日志输出）
 exception 处理规范
@@ -92,11 +92,19 @@ exception 处理规范
 
 
 
+jdbc事务
+
+get post区别
+
+interface/class 不能使用的（权限）修饰符
+
+常用（集合）类/接口 方法
+
+socket 底层 tcp/ip
+
 <details>
 <summary>Title</summary>
-    <h6>plan</h6>
-    <p>在 Java 笔记中记录常考知识点，并建立索引</p>
-    <p>本文档做暂存</p>
+  Orz
 </details>
 
 

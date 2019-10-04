@@ -215,6 +215,8 @@ Integer、Short、Byte、Character、Long这几个类的valueOf方法的实现�
 
 Double、Float的valueOf方法的实现是类似的。
 
+当使用的是基础数据类型对象，而需要的是包装类时会触发自动装箱，相反时会触发自动拆箱。
+
 ###### 包装类初始化
 
 Integer i = new Integer(xxx) 和 Integer i =xxx 这两种方式的区别：
@@ -3307,6 +3309,10 @@ BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入�
 
 ### Functional Interface
 
+注释接口
+
+枚举 enum类
+
 ## Tips
 
 ### length()、length 和 size()
@@ -3364,3 +3370,9 @@ https://blog.csdn.net/yuyulover/article/details/4427527#commentBox
 happens-before
 
 jconsole
+
+
+
+编码
+
+https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/#ibm-pcon

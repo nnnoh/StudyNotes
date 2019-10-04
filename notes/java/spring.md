@@ -508,6 +508,12 @@ logback
 - 工程的library的具体位置信息(kind=”lib”)
 - 项目的输出目录(kind=”output”)
 
+
+
+Eclipse默认提供了3种任务标签(FIXME,TODO,XXX)
+
+Windows->Perferences->Java->Compile->Task Tags
+
 ### Tips
 
 - eclipse validate 验证项目中的文件中代码有没有不规范的地方。该功能用于检测代码存在的“潜在”问题，比如：JSP文件的语法错误，XML中的schema错误等。
@@ -853,4 +859,40 @@ spring 的环绕通知和前置通知，后置通知有着很大的区别，主�
 
 
 
+servlet 3.0 post 默认使用 ISO-8859-1 编码，传输中文字符时要在获取数据前设置编码方式为 UTF-8。
+
+字符编码过滤器
+
+
+
 RESTful API
+
+
+
+springMVC controller
+
+- 接收 json 数据
+
+  @RequestBody 用于读取 http 请求的内容（字符串）。通过 SpringMVC 提供的 HttpMessageConverter 接口将读到的内容转换为 json、xml 等格式的数据并绑定到 Controller 类方法的对象参数上。作用于参数。
+
+- 返回 json 数据
+
+  @ResponseBody 将Controller类的方法返回的对象，通过HttpMessageConverter接口转换为指定格式的数据（默认 json）。作用于方法。
+
+
+
+`<mvc:resources>` 静态资源访问配置
+
+访问资源时响应头如果没有设置Content-Disposition（比如：直接访问静态资源路径），浏览器默认按照inline值进行处理，也就是，能显示就显示，不能显示就下载
+
+修改响应头中Context-Disposition="attachment;filename=文件名"， attachment下载以附件的形式下载。
+
+https://www.cnblogs.com/wenbuzhu/p/10107460.html
+
+https://www.cnblogs.com/kaleidoscope/p/9851603.html
+
+
+
+Controller 类，方法 配置的路径 层级关系
+
+其返回的视图中引入外部资源的相对路径为url访问路径的上一级目录。

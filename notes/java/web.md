@@ -59,7 +59,23 @@ form 表单 enctype 属性规定发送到服务器之前应该如何对表单数
 - text/plain 
   空格转换为 "+" 加号，但不对特殊字符编码。
 
+form 默认使用 html 的 charset 编码格式提交数据
 
+中文
+
+html 默认编码 ISO-8859-1 ？
+
+get post servlet req.setCharacterEncoding("") 区别
+
+servlet中设置编码时，注意语句的顺序。
+
+https://blog.csdn.net/jiahao1186/article/details/82026330#commentBox
+
+url中出现中文数据，最好使用URL编码处理
+
+
+
+https://www.cnblogs.com/oyer/p/5611508.html
 
 name id 区别
 
@@ -524,7 +540,7 @@ float
 
 overflow
 
-box-shadow 和 border 区别
+box-shadow 和 border 区别 border会占空间
 
 cursor
 
@@ -1156,11 +1172,11 @@ document.write(nDate+"<br>");
 
 ##### 获取/设置时间日期
 
-- get/setDate()  返回/设置星期。0-6，0 表示星期天。
+- get/setDay()  返回/设置星期。0-6，0 表示星期天。
 - get/setFullYear()  返回/设置年份，用四位数表示 
 - get/setYear()  返回/设置年份
 - get/setMonth()  返回/设置月份。0：一月，...，11：十二月
-- get/setDay() 返回/设置日。
+- get/setDate() 返回/设置日。
 - get/setHours()  返回/设置小时，24小时制
 - get/setMinutes()  返回/设置分钟数
 - get/setSeconds()  返回/设置秒钟数
@@ -1570,6 +1586,18 @@ const
 
 void 0 替代 undefined。
 
+输入编码处理：使用 escape 编码输入，使用时再用 unescape 解码。（避免特殊字符影响传输）
+
+输入逻辑处理：考虑各种输入情况。
+
+转义字符是用户透明的，除了在编写字面量时需要考虑。
+
+存储需要解析的字符串字面量时，注意转义字符的处理。示例：
+
+```javascript
+JSON.parse('{"id\\"":1}'); // 正常，使用"\\"，字符串中才会存储反斜杠，在解析时才能转义想转义的字符。
+```
+
 #### JS 输出空格
 
 1. 使用 html 标签`"&nbsp;"`
@@ -1690,6 +1718,12 @@ jQuery 中所有选择器都以美元符号开头：$()。
 
 
 
+选择器效率
+
+firejspt js性能测试工具
+
+
+
 事件冒泡 事件捕获 
 
 DOM2级事件规定的事件流包含三个阶段：事件捕获阶段，处于目标阶段和事件冒泡阶段。首先发生的是事件捕获，然后是实际的目标接收到事件，最后阶段是冒泡阶段。
@@ -1721,6 +1755,14 @@ e.preventDefault() 阻止默认事件
 jQuery 对象
 
 DOM 事件 load
+
+ready DOM 加载完成事件
+
+onload 所有内容（包括图片）加载完成事件
+
+
+
+
 
 注意，事件function中使用的$()选择器在每次执行时都会重新选择，可能会选不到想选的元素。在function外层定义变量解决。
 
@@ -1792,7 +1834,7 @@ json 的一种"使用模式"
 
 跨域失败Orz
 
-`<script type="text/javascript" src=""></script>` 也无法跨域。
+`<script type="text/javascript" src=""></script>` 无法跨域。
 
 spring 
 
@@ -2365,9 +2407,13 @@ Transfer-Encoding: chunked
 
 生命周期
 
-Http请求时，URL中作为参数值的中文字符等会被编码
+Http请求时，URL中作为参数值的中文字符等会被编码 
 
-URLEncode
+URLEncode 每个字节前加 '%' 
+
+
+
+get post同时存在时 spring MVC执行post，参数名相同的会结合在一起，用 ',' 分隔
 
 
 

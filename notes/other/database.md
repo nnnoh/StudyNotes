@@ -42,11 +42,19 @@ GROUP BY ALL
 
 insert ignore
 
+insert into () + (*)
+
 replace into
 
 insert ...  on duplicate key update
 
 primary key=unique+not null
+
+
+
+全局变量都是以@@开头，用户自定义变量以@开头。
+
+不带 FROM 子句的 SELECT 语句可用于显示不是从表中派生的表达式的值。
 
 
 
@@ -199,6 +207,10 @@ sql_mode
 规范
 
 区分 mysql 和 sql
+
+
+
+alter table table_name auto_increment=1;
 
 ### Tips
 
