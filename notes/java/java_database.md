@@ -157,6 +157,12 @@ Spring的`FactoryBean`接口
 
 
 
+逆向
+
+通用Mapper
+
+
+
 https://blog.csdn.net/huangyaa729/article/details/84564711
 
 ## H2 Database

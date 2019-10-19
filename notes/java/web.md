@@ -818,6 +818,8 @@ JavaScript 数组的 length 属性是可变的。
 arr.length=10; //增大数组的长度
 ```
 
+数组遍历方法
+
 **二维数组的定义**
 
 ```javascript
@@ -1061,6 +1063,8 @@ void(表达式)  该操作符指定要计算一个表达式但是不返回其值
 | onload      | 页面加载         |
 | onunload    | 页面关闭         |
 
+oncontextmenu 
+
 #### 特别事件
 
 form
@@ -1243,6 +1247,14 @@ Math 对象是一个固有的对象，无需创建它，直接把 Math 作为对
 #### Array
 
 [Array](#Array)
+
+特性
+
+动态增加
+
+``` javascript
+array[array.length]=array.length    // [0]
+```
 
 ##### 方法
 
@@ -1758,9 +1770,9 @@ DOM 事件 load
 
 ready DOM 加载完成事件
 
+当指定的对象已加载时绑定load/ready事件监听器，该方法会立即执行。
+
 onload 所有内容（包括图片）加载完成事件
-
-
 
 
 
@@ -1781,6 +1793,16 @@ onclick click 区别
 this  $(this)
 
 var thisObj = $(obj) //js对象转jquery对象
+
+
+
+jQuery.fn.extend();[·](http://caibaojian.com/jquery-extend-and-jquery-fn-extend.html)
+
+jQuery.extend();
+
+
+
+
 
 
 

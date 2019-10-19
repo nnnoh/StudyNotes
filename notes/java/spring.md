@@ -476,7 +476,7 @@ https://www.cnblogs.com/fangjian0423/p/servletContainer-tomcat-urlPattern.html#s
 3. Logback：Log4j的替代产品。须要配合日志框架SLF4j使用
 4. JUL(java.util.logging)：JDK提供的日志系统。较混乱，不经常使用
 
-日志框架，提供日志调用的接口，实际的日志输出托付给日志系统实现：
+日志框架（日志门面），提供日志调用的接口，实际的日志输出托付给日志系统实现：
 
 1. JCL(commons-logging)：比较流行的日志框架，非常多框架都依赖JCL，比如Spring等。
 2. SLF4j：提供新的API，初衷是配合Logback使用，但同一时候兼容Log4j。
@@ -489,11 +489,64 @@ https://blog.csdn.net/chinabestchina/article/details/85108585
 
 https://www.cnblogs.com/songxingzhu/p/8867817.html
 
-sfl4j
+slf4j
 
 log4j2
 
 logback
+
+不少应用服务器（如 Tomcat 和 WebShpere）的类路径中已经包含 Commons Logging。
+
+### slf4j
+
+slf4j 的直接/间接实现有slf4j-simple、logback、slf4j-log4j12、log4j-slf4j-impl
+
+pom.xml 示例（还需引入日志系统包）
+
+```xml
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.21</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.9.1</version>
+    </dependency>
+```
+
+#### 使用
+
+获取slf4j提供的Logger接口具体实现：
+
+`Logger logger = LoggerFactory.getLogger(Object.class);`
+
+> getLogger 会去 classpath 下找 STATIC_LOGGER_BINDER_PATH( org/slf4j/impl/StaticLoggerBinder.class)。所有slf4j的实现在提供的jar包路径下都有该类存在。
+>
+> 使用 set 接收查找结果。存在多个实现时，会执行 reportMultipleBindingAmbiguity。在这种情况下编译器会选择其中一个 StaticLoggerBinder.class 进行绑定，在 reportActualBinding 方法中报告了绑定的是哪个日志框架。
+>
+> 不同 StaticLoggerBinder 的 getLoggerFactory 实现不同，获得 ILoggerFactory 之后调用 getLogger 即获得具体的Logger。
 
 ## eclipse
 
@@ -879,6 +932,10 @@ springMVC controller
 
   @ResponseBody 将Controller类的方法返回的对象，通过HttpMessageConverter接口转换为指定格式的数据（默认 json）。作用于方法。
 
+ResponseBody 返回值限制，格式
+
+不能转换时返回 406
+
 
 
 `<mvc:resources>` 静态资源访问配置
@@ -896,3 +953,49 @@ https://www.cnblogs.com/kaleidoscope/p/9851603.html
 Controller 类，方法 配置的路径 层级关系
 
 其返回的视图中引入外部资源的相对路径为url访问路径的上一级目录。
+
+
+
+RequestMapping 优先级
+
+优先匹配确定的映射，而不匹配不确定的映射(通配符，占位符)
+
+控制器 > 静态资源
+
+
+
+value 有无 '/' 区别
+
+通配符 ** 多层路径
+
+produces：它的作用是指定返回值类型，不但可以设置返回值类型还可以设定返回值的字符编码；
+
+consumes： 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
+
+请求将由其他方法处理或返回 406
+
+
+
+ContentNegotiatingViewResolver 确定返回请求的媒体类型。
+
+BeanNameViewResolver 根据控制器返回的字符串查找（自定义）视图类
+
+
+
+ControllerAdvice
+
+ExceptHandler
+
+ResponseStatus
+
+自定义Excption抛出 默认 500
+
+
+
+@CrossOrigin注解
+
+https://blog.csdn.net/saytime/article/details/74937204#commentBox
+
+
+
+测试代码功能时 注意浏览器缓存数据的影响

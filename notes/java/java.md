@@ -377,11 +377,16 @@ java.util.Arrays 类能方便地操作数组，它提供的所有方法都是静
 
 3. List\<Integer> iList = Arrays.stream(intArray).boxed().collect(Collectors.toList());
 
-   java 8 方法
-
 4. ArrayList arrayList = new ArrayList<>(Arrays.asList("welcome", "to", "china"));
 
 https://segmentfault.com/a/1190000019400005?utm_source=tag-newest
+
+**ArrayList 转数组**
+
+```java
+E[] a= new E[list.size()];
+list.toArray(a);
+```
 
 #### 二维数组
 
@@ -402,6 +407,10 @@ s[1] = new String[3];
 Java 5.0 引入了枚举（enum），枚举限制变量只能是预先设定好的值。使用枚举可以减少代码中的bug。
 
 枚举可以单独声明或者声明在类里面。方法、变量、构造函数也可以在枚举中定义。
+
+
+
+所有枚举类型都是 Enum 类的子类，。
 
 例子：
 
@@ -1618,6 +1627,8 @@ public class Car {
 
 [Java API文档](http://www.matools.com/api/java8)
 
+分类
+
 ### Object 类
 
 toString
@@ -1703,6 +1714,8 @@ Character ch = Character.valueOf('a');  // Java9 以后
 Math 包含了用于执行基本数学运算的属性和方法，如初等指数、对数、平方根和三角函数。
 
 Math 的方法都被定义为 static 形式，通过 Math 类可以在主函数中直接调用。
+
+大数值
 
 #### 常用方法
 
@@ -3253,6 +3266,10 @@ https://www.cnblogs.com/CarpenterLee/p/9558026.html
 
 
 
+
+
+
+
 ## 新特性
 
 ### 注解
@@ -3343,6 +3360,8 @@ CLASSPATH 变量指明JAVA运行环境JRE搜索 .class 文件的路径。
 >
 > 通配符只适用配置的第二和第三种方式，第四种方式`manifest`文件不能使用通配符。
 
+文档注释
+
 ### 深拷贝 & 浅拷贝
 
 内存空间 堆 栈
@@ -3376,3 +3395,5 @@ jconsole
 编码
 
 https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/#ibm-pcon
+
+在返回的函数中访问了的（被调用）函数的局部变量生命周期会跟随着被返回的函数 ？ js同

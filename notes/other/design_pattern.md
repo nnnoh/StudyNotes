@@ -125,3 +125,15 @@ https://www.cnblogs.com/cielosun/p/6596475.html
 https://www.cnblogs.com/zailushang1996/p/8601808.html
 
 https://blog.csdn.net/u012156116/article/details/80857255#commentBox
+
+建造者模式
+
+
+
+结构型模式
+
+适配器模式
+
+桥接模式 两个独立变化的维度
+
+装饰模式 扩展一个类的功能
