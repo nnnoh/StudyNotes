@@ -193,6 +193,63 @@ this指的是当前对象，类方法依附于类而不是对象this
 
 
 
+js 培训
+let const
+顶层对象 window
+数组解构 （模式匹配）
+对象解构 ()解构
+解构 -> 默认值
+解构用途
+1.交换变量的值
+2.从返回多个值
+3.函数参数的定义
+4.解析JSON数据
+5.遍历Map结构
+等
+TS
+公有，私有与受保护的修饰符
+readonly 修饰符
+装饰器模式
+代码注释
+  /** @ 
+编码风格
+ 使用分号
+ 大括号
+ 函数参数 超过80字符换行，一行一个参数
+ 匿名函数
+ 块内函数声明  声明为变量
+  js关键字/保留字
+编码规范
+ 条件 尽量使用===
+ 循环体中不要包换函数表达式（声明变量）
+ 类型转换 
+  +'' -> String 
+  parseInt 指定进制 -> number
+  +str -> number
+  Math.xxx 去小数点
+  !! -> boolean
+ 对象 
+ 数组遍历 no for in
+模块化
+ SystemJS
+css盒子模型
+css命名技巧 BEM规范
+web应用 存文件常规方法，数据库
+js 上传 下载文件
+图片 img src
+ajax
+
+js引入库 冲突
+
+
+
+多表连接查询 单表多次查询效率
+sql 
+WM_CONCAT
+java 
+@SuppressWarnings
+js 模块化 strict
+
 <details>
 <summary>Title</summary>
   Orz

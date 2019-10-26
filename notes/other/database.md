@@ -202,7 +202,7 @@ rollback to sp; 回滚到指定保留点（事务继续，该保留点可用）�
 
 sql_mode
 
-
+select \* from a,b是笛卡尔乘积
 
 规范
 

@@ -3324,6 +3324,12 @@ BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入�
 
 <?>
 
+在编译之后程序会采取去泛型化的措施。也就是说Java中的泛型，只在编译阶段有效。在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。
+
+https://www.cnblogs.com/coprince/p/8603492.html
+
+https://www.cnblogs.com/dengchengchao/p/9717097.html
+
 ### Functional Interface
 
 注释接口

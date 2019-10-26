@@ -1023,6 +1023,10 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
 
 window[]
 
+Object 对象遍历
+
+https://blog.csdn.net/tomy123456123456/article/details/81633548
+
 #### 作用域
 
 局部变量：在函数中通过var声明的变量，只能在函数内部访问，在函数执行完毕后销毁。
@@ -1750,6 +1754,8 @@ js 自定义事件
 
 https://www.cnblogs.com/lyzg/p/5347857.html
 
+js CustomEvent / document.createEvent
+
 keypress 事件不会被某些键（比如 ALT、CTRL、SHIFT、ESC）触发。
 
 事件 命名空间 
@@ -1778,7 +1784,7 @@ onload 所有内容（包括图片）加载完成事件
 
 注意，事件function中使用的$()选择器在每次执行时都会重新选择，可能会选不到想选的元素。在function外层定义变量解决。
 
-$()=jquery()
+$ == jQuery
 
 `$('div').attr('width')` 是静态的，从 html 上读的属性值
 
@@ -1799,6 +1805,8 @@ var thisObj = $(obj) //js对象转jquery对象
 jQuery.fn.extend();[·](http://caibaojian.com/jquery-extend-and-jquery-fn-extend.html)
 
 jQuery.extend();
+
+https://www.cnblogs.com/douyage/p/8630529.html
 
 
 
@@ -2470,3 +2478,9 @@ ctrl+F5 刷新，不使用缓存
 - 一个Blob对象就是一个包含有只读原始数据的类文件对象。
 
 https://www.jianshu.com/p/b322c2d5d778
+
+jsp-tips 放 JavaWeb
+
+HTTP 放 计算机网络
+
+j-B 放 框架文件夹
