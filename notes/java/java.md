@@ -3226,7 +3226,7 @@ graph LR
 
 Thread.sleep()	可抛出 InterruptedException
 
-
+sleep方法不会释放共享资源的锁
 
 
 

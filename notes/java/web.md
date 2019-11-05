@@ -582,6 +582,12 @@ https://www.jianshu.com/p/091b4ffb10b0
 
 https://blog.csdn.net/tt_twilight/article/details/72804104#commentBox
 
+table 
+
+https://blog.csdn.net/zhw0596/article/details/86063093
+
+https://blog.csdn.net/Yocan_ture/article/details/80698108
+
 
 
 z-index
@@ -1830,6 +1836,10 @@ event window.event  diff \__proto__
 
 键盘
 
+execCommand
+
+Event
+
 prepend() 等插入元素方法，如果待插入的 jQuery 对象已在html中存在，其将会移动到新的位置上去。当该元素插入到多个地方时，原 jquery对象将指向最后插入的元素。
 
 scroll 
@@ -1845,6 +1855,8 @@ window scroll -> 浏览器窗口滚动条
 Tips
 
 实用方法
+
+移除属性 类
 
 ## AJAX
 
@@ -2108,6 +2120,8 @@ servlet jsp 区别
 https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
 
 各对象生命周期
+
+请求转发 参数
 
 ### Tips
 
@@ -2458,6 +2472,10 @@ http://www.ruanyifeng.com/blog/2016/04/cors.html
 https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox
 
 https://www.jianshu.com/p/d01eb74bf06c
+
+
+
+form data和request payload形式
 
 
 
