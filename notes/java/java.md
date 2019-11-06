@@ -668,6 +668,8 @@ Java中，可以使用访问控制符来保护对类、变量、方法和构造�
 |  public   |   yes    |   yes    |     yes      |      yes       |
 
 > 访问修饰符的开放范围由大到小排序是 public > protected > default > private
+>
+> 访问修饰符private、protected仅能修饰类中成员方法或成员变量。
 
 ##### 默认访问修饰符-不使用任何关键字
 
@@ -786,6 +788,16 @@ volatile修饰的成员变量在每次被线程访问时，都强迫从共享内
 Java 的 serialization 提供了一种持久化对象实例的机制。当持久化对象时，可能有一个特殊的对象数据成员，我们不想用 serialization 机制来保存它。为了在一个特定对象的一个域上关闭 serialization，可以在这个域前加上关键字transient。当一个对象被序列化的时候，transient 型变量的值不包括在序列化的表示中，然而非 transient 型的变量是被包括进去的。
 
 该修饰符包含在定义变量的语句中，用来预处理类和变量的数据类型。
+
+#### 类和接口的修饰符
+
+class 和 interface 只有两种访问修饰符，即默认值（没有访问修饰符）和public：
+
+- 默认值，对应的访问权限为包访问权限，代表只有该包中的其他类才可以访问此java类，其他包中无法访问该类（无法import该类，无法new其对象）；
+
+- public，此修饰符修饰的java类可以被本包或其他包中的任意类访问。
+
+class 非访问修饰符有 abstract 和 final。
 
 ### 运算符
 
@@ -3216,7 +3228,32 @@ graph LR
 
 #### Callable & Future
 
+Callable 接口是一个参数化的一个参数化的类型， 只有一
+个方法 call。类型参数是返回值的类型
+
+```java
+public interface Callable<V>{
+	V call() trows Exception;
+}
+```
+
+Future 保存异步计算的结果。Future 对象的所有者在结果计算好之后就可以获得它。
+
+```java
+public interface Future<V>{
+	V get() throws ..;
+	V get(long timeout, TimeUnit unit) throws ..;
+	boolean cancel (boolean mayInterrupt);
+	boolean isCancelled();
+	boolean isDone();
+}
+```
+
 #### FutureTask
+
+FutureTask 包装器是一种非常便利的机制，可将Callable 转换成Future 和Runnable，它同时实现二者的接口。
+
+
 
 ### 同步
 
@@ -3228,9 +3265,40 @@ Thread.sleep()	可抛出 InterruptedException
 
 sleep方法不会释放共享资源的锁
 
-
-
 https://www.zhihu.com/question/42962803
+
+
+
+wait() 和 sleep() 的区别
+同：
+1. 都是线程同步时会用到的方法，使当前线程暂停运行，把机会交给其他线程
+
+2.如果任何线程在等待期间被中断都会抛出InterruptedException
+
+3.都是native() 方法
+
+异：
+1. wait() 是Object超类中的方法；而sleep()是线程Thread类中的方法
+
+2. 对锁的持有不同，wait()会释放锁，而sleep()并不释放锁
+
+3. 唤醒方法不完全相同，wait() 依靠notify或者notifyAll 、中断、达到指定时间来唤醒；而sleep()到达指定时间被唤醒.
+
+4. 使用位置不同，wait只能在同步代码块或同步控制块中使用，而sleep可以在任何位置使用。
+
+await & wait
+
+1. wait()是Object超类中的方法，而await()是ConditionObject类里面的方法.
+
+2. await会导致当前线程被阻塞，会释放锁，这点和wait是一样的
+
+3. await中的lock不再使用synchronized把代码同步包装起来
+
+4. await的阻塞需要另外的一个对象condition
+
+5. notify是用来唤醒使用wait的线程；而signal是用来唤醒await线程。
+
+6. 所在的超类不同使用场景也不同，wait一般用于Synchronized中，而await只能用于ReentrantLock锁中
 
 
 

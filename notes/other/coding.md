@@ -103,3 +103,17 @@ Language: Java
 | ---- | ---- | ---- | ---- | ---- |
 |      |      |      |      |      |
 
+## Tips
+
+- 有循环时注意每个线程应该循环的次数。
+
+不同方式间的比较
+
+## Lock
+
+### ReentrantLock
+
+### Condition
+
+## Semaphore
+
