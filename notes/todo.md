@@ -4,10 +4,6 @@
 
 
 
-### Want to do
-
-- 实践
-
 
 
 ### Not urgent

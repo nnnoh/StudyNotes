@@ -21,6 +21,10 @@ public boolean equals(Object object) {
     }
 ```
 
+浮点数 比较需指定误差范围（1e-6f）或使用 BigDecimal 类进行运算
+
+BigDecimal(double)存在精度损失风险，在精确计算或值比较的场景中可能会导致业务逻辑异常。如：BigDecimal g = new BigDecimal(0.1f); 实际的存储值为：0.10000000149。优先推荐入参为String的构造方法，或使用BigDecimal的valueOf方法，此方法内部其实执行了Double的toString，而Double的toString按double的实际能表达的精度对尾数进行了截断。
+
 
 
 当程序执行try{}遇到return时，程序会先执行return语句，但并不会立即返回——也就是把return语句要做的一切事情都准备好，也就是在将要返回、但并未返回的时候，程序把执行流程转去执行finally块，当finally块执行完成后就直接返回刚才return语句已经准备好的结果。
@@ -28,6 +32,8 @@ public boolean equals(Object object) {
 只有在try{}块中包含遇到**System.exit(0)**之类的导致Java虚拟机直接退出的语句才会不执行。
 
 
+
+switch 参数不能是null，swicth(null)会报java.lang.NullPointerException异常
 
 Void 类型
 
@@ -49,8 +55,10 @@ https://www.cnblogs.com/java1024/p/8622195.html 注意错误
 
 regex 字符串或正则表达式对象。
 
-- 如果字符串中不包含分隔符，返回包含整个字符串的单一元素数组。
-- 
+- 当字符串只包含分隔符时，返回数组没有元素；
+- 当字符串不包含分隔符时，返回数组只包含一个元素（该字符串本身）；
+- 字符串最尾部出现的分隔符可以看成不存在，不影响字符串的分隔；
+- 字符串最前端出现的分隔符将分隔出一个空字符串以及剩下的部分的正常分隔；
 
 https://blog.csdn.net/e_wsq/article/details/79020743
 
@@ -73,6 +81,18 @@ https://www.nowcoder.com/profile/1715050/test/28710193/501006#summary
 #### 内存泄漏
 
 https://www.nowcoder.com/questionTerminal/970cdaaa4a114cbf9fef82213a7dabca
+
+### io
+
+#### read 方法
+
+到达流的末尾，则返回值`-1` 。 该方法阻塞直到输入数据可用，检测到流的结尾，或抛出异常。
+
+
+
+addAll 方法可以使 Collection 子类互相添加
+
+比如，list 使用 set 去重
 
 
 
@@ -149,11 +169,32 @@ socket 底层 tcp/ip
 
 
 
+js全局变量
+
+private 方法覆盖
+
+catch finally return
+
+hashmap 构造函数
+
+构造函数 返回值
+
+```javascript
+if(!"a" in window){
+    var a=1;
+}
+alert(a);
+```
+
+docker
+
+
+
 **question**
 
 js 
 
-<textarea>
+```
 tomcat settings
 modify settings for publishing
 tomcat 运行失败 杀进程 / console stop
@@ -189,7 +230,7 @@ CASCADE为连锁删除，RESTRICT为约束删除
 on update cascade 和 on delete cascade
 servlet 默认 单例多线程
 this指的是当前对象，类方法依附于类而不是对象this
-</textarea>
+```
 
 
 
@@ -264,3 +305,37 @@ js访问web api获取json方法
 2. Axios
 3. Fetch
 
+
+
+maven relativePath 标签
+document.forms
+HTMLCollection
+热部署
+input 纯数字
+textarea 字段长度 数据库存储
+身份证校验
+对实体 "serverTimezone" 的引用必须以 ';' 分隔符结尾。
+mbg 通用mapper
+mybatis example criteria
+https://blog.csdn.net/slgxmh/article/details/51860278
+ModelAndView 
+jar 包
+
+springboot
+js File
+FileReader
+call
+table 样式
+
+exsl/word ctrl+home 
+加表主键
+dateformat 注意大小写
+css 不写在 jsp 中
+注意命名
+注意表字段类型
+注意 init 时闭包变量会延续之前的值
+写/改前先总览规划
+记录笔记
+思考问题要全面，不要靠直觉
+冷静，提交代码前思考确认
+保存数据时，如果字段没有值不会清空数据库相应字段值

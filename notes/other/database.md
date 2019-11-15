@@ -46,9 +46,15 @@ insert into () + (*)
 
 replace into
 
+
+
 insert ...  on duplicate key update
 
 primary key=unique+not null
+
+
+
+SQL语言共分为四大类：数据查询语言DQL，数据操纵语言DML，数据定义语言DDL，数据控制语言DCL。
 
 
 
@@ -208,7 +214,27 @@ select \* from a,b是笛卡尔乘积
 
 区分 mysql 和 sql
 
+\g \G
 
+show 语句
+
+char & varchar
+
+https://blog.csdn.net/yirentianran/article/details/79318103
+
+ENGINE=INNODB：将数据库的引擎设置为InnoDB（mysql中两种数据库引擎 ：MyISAM 、InnoDB）
+
+AUTO_INCREMENT=1：自动增长的起始值为1
+
+DEFAULT CHARSET=utf8：设置数据库的默认字符集为utf8
+
+comment
+
+union 
+
+limit y,x == limit x offset y
+
+sql function 参数 局部变量
 
 alter table table_name auto_increment=1;
 
@@ -228,7 +254,21 @@ update_time 设置 DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP属性
 
 datetime timestamp 区别
 
-行转列
+行列互转
+
+https://blog.csdn.net/jx_870915876/article/details/52403472
+
+https://blog.csdn.net/changxiangyangy/article/details/86718551
+
+case-when
+
+使用场景：
+
+1. 等值转换
+2. 范围转换
+3. 列转行操作
+
+
 
 ### ERR
 

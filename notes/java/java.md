@@ -228,7 +228,7 @@ Integer i = new Integer(xxx) 和 Integer i =xxx 这两种方式的区别：
 > 对基本数据类型和对应包装类使用 instanceof 会报错
 > Incompatible conditional operand types long and Long
 
-###### == & equal
+###### == & equals
 
 - 当 "==" 运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象。如果其中有一个操作数是表达式（即包含**算术运算**）则比较的是数值（即**会触发自动拆箱**的过程）。对于基本数据类型，"\==" 比较的是数值，并且会进行隐式类型转换。
 - 对于包装器类型，equals 方法并不会进行类型转换，equals 参数会触发自动装箱。
@@ -262,7 +262,7 @@ Integer i = new Integer(xxx) 和 Integer i =xxx 这两种方式的区别：
 //        true
 ```
 
-##### == & equal
+##### == & equals
 
 > 值是存储在内存中的栈，而引用类型的变量在栈中仅仅是存储引用类型变量的地址，而其本身则存储在堆中。
 
@@ -1793,7 +1793,7 @@ SimpleDateFormat 是一个以语言环境敏感的方式来格式化和分析日
 
 ###### 时间模式字符串
 
-在此模式中，所有的 ASCII 字母被保留为模式字母。
+在此模式中，所有的 ASCII 字母被保留为模式字母。（注意大小写）
 
 | **字母** | **描述**                 | **示例**                |
 | -------- | ------------------------ | ----------------------- |
@@ -2554,6 +2554,8 @@ ListIterator 的 add 方法只依赖迭代器的位置，而 remove 方法依赖
 
 如果迭代器发现它的集合被另一个迭代器修改了，或是被该集合自身的方法修改了，就会抛出 ConcurrentModificationException。
 
+Iterator 是工作在一个独立的线程中，并且拥有一个 mutex 锁。 Iterator 被创建之后会建立一个指向原来对象的单链索引表，当原来的对象数量发生变化时，这个索引表的内容不会同步改变。当索引指针往后移动的时候就找不到要迭代的对象，所以按照 fail-fast 原则 Iterator 会马上抛出 java.util.ConcurrentModificationException 异常。所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。但你可以使用 Iterator 本身的方法 remove() 来删除对象， Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性。
+
 > 并发修改列表的检测 p358
 
 #### 数组列表
@@ -2700,6 +2702,8 @@ map.forEach(
 - Set\<Map.Entry\<K, V>> entrySet()  键/值对集
 
 > 对视图的操作会反映在原键值对中，反过来也一样。集合的各视图及迭代器的修改会互相影响。
+>
+> 不可以视图进行添加元素操作，否则会抛出UnsupportedOperationException异常。
 
 **Map.Entry** 是 Map 声明的一个内部静态接口，此接口为泛型，定义为 Entry<K,V>。它表示 Map 中的一个实体（一个key-value对）。接口中有 getKey()、getValue()、setValue() 方法。
 
@@ -3374,9 +3378,9 @@ new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuch
 
 - 
 
-对于 int 等基本数据类型，在输入之前最好先使用 **hasNextXxx()** 方法进行验证，再使用 **nextXxx()** 来读取。
+next / nextLine 返回值均为 String。
 
-hasNextXxx() next nexLine 空 回车后 
+对于 int 等基本数据类型，在输入之前最好先使用 **hasNextXxx()** 方法进行验证，再使用 **nextXxx()** 来读取。hasNextXxx 方法会阻塞到有输入数据，当数据可以解析为 Xxx 型返回 true，否则返回 false。
 
 #### 与 BufferedReader 的区别
 
