@@ -230,6 +230,18 @@ CASCADE为连锁删除，RESTRICT为约束删除
 on update cascade 和 on delete cascade
 servlet 默认 单例多线程
 this指的是当前对象，类方法依附于类而不是对象this
+
+ajax 路径
+Calendar
+year()
+spring 配置 过滤器 拦截器方式
+/* 是拦截所有的文件夹，不包含子文件夹
+/** 是拦截所有的文件夹及里面的子文件夹
+lombok idea设置
+通配符总结
+jwt
+cookie 跨域
+
 ```
 
 

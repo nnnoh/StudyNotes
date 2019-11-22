@@ -218,9 +218,7 @@ select \* from a,b是笛卡尔乘积
 
 show 语句
 
-char & varchar
 
-https://blog.csdn.net/yirentianran/article/details/79318103
 
 ENGINE=INNODB：将数据库的引擎设置为InnoDB（mysql中两种数据库引擎 ：MyISAM 、InnoDB）
 
@@ -238,9 +236,25 @@ sql function 参数 局部变量
 
 alter table table_name auto_increment=1;
 
+COLLATE
 
+scheme
 
 secure_file_priv参数
+
+MySQL没有boolean类型。建表时使用 boolean 类型，MySQL 会将它替换成`tinyint(1)`。
+
+`int(M)` 这个长度是为了告诉MYSQL数据库，这个字段的存储的数据的宽度为M位数，当然如果存储的不是M位数（只要在该类型的存储范围之内）MYSQL也能正常存储。
+
+`varchar(M)` 
+
+char & varchar
+
+https://blog.csdn.net/yirentianran/article/details/79318103
+
+int(M)
+
+https://www.imooc.com/article/41543
 
 ### Tips
 
