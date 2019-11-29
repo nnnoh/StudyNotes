@@ -242,6 +242,70 @@ lombok idea设置
 jwt
 cookie 跨域
 
+
+11/25
+接口完善
+
+问题 
+svn 提交
+
+webservice
+CSRF XSS
+left join select tips
+
+mp
+mapper学习
+文件 ui
+前台大改 bootstrap
+
+SELECT LAST_INSERT_ID()
+selectKey
+动态sql if test 可根据（虚拟）属性去执行相应方法得到bool值
+# $ 使用场景总结
+mbg criter.*? 关系
+_parameter
+@Transactional
+事务
+@Mapper
+mybatis insert 返回值
+反射 性能
+@RequestParam、@RequestBody和@ModelAttribute
+param和body data的区别，即get和post请求的区别
+@DateTimeFormat
+@JsonFormat
+url / 作用 及 href
+@Value
+https://blog.csdn.net/zzmlake/article/details/54946346
+ContentType 文件预览/下载
+ServletUriComponentsBuilder 
+link/script crossorigin
+cookie domain
+lombok 版本要求
+ rebuild
+js Promise
+java8 ::new 
+
+Calendar 时间
+exsl/word ctrl+home 
+加表主键
+dateformat 注意大小写
+css 不写在 jsp 中
+注意命名
+注意表字段类型
+注意 init 时闭包变量会延续之前的值
+写/改前先总览规划
+记录笔记
+思考问题要全面，不要靠直觉
+冷静，提交代码前思考确认
+保存数据时，如果字段没有值不会清空数据库相应字段值
+
+layui
+after learning js angular （vue）
+web （rest）设计
+
+
+打好基础
+冷静仔细
 ```
 
 
