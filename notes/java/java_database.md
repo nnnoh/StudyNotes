@@ -155,13 +155,13 @@ sqlSessionFactoryBeanName要用value而不用ref.
 
 Spring的`FactoryBean`接口
 
+insert 返回主键
 
+https://www.cnblogs.com/wsxdev/p/11714184.html
 
 逆向
 
 通用Mapper
-
-
 
 https://blog.csdn.net/huangyaa729/article/details/84564711
 

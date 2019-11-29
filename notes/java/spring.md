@@ -481,7 +481,7 @@ https://www.cnblogs.com/fangjian0423/p/servletContainer-tomcat-urlPattern.html#s
 1. JCL(commons-logging)：比较流行的日志框架，非常多框架都依赖JCL，比如Spring等。
 2. SLF4j：提供新的API，初衷是配合Logback使用，但同一时候兼容Log4j。
 
-### JCL
+
 
 https://blog.csdn.net/backbug/article/details/78655664
 
@@ -496,6 +496,14 @@ log4j2
 logback
 
 不少应用服务器（如 Tomcat 和 WebShpere）的类路径中已经包含 Commons Logging。
+
+
+
+slf4j + logback 配置，其他简介。
+
+property  , no properties
+
+windows 路径使用 `\\` 分隔符
 
 ### slf4j
 
