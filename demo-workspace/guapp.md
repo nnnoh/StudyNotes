@@ -1,14 +1,22 @@
 ## Gu
 
+### 前端
+
+> 博客 参考： https://github.com/BranSummer/branroom 
+>
+> 后台管理 模板： https://github.com/fanjyy/nepadmin 
+
 首页
 
 公开页
 
-### 用户权限管理
+### 后台
 
-#### 数据表
+#### 用户权限管理
 
-##### 用户信息表
+##### 数据表
+
+###### 用户信息表
 
 ```sql
 CREATE TABLE `ums_user` (
@@ -25,15 +33,15 @@ CREATE TABLE `ums_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表'
 ```
 
-##### 角色表
+###### 角色表
 
 
 
-##### 权限表
+###### 权限表
 
 
 
-##### 用户角色关系表
+###### 用户角色关系表
 
 ```sql
 CREATE TABLE `ums_user_role_relation` (
@@ -44,19 +52,19 @@ CREATE TABLE `ums_user_role_relation` (
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='用户角色关系表'
 ```
 
-##### 角色权限关系表
+###### 角色权限关系表
 
-#### API
+##### API
 
-##### login
+###### login
 
-##### register
+###### register
 
-### 博客系统
+#### 博客系统
 
-#### 数据表
+##### 数据表
 
-##### 文章分类表
+###### 文章分类表
 
 ```sql
 CREATE TABLE `bams_article_category` (
@@ -70,7 +78,7 @@ CREATE TABLE `bams_article_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文章分类表'
 ```
 
-##### 文章信息表
+###### 文章信息表
 
 ```sql
 CREATE TABLE `bams_article` (
@@ -90,7 +98,7 @@ CREATE TABLE `bams_article` (
 
 > todo 后续增加 username字段 
 
-##### 文章内容表
+###### 文章内容表
 
 ```sql
 CREATE TABLE `bams_article_content` (
@@ -106,13 +114,13 @@ CREATE TABLE `bams_article_content` (
 
 > create_time, updatetime 由数据库设置
 
-#### API
+##### API
 
 > 更新操作只对非空更新字段有效
 
-### 文件管理系统
+#### 文件管理系统
 
-#### 数据表
+##### 数据表
 
 ```sql
 CREATE TABLE `fms_file` (

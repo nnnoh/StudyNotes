@@ -284,28 +284,6 @@ lombok 版本要求
  rebuild
 js Promise
 java8 ::new 
-
-Calendar 时间
-exsl/word ctrl+home 
-加表主键
-dateformat 注意大小写
-css 不写在 jsp 中
-注意命名
-注意表字段类型
-注意 init 时闭包变量会延续之前的值
-写/改前先总览规划
-记录笔记
-思考问题要全面，不要靠直觉
-冷静，提交代码前思考确认
-保存数据时，如果字段没有值不会清空数据库相应字段值
-
-layui
-after learning js angular （vue）
-web （rest）设计
-
-
-打好基础
-冷静仔细
 ```
 
 
@@ -404,14 +382,5 @@ call
 table 样式
 
 exsl/word ctrl+home 
-加表主键
 dateformat 注意大小写
-css 不写在 jsp 中
-注意命名
-注意表字段类型
 注意 init 时闭包变量会延续之前的值
-写/改前先总览规划
-记录笔记
-思考问题要全面，不要靠直觉
-冷静，提交代码前思考确认
-保存数据时，如果字段没有值不会清空数据库相应字段值
