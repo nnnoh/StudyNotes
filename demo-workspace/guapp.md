@@ -27,7 +27,7 @@ CREATE TABLE `ums_user` (
   `phone` varchar(100) DEFAULT NULL COMMENT '手机号码',
   `status` int(1) DEFAULT '1' COMMENT '状态 0:禁用，1:启用',
   `login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
-  `creat_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表'
@@ -70,7 +70,7 @@ CREATE TABLE `ums_user_role_relation` (
 CREATE TABLE `bams_article_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主题',
   `name` varchar(20) NOT NULL COMMENT '分类名称',
-  `creat_time` datetime NOT NULL COMMENT '分类创建时间',
+  `create_time` datetime NOT NULL COMMENT '分类创建时间',
   `update_time` datetime NOT NULL COMMENT '分类修改时间',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态 0:禁用, 1:启用',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
@@ -85,7 +85,7 @@ CREATE TABLE `bams_article` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `title` varchar(50) DEFAULT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '作者id',
-  `category_id` bigint(20) DEFAULT NULL COMMENT '分类id',
+  `category_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '分类id',
   `cover` varchar(100) DEFAULT NULL COMMENT '封面图片',
   `state` tinyint(2) DEFAULT '1' COMMENT '状态 0:禁用, 1:暂存, 2:发布',
   `publish_time` datetime DEFAULT NULL COMMENT '发布时间',
@@ -104,7 +104,7 @@ CREATE TABLE `bams_article` (
 CREATE TABLE `bams_article_content` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主题',
   `content` text NOT NULL COMMENT '文章内容',
-  `creat_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `article_id` bigint(20) DEFAULT NULL COMMENT '文章id',
   PRIMARY KEY (`id`),
@@ -130,7 +130,7 @@ CREATE TABLE `fms_file` (
   `business` varchar(20) DEFAULT NULL COMMENT '业务名',
   `location_path` varchar(100) DEFAULT NULL COMMENT '本地路径',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态 0:禁用，1:启用',
-  `creat_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件信息表'

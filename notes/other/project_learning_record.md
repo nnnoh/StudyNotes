@@ -61,3 +61,15 @@ https://blog.csdn.net/u014750606/article/details/80040130#commentBox
 java.lang.ClassNotFoundException: com.alibaba.fastjson.JSON
 
 项目部署环境找不到 jar 包，可把对应的jar包添加到`WEB-INF/lib` 解决。（springboot 可放 resource/lib 下）
+
+idea -> Project Settings -> Artifacts
+
+## 前端
+
+https://blog.csdn.net/weixin_42839080/article/details/82833111
+
+XMLHttpRequest cannot loadfile:///E:/webs/extJS/ext-3.3.0/examples/csdn/combobox.txt?_dc=1414738973999.Cross origin requests are only supported for protocol schemes: http, data,chrome-extension, https, chrome-extension-resource.
+
+解决办法是给chrome添加启动参数：**--allow-file-access-from-files** ，这样本地ajax请求就不会报跨域错误了。（注意如果给chrome添加多个启动参数，每个启动参数“--”之前要有空格隔开，如"C:\ProgramFiles\Google\Chrome\Application\chrome.exe" **--allow-file-access-from-files**）
+
+具体方法：在浏览器快捷方式上右键-属性-快捷方式-目标
