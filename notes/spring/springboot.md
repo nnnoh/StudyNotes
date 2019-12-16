@@ -51,3 +51,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 }
 ```
 
+
+
+spring.factories
