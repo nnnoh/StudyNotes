@@ -20,7 +20,23 @@ Git 与 SVN 区别点：
 
 https://blog.csdn.net/stone_yw/article/details/80795669#commentBox
 
+
+
 ### 修改管理
+
+`git add (file)`
+
+`git commit `
+
+-m ""
+
+-am ""
+
+https://www.cnblogs.com/lfxiao/p/9378763.html
+
+
+
+git reset --hard
 
 ### 远程仓库
 
@@ -30,17 +46,27 @@ https://blog.csdn.net/stone_yw/article/details/80795669#commentBox
 
 将当前仓库连接到某个远程服务器。可以指定一个简单的名字，以便将来引用。
 
+url 如果是本地地址，可不用加`.git`。
+
 `git remote`
 
 查看当前配置有哪些远程仓库。
 
--v 参数，可以看到每个别名的实际链接地址。
+-v 参数，可以看到每个别名的实际链接地址。如果没有推送权限，就看不到push的地址。
 
 #### 从远程仓库克隆
 
 Git支持多种协议，默认的`git://`使用ssh，但也可以使用`https`等其他协议。
 
 使用`https`除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在某些只开放http端口的公司内部就无法使用`ssh`协议而只能用`https`。
+
+https://segmentfault.com/a/1190000002783245
+
+
+
+https://segmentfault.com/a/1190000007996197
+
+https://www.cnblogs.com/wgwyanfs/p/7290657.html
 
 ### 分支管理
 
@@ -104,6 +130,12 @@ eclipse 会自动忽略了后缀为gitkepp的文件。
 # Except this file 
 !.gitkeep 
 ```
+
+
+
+git init --shared --bare
+
+git config receive.denyCurrentBranch ignore
 
 ### Question
 

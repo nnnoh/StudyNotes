@@ -342,6 +342,44 @@ pom.xml 示例（还需引入日志系统包）
 >
 > 不同 StaticLoggerBinder 的 getLoggerFactory 实现不同，获得 ILoggerFactory 之后调用 getLogger 即获得具体的Logger。
 
+slf4 循环 堆栈溢出
+
+### Tips
+
+#### SLF4J: Class path contains multiple SLF4J bindings
+
+> 可能伴随着下面错误，不过下面错误不是重点。
+>
+> Logging system failed to initialize using configuration from ‘classpath:log4j2.xml’
+> java.lang.IllegalStateException: Logback configuration error detected: ...
+
+exclude logging的依赖，比如：
+
+```xml
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+```
+
+
+
 ## eclipse
 
 ### .classpath 文件

@@ -370,6 +370,7 @@ textarea 字段长度 数据库存储
 身份证校验
 对实体 "serverTimezone" 的引用必须以 ';' 分隔符结尾。
 mbg 通用mapper
+@MapperScan
 mybatis example criteria
 https://blog.csdn.net/slgxmh/article/details/51860278
 ModelAndView 

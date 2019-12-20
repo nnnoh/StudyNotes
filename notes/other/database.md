@@ -256,6 +256,8 @@ int(M)
 
 https://www.imooc.com/article/41543
 
+null值不匹配 like "%%"
+
 ### Tips
 
 示例
