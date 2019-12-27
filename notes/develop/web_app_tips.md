@@ -1,16 +1,18 @@
-## 技术
+## 工程结构
 
-### 安全框架
+### 目录结构
+
+SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目录中的数据可以直接通过浏览器访问，多用来放CSS、JS、img，但是不用来放html页面；
+
+其中`templates`用来存放HTML页面，但是需要在SpringBoot的配置文件(application.yml)中配置`spring.thymeleaf.prefix`标识Thymeleaf模板引擎渲染的页面位置。
+
+### 应用分层
 
 
 
+## 数据库
 
-
-## 目录结构
-
-SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目录中的数据可以直接通过浏览器访问，多用来放CSS、JS、img，但是不用来放html页面；其中`templates`用来存放HTML页面，但是需要在SpringBoot的配置文件(application.yml)中配置`spring.thymeleaf.prefix`标识Thymeleaf模板引擎渲染的页面位置。
-
-## Sql
+### 规约
 
 **AlibabaCodingGuidelines**
 
@@ -29,15 +31,35 @@ SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目
 <columnOverride column="字段名" jdbcType="VARCHAR" />
 ```
 
-
+对于传入的参数，后台不能过度依赖前端逻辑，最好后台也进行校验。
 
 status & state
 
 https://www.zhihu.com/question/21994784?sort=created
 
-## Class
 
-### Serializabla
+
+## 代码
+
+### 规约
+
+```java
+Collections.unmodifiableList(XXX)
+```
+
+
+
+### 第三方库
+
+java.lang.ClassNotFoundException: com.alibaba.fastjson.JSON
+
+项目部署环境找不到 jar 包，可把对应的jar包添加到`WEB-INF/lib` 解决。（springboot 可放 resource/lib 下）
+
+idea -> Project Settings -> Artifacts
+
+### 编程
+
+#### Serializabla
 
 如果要序列化某些类的对象，这些类就必须实现Serializable接口。而实际上，Serializable是一个空接口，没有什么具体内容，它的目的只是简单的标识一个类的对象可以被序列化，由 jvm 负责序列化操作。
 
@@ -49,27 +71,9 @@ https://www.zhihu.com/question/21994784?sort=created
 
 https://blog.csdn.net/u014750606/article/details/80040130#commentBox
 
-### Interface
+#### Interface
 
 1. 接口中的**方法**会被**隐式的指定**为  **public abstract** （只能是 public abstract，其他修饰符都会报错）。
 2. 接口中的**变量**会被**隐式的指定**为  **public static final**   变量（并且只能是 public，用 private 修饰会报编译错误。）
 
 所以，通常在定义接口方法时不指定访问修饰符。
-
-## 库
-
-java.lang.ClassNotFoundException: com.alibaba.fastjson.JSON
-
-项目部署环境找不到 jar 包，可把对应的jar包添加到`WEB-INF/lib` 解决。（springboot 可放 resource/lib 下）
-
-idea -> Project Settings -> Artifacts
-
-## 前端
-
-https://blog.csdn.net/weixin_42839080/article/details/82833111
-
-XMLHttpRequest cannot loadfile:///E:/webs/extJS/ext-3.3.0/examples/csdn/combobox.txt?_dc=1414738973999.Cross origin requests are only supported for protocol schemes: http, data,chrome-extension, https, chrome-extension-resource.
-
-解决办法是给chrome添加启动参数：**--allow-file-access-from-files** ，这样本地ajax请求就不会报跨域错误了。（注意如果给chrome添加多个启动参数，每个启动参数“--”之前要有空格隔开，如"C:\ProgramFiles\Google\Chrome\Application\chrome.exe" **--allow-file-access-from-files**）
-
-具体方法：在浏览器快捷方式上右键-属性-快捷方式-目标

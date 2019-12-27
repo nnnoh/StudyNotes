@@ -33,6 +33,20 @@ Validation 中内置的 constraint。
 
 Hibernate Validator 附加的 constraint（不再建议使用）。
 
+@NotNull
+
+CharSequence, Collection, Map 和 Array 对象不能是 null, 但可以是空集（size = 0）。
+
+@NotEmpty
+
+CharSequence, Collection, Map 和 Array 对象不能是 null 并且相关对象的 size 大于 0。
+
+@NotBlank
+
+String 不是 null 且去除两端空白字符后的长度（trimmed length）大于 0。 
+
+> @NotBlank用于判断String类型，使用其判断其他类型将无法正常工作。
+
 注意：
 
 - 这个字段的访问级别( private, protected 或者 public) 对此没有影响。

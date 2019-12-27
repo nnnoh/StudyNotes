@@ -62,7 +62,11 @@ Git支持多种协议，默认的`git://`使用ssh，但也可以使用`https`�
 
 https://segmentfault.com/a/1190000002783245
 
+https://blog.csdn.net/qq_32452623/article/details/78417609
 
+`git fetch`
+
+将远程仓库的分支及分支最新版本代码拉取到本地仓库，不合并到本地分支。
 
 https://segmentfault.com/a/1190000007996197
 
@@ -70,21 +74,29 @@ https://www.cnblogs.com/wgwyanfs/p/7290657.html
 
 ### 分支管理
 
+#### 基本操作
+
 `git branch [branchname]`
 
 没有参数时，**git branch** 会列出你在本地的分支。
 
+`git branch -a`
+
+查看所有分支，包括远端仓库的分支。
+
 执行 **git init** 的时候，默认情况下 Git 就会为你创建 **master** 分支。（新建的空分支，git branch无显示）
 
 带分支名参数时，创建新分支。
-
-`git branch -d (branchname)` 删除分支
 
 `git checkout (branchname)`
 
 切换分支，Git 会用该分支的最后提交的快照替换你的工作目录的内容。
 
 `git checkout -b (branchname)` 命令创建新分支并立即切换到该分支。
+
+`git branch -d (branchname)` 删除分支
+
+#### 合并分支
 
 `git merge [branchname] `
 
@@ -95,6 +107,8 @@ https://www.cnblogs.com/wgwyanfs/p/7290657.html
 `git log`
 
 列出历史提交记录。
+
+`git log [仓库分支]`  查看指定仓库分支的提交记录（可查看远端仓库记录，查看之前需要先运行`git fetch`更新远程仓库信息）。
 
 --oneline 选项查看历史记录的简洁的版本。
 

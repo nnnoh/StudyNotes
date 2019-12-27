@@ -1,4 +1,6 @@
-### controller参数注解
+### Controller入参
+
+#### 参数注解
 
 > 可注解value为接收参数的key，如：`@XXX("key") type param`
 
@@ -50,7 +52,7 @@ https://blog.csdn.net/weixin_38004638/article/details/99655322
 
 @RequestParam也同样支持multipart/form-data请求。他们最大的不同是，当请求方法的请求参数类型不再是String类型的时候。@RequestParam适用于name-valueString类型的请求域，@RequestPart适用于复杂的请求域（像JSON，XML）。
 
-### 自定义参数解析器
+#### 自定义参数解析器
 
 自定义解析器需要实现`HandlerMethodArgumentResolver`接口，用于解析request请求参数并绑定数据到Controller的入参上。
 
@@ -103,3 +105,118 @@ public class XxxResolverHandlerConfig extends WebMvcConfigurationSupport {
 }
 ```
 
+#### 日期参数
+
+##### @RequestParam
+
+```java
+public String formX(@RequestParam(name="date") Date d) {
+    return "formX Response Ok! " + d;
+}
+```
+
+可接收 http请求传入**特定日期格式的字符串**。
+
+@RequestParam注解决定了使用 RequestParamMethodArgumentResolver这个参数解析器，mvc-annotation注册的参数类型转换器并没有 String转Date类型的转换器 , 但是用到了ObjectToObjectConvert这个转换器。
+
+ObjectToObjectConvert转换器是尝试去寻找目标类（Date）构造方法即目标类构造方法需要唯一含有String类型的构造方法，然后实例化该目标类，没找到就会抛出异常。
+
+因此，是否支持传过来的字符串日期格式，测试 `new Date(“your pattern”)` 是否抛出异常即可。
+
+##### @DateTimeFormat
+
+在日期参数或javabean日期属性前加 `@DateTimeFormat(pattern="yyyy-MM-dd  HH:mm:ss")` 即可接收**指定格式的日期字符串**。
+
+```java
+public String formX(@RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date d) {
+        return "formX Response Ok! " + d;
+    }
+```
+
+> 参数是javabean时，该类必须要有空参的构造器，以及对应日期属性的set方法，没有构造器就抛出异常无法实例化Java对象，没有set方法就是Java对象属性为null。
+>
+> 参数解析器使用ServletModelAttributeMethodProcessor，将请求参数映射到Java对象的属性上；该Java对象需要有空参public类型构造器，不然无法实例化抛出异常，这种方式也支持级联属性设置，同样的级联的属性也需要有空参构造方法。
+
+这次使用到的Converter是AnnotationParserConverter，其专门针对String到@DateTimeFormat的转换器，这些转换器都注册在SpringMVC的ConversionService中。
+
+AnnotationParserConverter的convert方法，最后几行调用了ParserConvert的convert方法，ParserConvert继承自GenericConvert，其convert方法就是使用parser对象的parse方法，当前情况也就是DateFormatter的parser方法， 其parse方法等同于new SimpleDateFormat(“patten”).parse(“..”)。
+
+@DateTimeFormat 不仅可以得到**Date**类型数据，还可以转换成**Calendar**和**Long**型数据。
+
+在前面解析结束得到Date类型数据后，由于Date不符合需要参数类型要求，于是继续调用conversionService的convert进行解析。SpringMVC注册了Date转Calendar和转Long的转换器。
+
+
+
+@ResponseBody
+
+@JsonFormat
+
+
+
+
+
+### 过滤器
+
+过滤器依赖于servlet容器，在实现上基于函数回调，可以对request请求进行过滤。
+
+#### 注册过滤器
+
+除了使用 web.xml 配置注册过滤器，还可以通过`@WebFilter` 和 `FilterRegistrationBean` 进行配置。
+
+#### @WebFilter
+
+在配置类上添加`@WebFilter`注册过滤器，如：
+
+```java
+@WebFilter(filterName = "loginFilter",
+    urlPatterns = "/*",
+    initParams = {
+            @WebInitParam(name = "loginUI", value = "/home/login"),
+            @WebInitParam(name = "encoding", value = "UTF-8")
+    })
+```
+
+属性：
+
+- filterName  过滤器名称
+- urlPatterns/value  指定拦截的路径
+- initParams  配置参数，通过`@WebInitParam`数组设置值。
+- servletNames  指定对哪些Servlet进行过滤
+- displayName  Filter显示名
+- asyncSupported  指定Filter是否支持异步模式
+- dispatcherTypes  指定Filter对哪种方式的请求进行过滤。支持的属性：ASYNC、ERROR、FORWARD、INCLUDE、REQUEST。默认过滤所有方式的请求
+
+#### FilterRegistrationBean
+
+通过注入`FilterRegistrationBean`注册过滤器，如：
+
+```java
+@Configuration
+public class FilterConfig {
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        //新建过滤器注册类
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        // 添加过滤器
+        registration.setFilter( new LoginFilter());
+        // 设置过滤器的URL模式
+        registration.addUrlPatterns("/*");
+        // 设置过滤器配置参数
+        registration.addInitParameter("loginUI", "/home/login");
+        registration.addInitParameter("encoding", "UTF-8");
+        // 设置过滤器名称
+        registration.setName("loginFilter");
+        //设置过滤顺序，从小到大依次执行
+        registration.setOrder(1);
+        return registration;
+    }
+}
+```
+
+#### 拦截器与过滤器区别
+
+- 使用范围不同：Filter是Servlet规范规定的，只能用于Web程序中。
+
+https://blog.csdn.net/heweimingming/article/details/79993591
+
+https://segmentfault.com/a/1190000018381259?utm_source=tag-newest

@@ -2,10 +2,6 @@
 
 
 
-
-
-
-
 静态文件路径
 
 静态资源路径是指系统可以直接访问的路径，且路径下的所有文件均可被用户通过浏览器直接读取。
@@ -46,10 +42,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 spring.factories
 
 
-
-自定义参数解析器
-
-https://www.jianshu.com/p/ab835bd8f7e6
 
 WebMvcConfigurationSupport
 
