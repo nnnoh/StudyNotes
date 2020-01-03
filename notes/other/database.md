@@ -316,41 +316,6 @@ MySQL 数据库对于 BLOB/TEXT 这样类型的数据结构只能索引前 N 个
 
 
 
-Cache（暂）
-
-## Redis
-
-### Installation
-
-Download, extract and compile Redis with:
-
-```shell
-$ wget http://download.redis.io/releases/redis-5.0.5.tar.gz
-$ tar xzf redis-5.0.5.tar.gz
-$ cd redis-5.0.5
-$ make
-```
-
-The binaries that are now compiled are available in the `src` directory. Run Redis with:
-
-```shell
-$ src/redis-server
-```
-
-You can interact with Redis using the built-in client:
-
-```sh
-$ src/redis-cli
-redis> set foo bar
-OK
-redis> get foo
-"bar"
-```
-
-
-
-
-
 
 
 

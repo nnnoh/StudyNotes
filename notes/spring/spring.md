@@ -44,6 +44,10 @@ properties属性可能来源于properties文件、JVM properties、system环境�
 
 https://www.cnblogs.com/supercj/p/10303645.html
 
+@Qualifier
+
+@ConfigurationProperties
+
 ### 组件注册
 
 在较早版本的Spring中，通常是通过XML的方式来往IOC容器中注册组件的。
@@ -393,6 +397,10 @@ Aware 接口，从字面上理解就是感知捕获。Bean对Spring容器的存�
 子接口均提供了一个 set 方法，方法的参数就是当前 Bean 需要感知的内容，因此我们需要在 Bean 中重写该方法，声明相关的成员变量来接受这个参数。接收到这个参数后，就可以通过这个参数获取到容器的详细信息。
 
 ### 拦截器
+
+### 过滤器
+
+OncePerRequestFilter
 
 ### 监听器
 

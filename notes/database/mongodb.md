@@ -220,7 +220,7 @@ mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][
 - **/database** 如果指定username:password@，连接并验证登陆指定数据库。若不指定，默认打开 test 数据库。
 - **?options** 是连接选项。如果不使用/database，则前面需要加上/。所有连接选项都是键值对name=value，键值对之间通过&或;（分号）隔开。
 
-### 命令
+### 基本操作
 
 #### 数据库
 
@@ -351,7 +351,7 @@ db.colname.save(
 - **document** : 文档数据。
 - **writeConcern** :可选，抛出异常的级别。
 
-需指定主键 _id，不指定则插入该文档数据。
+需指定更新数据的主键 _id，不指定则插入该文档数据。
 
 ##### 删除文档
 
@@ -564,3 +564,200 @@ db.col.dropIndex("索引名称")
 http://www.mongoing.com/archives/26867
 
 https://www.runoob.com/mongodb/mongodb-indexing.html
+
+#### 聚合
+
+MongoDB中聚合(aggregate)主要用于处理数据(诸如统计平均值,求和等)，并返回计算后的数据结果。
+
+```
+db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+```
+
+聚合操作可以是单个操作`{}`，也可以有多个操作`[]`，多个操作按顺序执行。
+
+示例：
+
+```
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+```
+
+类似sql语句，`select by_user, count(*) from mycol group by by_user`。
+
+常用聚合操作表达式：
+
+| 表达式    | 描述                                           | 实例                                                         |
+| :-------- | :--------------------------------------------- | :----------------------------------------------------------- |
+| $sum      | 计算总和。                                     | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}]) |
+| $avg      | 计算平均值                                     | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}]) |
+| $min      | 获取集合中所有文档对应值得最小值。             | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}]) |
+| $max      | 获取集合中所有文档对应值得最大值。             | db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}]) |
+| $push     | 在结果文档中插入值到一个数组中。               | db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]) |
+| $addToSet | 在结果文档中插入值到一个数组中，但不创建副本。 | db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}]) |
+| $first    | 根据资源文档的排序获取第一个文档数据。         | db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}]) |
+| $last     | 根据资源文档的排序获取最后一个文档数据         | db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]) |
+
+时间聚合操作：
+
+- `$dayOfYear` 返回该日期是这一年的第几天（全年 366 天）。
+- `$dayOfMonth` 返回该日期是这一个月的第几天（1到31）。
+- `$dayOfWeek` 返回的是这个周的星期几（1：星期日，7：星期六）。
+- `$year` 返回该日期的年份部分。
+- `$month` 返回该日期的月份部分（ 1 到 12）。
+- `$week` 返回该日期是所在年的第几个星期（ 0 到 53）。
+- `$hour` 返回该日期的小时部分。
+- `$minute` 返回该日期的分钟部分。
+- `$second` 返回该日期的秒部分（以0到59之间的数字形式返回日期的第二部分，但可以是60来计算闰秒）。
+- `$millisecond` 返回该日期的毫秒部分（ 0 到 999）。
+- `$dateToString` `{ $dateToString: { format: , date: } }`。
+
+##### 管道
+
+聚合管道将MongoDB文档在一个管道处理完毕后将结果传递给下一个管道处理。管道操作是可以重复的。
+
+聚合中常用操作：
+
+- `$project`修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+
+  非0表示显示该字段，0表示不显示。
+
+- `$match`用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+
+- `$limit`用来限制MongoDB聚合管道返回的文档数。
+
+- `$skip`在聚合管道中跳过指定数量的文档，并返回余下的文档。
+
+- `$unwind`将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+
+- `$group`将集合中的文档分组，可用于统计结果。
+
+  键值对的键为显示字段名，值及为该字段的值。第一个键的必须是`_id`，其值没有要求。
+
+- `$sort`将输入文档排序后输出。
+
+- `$geoNear`输出接近某一地理位置的有序文档。
+
+### 数据关系
+
+文档间可以通过嵌入和引用来建立联系。
+
+MongoDB 中的关系可以是：
+
+- 1:1 (1对1)
+- 1: N (1对多)
+- N: 1 (多对1)
+- N: N (多对多)
+
+比如，用户与用户地址的1对多关系
+
+#### 嵌入式关系
+
+嵌入式关系，即直接将用户地址嵌入到用户文档中。
+
+```json
+{...
+   "address": [
+      {
+         "building": "22 A, Indiana Apt",
+      },
+      {
+         "building": "170 A, Acropolis Apt",
+      }]
+} 
+```
+
+数据保存在单一的文档中，可以比较容易的获取和维护数据。 
+
+缺点是，如果用户和用户地址在不断增加，数据量不断变大，会影响读写性能。
+
+#### 引用式关系
+
+引用式关系把用户数据文档和用户地址数据文档分开，通过引用文档的 **id** 字段来建立关系。
+
+```json
+{...
+    "address_ids": [
+      ObjectId("52ffc4a5d85242602e000000"),
+      ObjectId("52ffc4a5d85242602e000001")
+   ]
+}
+```
+
+如上实例，用户文档的 address_ids 字段包含用户地址的对象id（ObjectId）数组。可以读取这些用户地址的对象id（ObjectId）来获取用户的详细地址信息。
+
+这种方法需要两次查询，第一次查询用户地址的对象id（ObjectId），第二次通过查询的id获取用户的详细地址信息。
+
+```json
+var result = db.users.findOne({"name":"Tom Benzamin"},{"address_ids":1})
+var addresses = db.address.find({"_id":{"$in":result["address_ids"]}})
+```
+
+### 数据库引用
+
+MongoDB 引用有两种：
+
+- 手动引用（Manual References）
+- DBRefs
+
+当一个文档从多个集合引用文档，应该使用 DBRefs。
+
+DBRef的形式：
+
+```json
+{ $ref : , $id : , $db :  }
+```
+
+- $ref：集合名称
+- $id：引用的id
+- $db:数据库名称，可选参数
+
+使用示例：
+
+```json
+{...
+   "address": {
+      "$ref": "address_home",
+      "$id": ObjectId("534009e4d852427820000002"),
+      "$db": "runoob"
+   }
+}
+```
+
+通过指定 $ref 参数来查找指定集合中指定id的用户地址信息：
+
+```javascript
+var user = db.users.findOne({"name":"Tom Benzamin"})
+var dbRef = user.address
+db[dbRef.$ref].findOne({"_id":(dbRef.$id)})
+```
+
+> 注意`_id`的值不要漏了`ObjectId()`。
+
+### 覆盖索引查询
+
+覆盖查询是以下的查询：
+
+- 所有的查询字段是索引的一部分
+- 所有的查询返回字段在同一个索引中
+
+由于所有出现在查询中的字段是索引的一部分， MongoDB 无需在整个数据文档中检索匹配查询条件返回查询结果，而是从索引中提取数据。因为索引存在于RAM中，从索引中获取数据比通过扫描文档读取数据要快得多。
+
+```javascript
+db.users.find({gender:"M"},{user_name:1,_id:0})
+```
+
+注意，`_id`会默认返回，如果索引不包括`_id`，需将其排除，否则查询不会被覆盖。
+
+如果是以下的查询，不能使用覆盖索引查询：
+
+- 所有索引字段是一个数组
+- 所有索引字段是一个子文档
+
+### 查询分析
+
+查询分析可以确保我们所建立的索引是否有效，是查询语句性能分析的重要工具。
+
+MongoDB 查询分析常用函数有：explain() 和 hint()。
+
+#### explain()
+
+#### hint()

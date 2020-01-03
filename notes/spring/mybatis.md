@@ -1,3 +1,4 @@
+## Mybatis
 
 resultMap 
 
@@ -108,4 +109,10 @@ BaseExecutor是一个抽象类，提供了三个实现：SimpleExecutor，BatchE
 - executor-type值为BATCH，insert、update、delete方法返回值一直会是负数-2147482646，在该模式下insert、update、delete返回值将无任何意义，不能作为判断sql执行成功的判断依据。
 
   BATCH模式下，在事务没有提交之前，是没有办法获取到自增的id，这在某型情形下是不符合业务要求的。
+
+## Mybatis Plus
+
+MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
+
+### 代码生成器
 

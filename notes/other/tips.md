@@ -1,3 +1,43 @@
+### 通配符
+
+> 通配符(wildcard)优先级：模式越具体，其优先级也越高。
+
+#### sql通配符
+
+SQL 通配符必须与 LIKE 运算符一起使用。
+
+- `%` 替代零个或多个字符
+- `_` 仅替代一个字符
+- `[charlist]` 字符列中的任何单一字符
+- `[^charlist]`或者`[!charlist]` 不在字符列中的任何单一字符
+
+#### shell 通配符
+
+- `*`  匹配 0 或多个字符
+- `?`  匹配任意一个字符
+- `[list]`  匹配 list 中的任意单一字符
+- `[!list]`  匹配 除list 中的任意单一字符
+- `[c1-c2]`  匹配 c1-c2 中的任意单一字符，如：[0-9] [a-z]
+- `{string1,string2,...}`  匹配其中任意一个字符串
+
+#### classpath 通配符
+
+1. `classpath*` 它会搜索所有的 classpath，找到所有符合条件的文件，包括当前项目依赖的jar文件中的配置文件。而`classpath` 不会到当前项目依赖的jar文件中去寻找。
+2. `classpath*` 存在可移植性问题，遇到问题时，应该使用`classpath`。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Java
 
 equals 实现示例
@@ -93,6 +133,10 @@ https://www.nowcoder.com/questionTerminal/970cdaaa4a114cbf9fef82213a7dabca
 addAll 方法可以使 Collection 子类互相添加
 
 比如，list 使用 set 去重
+
+
+
+
 
 
 
@@ -243,21 +287,6 @@ jwt
 cookie 跨域
 
 
-11/25
-接口完善
-
-问题 
-svn 提交
-
-webservice
-CSRF XSS
-left join select tips
-
-mp
-mapper学习
-文件 ui
-前台大改 bootstrap
-
 SELECT LAST_INSERT_ID()
 selectKey
 动态sql if test 可根据（虚拟）属性去执行相应方法得到bool值
@@ -280,10 +309,27 @@ ContentType 文件预览/下载
 ServletUriComponentsBuilder 
 link/script crossorigin
 cookie domain
-lombok 版本要求
- rebuild
 js Promise
 java8 ::new 
+
+webservice
+CSRF XSS CSP
+ldap 认证
+Ribbon和Feign
+
+template repository
+HttpServletRequestWrapper
+dependencyManagement 
+Spring IO Platform
+ul ol dl 区别
+当Ajax以application/x-www-form-urlencoded格式上传即使用JSON对象，后台需要使用@RequestParam 或者Servlet获取。 当Ajax以application/json格式上传即使用JSON字符串，后台需要使用@RquestBody
+order group 多个字段直接 , 分割，不能使用对同一个表使用多次该语句
+mysql 存储过程
+
+Consumer
+Predicate
+mybatis 动态sql map类型参数
+
 ```
 
 
