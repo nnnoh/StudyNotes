@@ -2,7 +2,7 @@
 
 Spring Security OAuth2主要包含认证服务器和资源服务器这两大块的实现：
 
-![Oauth2](https://mrbird.cc/img/QQ%E6%88%AA%E5%9B%BE20190624155418.png)
+![Oauth2](D:\GitHub\StudyNotes\notes\spring\oauth.assets\20190624155418.png)
 
 资源服务器主要是在Spring Security的过滤器链上加了OAuth2AuthenticationProcessingFilter过滤器，即使用OAuth2协议发放令牌认证的方式来保护我们的资源。
 
