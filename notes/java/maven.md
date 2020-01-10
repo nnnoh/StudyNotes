@@ -176,9 +176,16 @@ gradle 区别
 
 ### 自定义 Maven Archetype
 
-https://blog.51cto.com/dengshuangfu/2344615
+Maven自身提供了许多Archetype来方便用户创建Project，但是每个团队都可能会有一些常用的文件或配置，为了避免在创建project时重复的拷贝和修改，可以自定义自己的Archetype。
 
-基于目前项目创建脚手架，在当前项目的pom文件中增加插件
+Archetype项目：
+
+- `pom.xml`用于定义archetype项目的坐标等信息。
+
+- `src/main/resources/archetype-resources`下的所有内容定义了待生成项目的所有文件（原型文件）
+- `src/main/resources/META-INF/maven/archetype.xml`中定义骨架的描述符（元数据），这个文件列出了包含在archetype中的所有文件并将这些文件分类。
+
+除了直接创建Archetype项目，还可以基于已有项目创建脚手架，在当前项目的pom文件中增加插件：
 
 ```
 <plugin>
@@ -188,11 +195,31 @@ https://blog.51cto.com/dengshuangfu/2344615
 </plugin>
 ```
 
+### 重复版本依赖
+
+查看依赖，可以通过mvn dependency:tree 打印依赖树，或使用 ide 功能查看。
+
+#### 重复版本依赖原则
+
+- 最短路径原则
+
+  项目中就出现了两个版本的依赖时，maven会采用声明路径最短的版本声明。
+
+- 声明优先原则
+
+  当两个版本的依赖声明路径都是一样长，按照依赖包在pom.xml中声明的先后顺序，优先选择先声明的包。
+
+#### 解决版本冲突
+
+- 排除依赖
+
+  在`dependency`中使用`exclusions`声明排除的依赖`exclusion`。
+
+- 版本锁定
+
+  在`dependencyManagement`声明依赖版本，需要使用时不必考虑依赖版本，以统一版本号。
+
 ### Tips
-
-setting.xml
-
-eclipse -> Preferences -> Maven -> User Setting 确认路径无误。
 
 #### 修改仓库
 
@@ -248,6 +275,10 @@ eclipse -> Preferences -> Maven -> User Setting 确认路径无误。
 	  </properties>  
 	</profile>
 ```
+
+#### setting.xml
+
+eclipse -> Preferences -> Maven -> User Setting 确认路径。
 
 #### pom.xml Errors/Warnings
 

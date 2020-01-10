@@ -141,6 +141,8 @@ https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
 
 请求转发 参数
 
+
+
 ### Tips
 
 #### 统计在线人数
@@ -365,6 +367,10 @@ Web 项目中的相对路径
 Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署。
 
 https://www.cnblogs.com/purplestone/p/3964207.html
+
+https://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/index.html
+
+https://www.ibm.com/developerworks/cn/java/j-lo-servlet/
 
 ### Tips
 

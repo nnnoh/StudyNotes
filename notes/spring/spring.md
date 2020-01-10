@@ -44,7 +44,11 @@ properties属性可能来源于properties文件、JVM properties、system环境�
 
 https://www.cnblogs.com/supercj/p/10303645.html
 
-@Qualifier
+#### @Qualifier
+
+限定描述符除了能根据名字进行注入，更能进行更细粒度的控制如何选择候选者。
+
+默认使用bean name选择注入对象。
 
 @ConfigurationProperties
 

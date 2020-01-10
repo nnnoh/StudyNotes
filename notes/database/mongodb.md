@@ -1,5 +1,7 @@
 ## MongoDB
 
+[MONGODB MANUAL](https://docs.mongodb.com/manual/)
+
 ### 概念
 
 | RDBMS  | MongoDB                        |
@@ -760,4 +762,242 @@ MongoDB 查询分析常用函数有：explain() 和 hint()。
 
 #### explain()
 
+explain 操作提供了查询信息，使用索引及查询统计等。有利于我们对索引的优化。
+
+使用示例：
+
+```javascript
+>db.users.find({gender:"M"},{user_name:1,_id:0}).explain()
+{
+   "cursor" : "BtreeCursor gender_1_user_name_1",
+   "isMultiKey" : false,
+   "n" : 1,
+   "nscannedObjects" : 0,
+   "nscanned" : 1,
+   "nscannedObjectsAllPlans" : 0,
+   "nscannedAllPlans" : 1,
+   "scanAndOrder" : false,
+   "indexOnly" : true,
+   "nYields" : 0,
+   "nChunkSkips" : 0,
+   "millis" : 0,
+   "indexBounds" : {
+      "gender" : [
+         [
+            "M",
+            "M"
+         ]
+      ],
+      "user_name" : [
+         [
+            {
+               "$minElement" : 1
+            },
+            {
+               "$maxElement" : 1
+            }
+         ]
+      ]
+   }
+}
+```
+
+- **indexOnly**：字段为 true ，表示我们使用了索引。
+- **cursor**：因为这个查询使用了索引，MongoDB 中索引存储在B树结构中，所以这是也使用了 BtreeCursor 类型的游标。如果没有使用索引，游标的类型是 BasicCursor。这个键还会给出你所使用的索引的名称，你通过这个名称可以查看当前数据库下的system.indexes集合（系统自动创建，由于存储索引信息，这个稍微会提到）来得到索引的详细信息。
+- **n**：当前查询返回的文档数量。
+- **nscanned/nscannedObjects**：表明当前这次查询一共扫描了集合中多少个文档，我们的目的是，让这个数值和返回文档的数量越接近越好。
+- **millis**：当前查询所需时间，毫秒数。
+- **indexBounds**：当前查询具体使用的索引。
+
 #### hint()
+
+虽然MongoDB查询优化器一般工作的很不错，但是也可以使用 hint 来强制 MongoDB 使用一个指定的索引。
+
+这种方法某些情形下会提升性能。 一个有索引的 collection 并且执行一个多字段的查询(一些字段已经索引了)。
+
+使用示例：
+
+```javascript
+db.users.find({gender:"M"},{user_name:1,_id:0}).hint({gender:1,user_name:1}).explain()
+```
+
+### 原子操作
+
+mongodb不支持事务，但是mongodb提供了许多原子操作，比如文档的保存，修改，删除等，都是原子操作。
+
+#### 原子操作数据模型
+
+`db.collection.findAndModify()`命令可以返回指定条件的数据并对其执行更新操作。
+
+示例：
+
+```javascript
+db.books.findAndModify ( {
+   query: {
+            _id: 123456789,
+            available: { $gt: 0 }
+          },
+   update: {
+             $inc: { available: -1 },
+             $push: { checkout: { by: "abc", date: new Date() } }
+           }
+} )
+```
+
+与 update 区别
+
+- findAndModify是有返回值的
+
+  输出中的value字段即返回修改之前的文档，使用 new:true 选项返回修改后的文档。
+
+  update是更新操作，是没有返回值的。
+
+- findAndModify强调操作的原子性（atomically）。
+
+- 属于 get-and-set 式的操作，一般来讲，findAndModify 比update操作稍慢，因为需要等待数据库的响应。
+
+- 另外findAndModify ，其中modify可以是update，还可以是remove。
+
+#### 原子操作常用命令
+
+##### $set
+
+用来指定一个键并更新键值，若键不存在并创建。
+
+```
+{ $set : { field : value } }
+```
+
+##### $unset
+
+用来删除一个键。
+
+```
+{ $unset : { field : 1} }
+```
+
+##### $inc
+
+$inc可以对文档的某个值为数字型（只能为满足要求的数字）的键进行增减的操作。
+
+```
+{ $inc : { field : value } }
+```
+
+##### $push
+
+```
+{ $push : { field : value } }
+```
+
+把value追加到field里面去，field一定要是数组类型才行，如果field不存在，会新增一个数组类型加进去。
+
+##### $pushAll
+
+同$push，只是一次可以追加多个值到一个数组字段内。
+
+```
+{ $pushAll : { field : value_array } }
+```
+
+##### $pull
+
+从数组field内删除一个等于value值。
+
+```
+{ $pull : { field : _value } }
+```
+
+##### $addToSet
+
+增加一个值到数组内，而且只有当这个值不在数组内才增加。
+
+##### $pop
+
+删除数组的第一个或最后一个元素
+
+```
+{ $pop : { field : 1 } }
+```
+
+##### $rename
+
+修改字段名称
+
+```
+{ $rename : { old_field_name : new_field_name } }
+```
+
+##### $bit
+
+位操作，integer类型
+
+```
+{$bit : { field : {and : 5}}}
+```
+
+### 高级索引
+
+```json
+{
+   "address": {
+      "city": "Los Angeles",
+      "state": "California",
+      "pincode": "123"
+   },
+   "tags": [
+      "music",
+      "cricket",
+      "blogs"
+   ],
+   "name": "Tom Benzamin"
+}
+```
+
+#### 索引数组字段
+
+在数组中创建索引，需要对数组中的每个字段依次建立索引。
+
+如前示例，为数组 tags 创建索引时，会为 music、cricket、blogs三个值建立单独的索引。
+
+```javascript
+db.users.ensureIndex({"tags":1})
+```
+
+创建索引后，我们可以这样检索集合的 tags 字段：
+
+```javascript
+db.users.find({tags:"cricket"})
+```
+
+为了验证我们使用使用了索引，可以使用 explain 命令：
+
+```javascript
+db.users.find({tags:"cricket"}).explain()
+```
+
+以上命令执行结果中会显示 "cursor" : "BtreeCursor tags_1" ，则表示已经使用了索引。
+
+#### 索引子文档字段
+
+假设我们需要通过city、state、pincode字段来检索文档，由于这些字段是子文档的字段，所以我们需要对子文档建立索引。
+
+为子文档的三个字段创建索引，命令如下：
+
+```javascript
+db.users.ensureIndex({"address.city":1,"address.state":1,"address.pincode":1})
+```
+
+一旦创建索引，我们可以使用子文档的字段来检索数据：
+
+```javascript
+db.users.find({"address.city":"Los Angeles"})   
+```
+
+查询表达不一定遵循指定的索引的顺序，mongodb 会自动优化。所以上面创建的索引将支持以下查询：
+
+```javascript
+db.users.find({"address.state":"California","address.city":"Los Angeles"}) 
+db.users.find({"address.city":"Los Angeles","address.state":"California","address.pincode":"123"})
+```
+

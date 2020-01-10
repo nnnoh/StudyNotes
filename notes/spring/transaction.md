@@ -11,7 +11,7 @@ https://blog.csdn.net/trigl/article/details/50968079
 
 ### 事务接口
 
-![Spring事务管理接口](D:\GitHub\StudyNotes\notes\spring\transaction.assets\20160324011156424)
+![Spring事务管理接口](D:\GitHub\StudyNotes\notes\spring\transaction.assets\20160324011156424.PNG)
 
 #### 事务管理器
 

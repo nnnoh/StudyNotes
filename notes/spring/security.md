@@ -1,6 +1,6 @@
 ## Spring Security
 
-Spring Security是一款基于Spring的安全框架，主要包含认证和授权两大安全模块。
+Spring Security是一款基于Spring的安全框架，主要包含**认证**（Authentication）和**授权**（Authorization）两大安全模块。
 
 安全框架比较
 
@@ -59,9 +59,23 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
 #### 基本原理
 
-Spring Security包含了众多的过滤器，这些过滤器形成了一条链，所有请求都必须通过这些过滤器后才能成功访问到资源。
+Spring Security采用的是责任链的设计模式，其中包含了众多的过滤器，这些过滤器形成了一条链，所有请求都必须通过这些过滤器后才能成功访问到资源。
 
-比如，`UsernamePasswordAuthenticationFilter`过滤器用于处理基于表单方式的登录认证，而`BasicAuthenticationFilter`用于处理基于HTTP Basic方式的登录验证。
+1. WebAsyncManagerIntegrationFilter：将 Security 上下文与 Spring Web 中用于处理异步请求映射的 WebAsyncManager 进行集成。
+2. SecurityContextPersistenceFilter：在每次请求处理之前将该请求相关的安全上下文信息加载到 SecurityContextHolder 中，然后在该次请求处理完成之后，将 SecurityContextHolder 中关于这次请求的信息存储到一个“仓储”中，然后将 SecurityContextHolder 中的信息清除，例如在Session中维护一个用户的安全信息就是这个过滤器处理的。
+3. HeaderWriterFilter：用于将头信息加入响应中。
+4. CsrfFilter：用于处理跨站请求伪造。
+5. LogoutFilter：用于处理退出登录。如果是登出路径则到 logoutHandler ，如果登出成功则到 logoutSuccessHandler 登出成功处理，如果登出失败则由 ExceptionTranslationFilter 处理；如果不是登出路径则直接进入下一个过滤器。
+6. UsernamePasswordAuthenticationFilter：用于处理基于表单的登录请求，从表单中获取用户名和密码。默认情况下处理来自 /login 的请求。从表单中获取用户名和密码时，默认使用的表单 name 值为 username 和 password，这两个值可以通过设置这个过滤器的usernameParameter 和 passwordParameter 两个参数的值进行修改。
+7. DefaultLoginPageGeneratingFilter：如果没有配置登录页面，那系统初始化时就会配置这个过滤器，并且用于在需要进行登录时生成一个登录表单页面。
+8. BasicAuthenticationFilter：检测和处理 http basic 认证。
+9. RequestCacheAwareFilter：用来处理请求的缓存。
+10. SecurityContextHolderAwareRequestFilter：主要是包装请求对象request。
+11. AnonymousAuthenticationFilter：检测 SecurityContextHolder 中是否存在 Authentication 对象，如果不存在为其提供一个匿名 Authentication。
+12. SessionManagementFilter：管理 session 的过滤器
+13. ExceptionTranslationFilter：处理 AccessDeniedException 和 AuthenticationException 异常。
+14. FilterSecurityInterceptor：可以看做过滤器链的出口。
+15. RememberMeAuthenticationFilter：当用户没有登录而直接访问资源时, 从 cookie 里找出用户的信息, 如果 Spring Security 能够识别出用户提供的remember me cookie, 用户将不必填写用户名和密码, 而是直接登录进入系统，该过滤器默认不开启。
 
 在过滤器链的末尾是一个名为`FilterSecurityInterceptor`的拦截器，用于判断当前请求身份认证是否成功，是否有相应的权限，当身份认证失败或者权限不足的时候便会抛出相应的异常。
 
@@ -244,11 +258,143 @@ http.formLogin() // 表单登录
     .failureHandler(authenticationFailureHandler) // 处理登录失败
 ```
 
-### HttpSecurity方法
+### 配置方法
 
-#### 请求认证
+#### configure(AuthenticationManagerBuilder auth)
 
-`http.authorizeRequests()`下添加了多个匹配器，进行请求的权限配置。
+AuthenticationManager 的建造器，配置 AuthenticationManagerBuilder 会让Security 自动构建一个 AuthenticationManager；如果想要使用该功能你需要配置一个 UserDetailService 和 PasswordEncoder。
+
+UserDetailsService 用于在认证器中根据用户传过来的用户名查找一个用户， PasswordEncoder 用于密码的加密与比对，存储用户密码的时候用PasswordEncoder.encode() 加密存储，在认证器里会调用 PasswordEncoder.matches() 方法进行密码比对。
+
+如果重写了该方法，Security 会启用 DaoAuthenticationProvider 这个认证器，该认证就是先调用 UserDetailsService.loadUserByUsername 然后使用 PasswordEncoder.matches() 进行密码比对，如果认证成功成功则返回一个 Authentication 对象。
+
+#### configure(WebSecurity web)
+
+这个配置方法用于配置静态资源的处理方式，可使用 Ant 匹配规则。
+
+#### configure(HttpSecurity http)
+
+ HttpSecurity 使用的是链式编程，`and()`是返回一个securityBuilder对象。
+
+```java
+http	
+  .formLogin()  //表单验证
+	.loginPage("/login_page") //登录页请求路径
+	.passwordParameter("username") //用户名属性名
+	.passwordParameter("password") //密码属性名
+	.loginProcessingUrl("/sign_in")	//登录请求路径
+	.permitAll() //允许所有用户基于表单登录访问登录地址
+  .and()
+  .authorizeRequests() //进行权限配置
+	.antMatchers("/tets_a/**","/test_b/**").hasRole("test") //具有相应权限才能访问
+	.anyRequest().authenticated() //其他请求，已登录才能访问
+	.accessDecisionManager(accessDecisionManager()); //鉴权管理器
+  .and()
+  .logout() //进行登出配置
+	.logoutUrl("/logout") //登出 url
+  .and()
+  
+.exceptionHandling()
+	.accessDeniedHandler(new MyAccessDeniedHandler()); //配置鉴权失败的处理器
+  .and()
+  .addFilterAfter(new MyFittler(), LogoutFilter.class);	//在LogoutFilter过滤器后添加过滤器
+```
+
+框架原有的 Filter 在启动 HttpSecurity 配置的过程中，都由框架完成了其一定程度上固定的配置，是不允许更改替换的。根据测试结果来看，调用 addFilterAt 方法插入的 Filter ，会在这个位置上的原有 Filter 之前执行。
+
+访问权限设置方法：
+
+![func](D:\GitHub\StudyNotes\notes\spring\security.assets\4676695-5cc2b3734d9f686a.webp)
+
+**access**
+
+常见 SpEL 方法：
+
+- hasIpAddress(ipAddress)
+- hasRole(role)
+- hasAnyRole(role)
+
+常见 SpEL 属性：
+
+- permitAll
+- denyAll
+- anonymous
+- authenticated
+- rememberMe
+- fullyAuthenticated
+
+示例：
+
+```java
+//同时具有 "ROLE_ADMIN" 和 "ROLE_DBA"权限的用户才可以访问
+.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")   
+//使用自定义授权策略               
+    .anyRequest().access("@mySecurity.check(authentication,request)");
+```
+
+```java
+@Component("mySecurity")
+public class MySecurity(){
+    //注入用户和该用户所拥有的权限（权限在登录成功的时候已经缓存起来，当需要访问该用户的权限是，直接从缓存取出），然后验证该请求是否有权限，有就返回true，否则则返回false不允许访问该Url。
+    //而且这里还传入了request,我也可以使用request获取该次请求的类型。
+    //根据restful风格我们可以使用它来控制我们的权限，例如当这个请求是post请求，证明该请求是向服务器发送一个新建资源请求，我们可以使用request.getMethod()来获取该请求的方式，然后在配合角色所允许的权限路径进行判断和授权操作。
+    public boolean check(Authentication authentication, HttpServletRequest request){
+          //如果能获取到Principal对象不为空证明，授权已经通过
+          Object principal  = authentication.getPrincipal();
+          if(principal  != null && principal  instanceof UserDetails){
+                  //获取请求登录的url
+                  System.out.println(((UserDetails)principal).getAuthorities()) ;
+                  return true;
+          }
+          return false;
+    }
+}
+```
+
+### 权限系统
+
+- **UserDetails**
+
+  Security 中的用户接口，自定义用户类要实现该接口。
+
+- **GrantedAuthority**
+
+  Security 中的用户权限接口，自定义权限需要实现该接口:
+
+  ```java
+  public class MyGrantedAuthority implements GrantedAuthority {	
+      private String authority;	
+  }
+  ```
+  authority 表示权限字段，需要注意的是在 config 中配置的权限会被加上 ROLE_ 前缀，比如 .hasRole("test")，配置了一个 test 权限但存储的权限字段（authority）应该是 ROLE_test 。
+  
+- **UserDetailsService**
+
+  Security 中的用户 Service，自定义用户服务类需要实现该接口，接口的 loadUserByUsername 方法根据用户名查询用户对象。
+
+- **SecurityContextHolder**
+
+  用户在完成登录后用户信息将存储到这个类中，之后其他流程（比如鉴权）需要得到用户信息时都是从这个类中获得。
+
+  用户信息被封装成 SecurityContext ，而实际存储的类是 SecurityContextHolderStrategy ，默认的SecurityContextHolderStrategy 实现类是 ThreadLocalSecurityContextHolderStrategy，它使用了ThreadLocal来存储了用户信息。
+
+  对于 token 鉴权系统中，验证token后手动填充SecurityContextHolder，填充时机只要在执行投票器之前即可，或者干脆可以在投票器中填充，然后在登出操作中清空SecurityContextHolder。
+  
+  ```java
+  UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test","test",list);	
+  SecurityContextHolder.getContext().setAuthentication(token);
+  ```
+
+### Security 扩展
+
+- 鉴权失败处理器
+- 验证器
+- 登录成功处理器
+- 投票器
+- 自定义token处理过滤器
+- 登出成功处理器
+- 登录失败处理器
+- 自定义 UsernamePasswordAuthenticationFilter
 
 ### 添加图像验证码
 
@@ -985,6 +1131,12 @@ public void test(){
 <global-method-security pre-post-annotations="enabled"/>
 ```
 
+java配置启用注解：
+
+```java
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+```
+
 ###### @PreAuthorize
 
 该注解用于方法前验证权限，比如限制非VIP用户提交blog的note字段字数不得超过1000字：
@@ -1019,7 +1171,6 @@ Spring Security在SpEL中提供了名为returnObject 的变量。在这里方法
 ```java
 @Component
 public class MyAuthenticationAccessDeniedHandler implements AccessDeniedHandler {
-
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -1036,3 +1187,324 @@ http.exceptionHandling()
     .accessDeniedHandler(authenticationAccessDeniedHandler)
 ```
 
+### 自定义决策管理器
+
+`Spring Security`使用决策管理器`AccessDecisionManager`进行动态的权限验证。
+
+#### 权限资源 SecurityMetadataSource
+
+要实现动态的权限验证，首先要有对应的访问权限资源。`Spring Security`是通过`SecurityMetadataSource`来加载访问请求所需要的具体权限。
+
+`SecurityMetadataSource`接口有一个`FilterInvocationSecurityMetadataSource`子接口。`FilterInvocationSecurityMetadataSource`只是一个标识接口，对应于`FilterInvocation`。
+
+web项目通常需要实现的接口是`FilterInvocationSecurityMetadataSource`。
+
+```java
+@Component
+public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
+    @Autowired
+    private PermissionMapper permissionMapper;
+    /**
+     * 每一个资源所需要的角色 Collection<ConfigAttribute>
+     */
+    private static HashMap<String, Collection<ConfigAttribute>> map =null;
+    /**
+     * 返回请求的资源需要的角色
+     */
+    @Override
+    public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+        if (null == map) {
+            loadResourceDefine();
+        }
+        //object 中包含用户请求的request 信息
+        HttpServletRequest request = ((FilterInvocation) o).getHttpRequest();
+        for (Iterator<String> it = map.keySet().iterator() ; it.hasNext();) {
+            String url = it.next();
+            if (new AntPathRequestMatcher( url ).matches( request )) {
+                return map.get( url );
+            }
+        }
+
+        return null;
+    }
+    @Override
+    public Collection<ConfigAttribute> getAllConfigAttributes() {
+        return null;
+    }
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return FilterInvocation.class.isAssignableFrom(clazz);
+    }
+    /**
+     * 初始化 所有资源 对应的角色
+     */
+    public void loadResourceDefine() {
+        map = new HashMap<>(16);
+        //权限资源 和 角色对应的表  也就是 角色权限 中间表
+        List<RolePermisson> rolePermissons = permissionMapper.getRolePermissions();
+        //某个资源 可以被哪些角色访问
+        for (RolePermisson rolePermisson : rolePermissons) {
+
+            String url = rolePermisson.getUrl();
+            String roleName = rolePermisson.getRoleName();
+            ConfigAttribute role = new SecurityConfig(roleName);
+
+            if(map.containsKey(url)){
+                map.get(url).add(role);
+            }else{
+                List<ConfigAttribute> list =  new ArrayList<>();
+                list.add( role );
+                map.put( url , list );
+            }
+        }
+    }
+}
+```
+
+`FilterInvocationSecurityMetadataSource`接口有3个方法：
+
+- `getAttributes`方法返回本次访问需要的权限，可以有多个权限。此处如果没有匹配的url直接返回null，也就是没有配置权限的url默认都为白名单。
+- `getAllConfigAttributes`方法如果返回了所有定义的权限资源，`Spring Security`会在启动时校验每个`ConfigAttribute`是否配置正确，不需要校验直接返回null。
+- `supports`方法返回类对象是否支持校验，web项目一般使用`FilterInvocation`来判断，或者直接返回true。
+
+> ConfigAttribute只是一个简单的配置属性，其具体的解释将由AccessDecisionManager来决定，比如只存储角色名称。
+
+#### 权限决策 AccessDecisionManager
+
+`AccessDecisionManager`是由`AbstractSecurityInterceptor`调用的，它负责鉴定用户是否有访问对应资源（方法或URL）的权限。
+
+```java
+@Component
+public class MyAccessDecisionManager implements AccessDecisionManager {
+    private final static Logger logger = LoggerFactory.getLogger(MyAccessDecisionManager.class);
+    /**
+     * 决定用户是否有访问对应受保护对象的权限
+     *
+     * @param authentication 包含了当前的用户信息，包括拥有的权限。这里的权限来源就是前面登录时UserDetailsService中设置的authorities。
+     * @param object  就是FilterInvocation对象，可以得到request等web资源
+     * @param configAttributes configAttributes是本次访问需要的权限
+     */
+    @Override
+    public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+        if (null == configAttributes || 0 >= configAttributes.size()) {
+            return;
+        } else {
+            String needRole;
+            for(Iterator<ConfigAttribute> iter = configAttributes.iterator(); iter.hasNext(); ) {
+                needRole = iter.next().getAttribute();
+                for(GrantedAuthority ga : authentication.getAuthorities()) {
+                    if(needRole.trim().equals(ga.getAuthority().trim())) {
+                        return;
+                    }
+                }
+            }
+            throw new AccessDeniedException("当前访问没有权限");
+        }
+    }
+    /**
+     * 表示此AccessDecisionManager是否能够处理传递的ConfigAttribute呈现的授权请求
+     */
+    @Override
+    public boolean supports(ConfigAttribute configAttribute) {
+        return true;
+    }
+    /**
+     * 表示当前AccessDecisionManager实现是否能够为指定的安全对象（方法调用或Web请求）提供访问控制决策
+     */
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return true;
+    }
+}
+```
+
+`AccessDecisionManager` 接口的 `decide` 方法决定是否具有权限进行本次访问。抛出`AccessDeniedException`异常即为无权限，正常返回则具有权限。本例为具有任意一个所需权限即可访问。
+
+#### 拦截器 AbstractSecurityInterceptor
+
+`AbstractSecurityInterceptor` 是一个实现了对受保护对象的访问进行拦截的抽象类。每种受支持的安全对象类型（方法调用或Web请求）都有自己的拦截器类，其为`AbstractSecurityInterceptor`的子类。
+
+Spring Security内部默认主要有三个`AbstractSecurityInterceptor`的实现。
+
+```mermaid
+graph TD
+	subgraph spring-security-core
+	AbstractSecurityInterceptor --> MethodSecurityInterceptor
+	MethodSecurityInterceptor --> AspectJMethodSecurityInterceptor
+	end
+	subgraph spring-security-web
+	AbstractSecurityInterceptor --> FilterSecurityInterceptor
+	end
+```
+
+`MethodSecurityInterceptor`用于调用受保护的方法；`FilterSecurityInterceptor`用于受保护的Web请求。
+
+实现`AbstractSecurityInterceptor`就是通过设置自定义的 `AccessDecisionManager` 和 `securityMetadataSource`实现使用自定义的决策管理器。
+
+```java
+@Component
+public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
+    @Autowired
+    private FilterInvocationSecurityMetadataSource securityMetadataSource;
+    
+    @Autowired
+    public void setMyAccessDecisionManager(MyAccessDecisionManager myAccessDecisionManager) {
+        super.setAccessDecisionManager(myAccessDecisionManager);
+    }
+    
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
+        invoke(fi);
+    }
+    
+    public void invoke(FilterInvocation fi) throws IOException, ServletException {
+        InterceptorStatusToken token = super.beforeInvocation(fi);
+        try {
+            //执行下一个拦截器
+            fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
+        } finally {
+            super.afterInvocation(token, null);
+        }
+    }
+    
+    @Override
+    public Class<?> getSecureObjectClass() {
+        return FilterInvocation.class;
+    }
+    
+    @Override
+    public SecurityMetadataSource obtainSecurityMetadataSource() {
+
+        return this.securityMetadataSource;
+    }
+}
+```
+
+`AbstractSecurityInterceptor`中的方法：
+
+- `beforeInvocation`方法实现了对访问受保护对象的权限校验，内部用到了AccessDecisionManager和AuthenticationManager；
+- `finallyInvocation`方法用于实现受保护对象请求完毕后的一些清理工作，主要是如果在beforeInvocation()中改变了SecurityContext，则在finallyInvocation()中需要将其恢复为原来的SecurityContext，该方法的调用应当包含在子类请求受保护资源时的finally语句块中。
+- `afterInvocation`方法实现了对返回结果的处理。在注入了AfterInvocationManager的情况下默认会调用其decide()方法。
+
+`AbstractSecurityInterceptor`在处理受保护对象的请求时都具有一致的逻辑，可以分为几个步骤：
+
+1. 先将正在请求调用的受保护对象传递给beforeInvocation()方法进行权限鉴定。
+2. 权限鉴定失败就直接抛出异常了。
+3. 鉴定成功将尝试调用受保护对象，调用完成后，不管是成功调用，还是抛出异常，都将执行finallyInvocation()。
+4. 如果在调用受保护对象后没有抛出异常，则调用afterInvocation()。
+
+安全拦截器和安全对象模型：
+
+![Abstract Security Interceptor](D:\GitHub\StudyNotes\notes\spring\security.assets\security-interception.png)
+
+> 在AccessDecisionManager鉴权成功后，可以通过RunAsManager在现有Authentication基础上构建一个新的Authentication，如果新的Authentication不为空则将产生一个新的SecurityContext，并把新产生的Authentication存放在其中。
+>
+> 这样在请求受保护资源时从SecurityContext中获取到的Authentication就是新产生的Authentication。待请求完成后会在finallyInvocation()中将原来的SecurityContext重新设置给SecurityContextHolder。
+>
+> AbstractSecurityInterceptor默认持有的是一个对RunAsManager进行空实现的NullRunAsManager。
+>
+> 此外，Spring Security对RunAsManager还有一个非空实现类RunAsManagerImpl，其在构造新的Authentication时是这样的逻辑：如果受保护对象对应的ConfigAttribute中拥有以`RUN_AS_`开头的配置属性，则在该属性前加上`ROLE_`，然后再把它作为一个GrantedAuthority赋给将要创建的Authentication，最后再利用原Authentication的principal、权限等信息构建一个新的Authentication进行返回；如果不存在任何以`RUN_AS_`开头的ConfigAttribute，则直接返回`null`。
+
+除了继承`AbstractSecurityInterceptor`配置自定义决策管理外，还可以使用`ObjectPostProcessor`进行配置，如下：
+
+```java
+htttp.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+    	// 创建默认的FilterSecurityInterceptor的时候把自定义的accessDecisionManager和securityMetadataSource设置进去
+        public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+            fsi.setAccessDecisionManager(accessDecisionManager());
+            fsi.setSecurityMetadataSource(securityMetadataSource());
+            return fsi;
+        }
+}
+```
+
+### 投票器
+
+Spring Security内置了几个基于投票的`AccessDecisionManager`。
+
+使用这种方式，一系列的`AccessDecisionVoter`将会被`AccessDecisionManager`用来对`Authentication`是否有权访问受保护对象进行投票，然后再根据投票结果来决定是否要抛出`AccessDeniedException`。
+
+![img](D:\GitHub\StudyNotes\notes\spring\security.assets\1099841-20170621164503132-862636988.png)
+
+`AccessDecisionVoter` 接口：
+
+```java
+public interface AccessDecisionVoter<S> {
+    int ACCESS_GRANTED = 1;
+    int ACCESS_ABSTAIN = 0;
+    int ACCESS_DENIED = -1;
+    
+    boolean supports(ConfigAttribute attribute);
+    
+    boolean supports(Class<?> clazz);
+    
+    int vote(Authentication authentication, S object, Collection<ConfigAttribute> attributes);
+
+}
+```
+
+#### 基于投票的决策管理器
+
+Spring Security提供了3个决策管理器，默认是一票制`AffirmativeBased`。
+
+- **AffirmativeBased**
+
+   - 只要有`AccessDecisionVoter`的投票为`ACCESS_GRANTED`则同意用户进行访问；
+   - 如果全部弃权也表示通过；
+   - 如果没有一个人投赞成票，但是有人投反对票，则将抛出`AccessDeniedException`。
+
+- **ConsensusBased**
+
+   - 如果赞成票多于反对票则表示通过。
+   - 反过来，如果反对票多于赞成票则将抛出`AccessDeniedException`。
+   - 如果赞成票与反对票相同且不等于0，并且属性`allowIfEqualGrantedDeniedDecisions`的值为`true`，则表示通过，否则将抛出异常`AccessDeniedException`。参数`allowIfEqualGrantedDeniedDecisions`的值默认为`true`。
+   - 如果所有的`AccessDecisionVoter`都弃权了，则将视参数`allowIfAllAbstainDecisions`的值而定，如果该值为`true`则表示通过，否则将抛出异常`AccessDeniedException`。参数`allowIfAllAbstainDecisions`的值默认为`false`。
+
+- **UnanimousBased**
+  
+   另外两种会一次性把受保护对象的配置属性全部传递给`AccessDecisionVoter`进行投票，而`UnanimousBased`会一次只传递一个`ConfigAttribute`给`AccessDecisionVoter`进行投票。
+   
+   - 如果受保护对象配置的某一个`ConfigAttribute`被任意的`AccessDecisionVoter`反对了，则将抛出`AccessDeniedException`。
+   - 如果没有反对票，但是有赞成票，则表示通过。
+   - 如果全部弃权了，则将视参数`allowIfAllAbstainDecisions`的值而定，`true`则通过，`false`则抛出`AccessDeniedException`。
+
+#### 内置的投票器
+
+Spring Security有两个默认的投票器。
+
+- **RoleVoter**
+
+  `RoleVoter`将`ConfigAttribute`简单的看作是一个角色名称。如果`ConfigAttribute`是以“ROLE_”开头的，则将使用RoleVoter进行投票。
+
+  - 当用户拥有的权限中有一个或多个能匹配受保护对象配置的以`ROLE_`开头的`ConfigAttribute`时其将投赞成票；
+  - 如果用户拥有的权限中没有一个能匹配受保护对象配置的以`ROLE_`开头的`ConfigAttribute`，则RoleVoter将投反对票；
+  - 如果受保护对象配置的`ConfigAttribute`中没有以`ROLE_`开头的，则RoleVoter将弃权。
+
+- **AuthenticatedVoter**
+
+  `AuthenticatedVoter`主要用来区分匿名用户、通过`Remember-Me`认证的用户和完全认证的用户。完全认证的用户是指由系统提供的登录入口进行成功登录认证的用户。
+
+  `AuthenticatedVoter`可以处理的`ConfigAttribute`有`IS_AUTHENTICATED_FULLY`、`IS_AUTHENTICATED_REMEMBERED`和`IS_AUTHENTICATED_ANONYMOUSLY`。如果`ConfigAttribute`不在这三者范围之内，则`AuthenticatedVoter`将弃权。否则将视`ConfigAttribute`而定。
+
+  - 如果`ConfigAttribute`为 `IS_AUTHENTICATED_ANONYMOUSLY`，则不管用户是匿名的还是已经认证的都将投赞成票；
+
+  - 如果`ConfigAttribute`为 `IS_AUTHENTICATED_REMEMBERED`，则仅当用户是由`Remember-Me`自动登录，或者是通过登录入口进行登录认证时才会投赞成票，否则将投反对票；
+
+  - 如果`ConfigAttribute`为 `IS_AUTHENTICATED_FULLY`时， 则仅当用户是通过登录入口进行登录的才会投赞成票，否则将投反对票。
+
+  `AuthenticatedVoter`是通过`AuthenticationTrustResolver`的`isAnonymous`()方法和`isRememberMe`()方法来判断`SecurityContextHolder`持有的`Authentication`是否为`AnonymousAuthenticationToken`或`RememberMeAuthenticationToken`的，即是否为`IS_AUTHENTICATED_ANONYMOUSLY`和`IS_AUTHENTICATED_REMEMBERED`。
+
+### 调用后的处理
+
+Spring Security为我们提供了一个`AfterInvocationManager`接口，它允许我们在受保护对象访问完成后对返回值进行修改或者进行权限鉴定，决定是否需要抛出`AccessDeniedException`，其将由`AbstractSecurityInterceptor`的子类进行调用。
+
+![img](D:\GitHub\StudyNotes\notes\spring\security.assets\512771-20160927164143516-1860475152.png)
+
+类似于`AuthenticationManager`，`AfterInvocationManager`拥有一个默认的实现类`AfterInvocationProviderManager`，其中拥有一个由`AfterInvocationProvider`组成的集合，`AfterInvocationProvider`与`AfterInvocationManager`具有相同的方法定义，在调用`AfterInvocationProviderManager`中的方法时实际上就是依次调用其中包含的`AfterInvocationProvider`对应的方法。
+
+需要注意的是`AfterInvocationManager`需要在受保护对象成功被访问后才能执行。
+
+### 角色的继承
+
+当要求`ROLE_ADMIN`拥有所有的`ROLE_USER`所具有的权限，我们可以给拥有`ROLE_ADMIN`角色的用户同时授予`ROLE_USER`角色来达到这一效果或者修改需要`ROLE_USER`进行访问的资源使用`ROLE_ADMIN`也可以访问。Spring Security为我们提供了一种更为简便的办法，那就是角色的继承，它允许我们的`ROLE_ADMIN`直接继承`ROLE_USER`，这样所有`ROLE_USER`可以访问的资源`ROLE_ADMIN`也可以访问。定义角色的继承我们需要在`ApplicationContext`中定义一个`RoleHierarchy`，然后再把它赋予给一个`RoleHierarchyVoter`，之后再把该`RoleHierarchyVoter`加入到我们基于`Voter`的`AccessDecisionManager`中，并指定当前使用的`AccessDecisionManager`为我们自己定义的那个。

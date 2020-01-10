@@ -36,7 +36,6 @@ mybatis:
 
 - prefix  给sql语句拼接的前缀
 - suffix  给sql语句拼接的后缀
-- prefixOverrides  去除sql语句前面的关键字或者字符
 - suffixOverrides  去除sql语句后面的关键字或者字符
 
 > select 查询无数据时
@@ -86,7 +85,6 @@ BaseExecutor是一个抽象类，提供了三个实现：SimpleExecutor，BatchE
     mapper.insert(xxx);
       sqlSession.commit();
   ```
-  
 
 #### BaseExecutor
 
@@ -114,5 +112,12 @@ BaseExecutor是一个抽象类，提供了三个实现：SimpleExecutor，BatchE
 
 MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
-### 代码生成器
+[mybatis plus](https://mp.baomidou.com/guide)
 
+## Mybatis Generater
+
+
+
+mybatis-generator-plugin
+
+mybatis-generator-plugin 通过该插件机制来强化Mybatis Generator本身，方便和减少我们平时的代码开发量。

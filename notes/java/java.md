@@ -1673,7 +1673,40 @@ Object 类的 clone() 只实现了浅拷贝。
 ### System 类
 
 - getenv是获取环境变量，这是操作系统级的变量，
+
 - getProperty是获取Java属性，这是JVM级的变量，可以通过-D或程序设置。
+
+  getProperty可获取的值：
+
+  | java.version                  | Java 运行时环境版本               |
+  | ----------------------------- | --------------------------------- |
+  | java.vendor                   | Java 运行时环境供应商             |
+  | java.vendor.url               | Java 供应商的 URL                 |
+  | java.home                     | Java 安装目录                     |
+  | java.vm.specification.version | Java 虚拟机规范版本               |
+  | java.vm.specification.vendor  | Java 虚拟机规范供应商             |
+  | java.vm.specification.name    | Java 虚拟机规范名称               |
+  | java.vm.version               | Java 虚拟机实现版本               |
+  | java.vm.vendor                | Java 虚拟机实现供应商             |
+  | java.vm.name                  | Java 虚拟机实现名称               |
+  | java.specification.version    | Java 运行时环境规范版本           |
+  | java.specification.vendor     | Java 运行时环境规范供应商         |
+  | java.specification.name       | Java 运行时环境规范名称           |
+  | java.class.version            | Java 类格式版本号                 |
+  | java.class.path               | Java 类路径                       |
+  | java.library.path             | 加载库时搜索的路径列表            |
+  | java.io.tmpdir                | 默认的临时文件路径                |
+  | java.compiler                 | 要使用的 JIT 编译器的名称         |
+  | java.ext.dirs                 | 一个或多个扩展目录的路径          |
+  | os.name                       | 操作系统的名称                    |
+  | os.arch                       | 操作系统的架构                    |
+  | os.version                    | 操作系统的版本                    |
+  | file.separator                | 文件分隔符（在 UNIX 系统中是“/”） |
+  | path.separator                | 路径分隔符（在 UNIX 系统中是“:”） |
+  | line.separator                | 行分隔符（在 UNIX 系统中是“/n”）  |
+  | user.name                     | 用户的账户名称                    |
+  | user.home                     | 用户的主目录                      |
+  | user.dir                      | 用户的当前工作目录                |
 
 ### Number 类
 
@@ -3647,81 +3680,3 @@ https://www.cnblogs.com/dengchengchao/p/9717097.html
 枚举 enum类
 
 String...
-
-## Tips
-
-### length()、length 和 size()
-
-- **length()** 方法是针对字符串来说的，要求一个字符串的长度就要用到它的length()方法；
-- **length 属性**是针对 Java 中的数组来说的，要求数组的长度可以用其 length 属性；
-- **size()** 方法是针对泛型集合说的，如果想看这个泛型有多少个元素, 就调用此方法来查看。
-
-### classpath
-
-CLASSPATH 变量指明JAVA运行环境JRE搜索 .class 文件的路径。
-
-1. 不采取任何方式，那么 ClassPath 的默认配值为 ‘.’，即类路径为当前目录及其子目录。
-
-2. 使用环境变量 `CLASSPATH` 设置，设置后会覆盖默认配置。
-
-3. 使用命令行参数 `-classpath` 或 `-cp` 设置，设置后会覆盖环境变量配置和默认配置。
-
-   每个路径之间使用英文分号 ‘;’ 进行分隔（linux环境下则使用英文冒号 ‘:’ 分隔）。
-
-4. 如果运行含有 `manifest` 文件的可执行 jar 包，那么 `manifest` 文件设置的类路径会覆盖前三种配置。
-
-   使用空格分隔各个路径。当类路径过多而需要换行时，从第二行开始，必须以两个空格开头。
-
-> 通配符只匹配目录下的`.jar`和`.JAR`文件，除此之外，既不匹配`.class`文件也不匹配子目录。
->
-> 在`main`方法运行之前，通配符会自动展开为具体的路径，展开路径的顺序因平台不同而不同，甚至同一机器不同时刻不同。
->
-> 通配符只适用配置的第二和第三种方式，第四种方式`manifest`文件不能使用通配符。
-
-### default关键字
-
-`default`的用法：
-
-- 在`switch`语句的时候使用`default`
-
-- 在定义接口的时候使用`default`来修饰具体的方法
-
-  JDK1.8中为了加强接口的能力，使得接口可以存在具体的方法，前提是方法需要被default或static关键字所修饰。
-
-  > default关键字是一个实实在在存在的关键字，是需要显式声明的，不要和有加任何访问修饰符的默认访问修饰符相混淆。
-
-文档注释
-
-### 深拷贝 & 浅拷贝
-
-内存空间 堆 栈
-
-= 运算符 
-
-引用
-
-:: 操作符 
-
-方法变量 Function
-
-close()
-
-jdk jre
-
-https://zhuanlan.zhihu.com/p/79527556
-
-序列化
-
-https://blog.csdn.net/qq_40670946/article/details/88106817
-
-https://blog.csdn.net/yuyulover/article/details/4427527#commentBox
-
-happens-before
-
-jconsole
-
-
-
-编码
-
-https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/#ibm-pcon

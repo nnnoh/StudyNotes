@@ -124,7 +124,61 @@ pom.xml依赖，配置文件与服务提供模块类似。
     }
 ```
 
-FeignClient 
+#### RestTemplate
+
+SpringCloud服务间的调用有两种方式：RestTemplate和FeignClient。这两种方式都是通过REST接口调用服务的http接口。
+
+方法列表
+
+![function](D:\GitHub\StudyNotes\notes\microservice\nacos.assets\5b502d970001e42f06290288.png)
+
+状态码 异常
+
+https://my.oschina.net/u/3177357/blog/2239749
+
+https://www.cnblogs.com/f-anything/p/10084215.html
+
+https://mrbird.cc/Spring-Cloud-Ribbon-LoadBalance.html
+
+#### Feign
+
+https://segmentfault.com/a/1190000018914017
+
+##### @FeignClient 
+
+`@FeignClient`注解作用于类，接口，枚举上。
+
+```java
+@FeignClient(name = "github-client", url = "https://api.github.com", configuration = GitHubExampleConfig.class)
+public interface GitHubClient {
+    @RequestMapping(value = "/search/repositories", method = RequestMethod.GET)
+    String searchRepo(@RequestParam("q") String queryStr);
+}
+```
+
+如上声明接口后，通过`@Resource`依赖注入对象即可使用。
+
+注解参数：
+
+- name：指定FeignClient的名称，如果项目使用了Ribbon，name属性会作为微服务的名称，用于服务发现
+
+- url: url一般用于调试，可以手动指定@FeignClient调用的地址
+
+- decode404:当发生http 404错误时，如果该字段位true，会调用decoder进行解码，否则抛出FeignException
+
+- configuration: Feign配置类，可以自定义Feign的Encoder、Decoder、LogLevel、Contract
+
+- fallback: 定义容错的处理类，当调用远程接口失败或超时时，会调用对应接口的容错逻辑，fallback指定的类必须实现@FeignClient标记的接口
+
+  在使用fallback属性时，需要使用@Component注解，保证fallback类被Spring容器扫描到
+
+- fallbackFactory: 工厂类，用于生成fallback类示例，通过这个属性我们可以实现每个接口通用的容错逻辑，减少重复的代码
+
+- path: 定义当前FeignClient的统一前缀
+
+##### Config
+
+
 
 https://www.cnblogs.com/smiler/p/10689894.html
 

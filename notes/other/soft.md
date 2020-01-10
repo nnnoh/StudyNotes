@@ -18,6 +18,16 @@ $SELECTION$
 
 顶部菜单栏 Navigate -> Type Hierachy
 
+#### 查看使用
+
+右键菜单 -> Find Usage
+
+### Question
+
+#### maven项目不识别
+
+右键菜单 add as maven
+
 
 
 
