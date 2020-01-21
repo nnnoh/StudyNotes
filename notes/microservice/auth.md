@@ -14,25 +14,5 @@
 
 ### 示例
 
-<div class="model">
-    <div class="inner">
-        桌面
-    </div>
-    <div class="inner">
-        桌面
-    </div>
-</div>
-<style>
-    .inner{
-        float:left;
-        border:1px solid;
-        margin: 5px;
-    }
-    .model{
-        border:1px dashed;
-        margin: 5px;
-    }
-</style>
-
 https://blog.csdn.net/weixin_33829657/article/details/91645738
 

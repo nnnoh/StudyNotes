@@ -14,6 +14,269 @@
 
 https://www.cnblogs.com/jingmoxukong/p/10151785.html
 
+#### 加载配置文件
+
+加载配置文件到spring容器后，该容器注册的Bean就能通过`@Value`等标签获取当前容器加载的配置。
+
+application.properties在spring boot启动时默认加载此文件，自定义配置文件需要手动加载。
+
+相同属性名的值，后加载的覆盖先加载的，即后加载的属性起作用。
+
+##### java配置
+
+```java
+@PropertySource("classpath:dbconfig.properties")
+```
+
+##### xml配置
+
+```xml
+<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+    <property name="fileEncoding" value="UTF-8"/>  
+    <property name="locations">  
+        <list>  
+            <value>classpath:dbconfig.properties</value>  
+        </list>  
+    </property>  
+</bean> 
+<!-- or -->
+<context:property-placeholder location="classpath:dbconfig.properties" />  
+<!-- or -->
+<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">  
+    <property name="location">  
+    <value>dbconfig.properties</value>  
+    </property>  
+</bean> 
+```
+
+使用`@Value("${xx}")`或在xml中使用`${xx}`获取属性时，Spring会在第一个读取到的属性文件中去找，如果没有就直接抛出异常，而不会继续去第二个属性文件中找。
+
+需设置`ignore-unresolvable`为true解决该问题。在每个PropertySourcesPlaceholderConfigurer配置中添加
+`<property name="ignoreUnresolvablePlaceholders" value="true"/>`
+ 或者在每个context:property-placeholder中都加上`ignore-unresolvable="true"`。
+
+#### 获取配置
+
+##### @Value
+
+通过@Value将外部的值动态注入到Bean中，使用的情况有：
+
+- 注入普通字符串
+
+  ```java
+  @Value("normal")
+  private String normal;
+  ```
+
+- 注入操作系统属性
+
+  ```java
+  @Value("#{systemProperties['os.name']}")
+  private String systemPropertiesName;
+  ```
+
+- 注入表达式结果
+
+  ```java
+  @Value("#{ T(java.lang.Math).random() * 100.0 }")
+  private double randomNumber;
+  ```
+
+- 注入配置属性
+
+  ```java
+  @Value("${spring.application.name}")
+  private String applicationName;
+  ```
+
+- 注入其他Bean的属性
+
+  ```java
+  @Value("#{beanInject.another}")
+  private String fromAnotherBean;
+  ```
+
+- 注入文件资源
+
+  ```java
+  @Value("classpath:com/hry/spring/configinject/config.txt")
+  private Resource resourceFile;
+  ```
+
+- 注入URL资源
+
+  ```java
+  @Value("http://www.baidu.com")
+  private Resource testUrl;
+  ```
+
+静态变量在使用 `@Value` 时，只能加在方法（set）上面，并且该方法不能是静态方法。
+
+从配置文件读取值时设置默认值：
+
+- `@Value("${file.path:default}")`。
+- `@Value("#{spel?:defaultValue}")`
+
+###### @Value("#{}")与@Value("${}")的区别
+
+- `@Value("#{}")` 使用SpEl表达式，通常使用bean名来获取bean的属性，或者调用bean的某个方法。当然还有可以表示常量。
+- `@Value("${xxxx}")`注解从环境变量、配置文件读取值。
+
+##### @ConfigurationProperties
+
+`@ConfigurationProperties` 注解将外部属性绑定到类的成员变量上。
+
+- 前缀定义了哪些外部属性将绑定到类的字段上
+- 根据 Spring Boot 宽松的绑定规则，类的属性名称必须与外部属性的名称匹配
+- 类本身可以是包私有的
+- 类的字段必须有公共 setter 方法
+
+如下将前缀为 mail 的属性绑定到该类的成员变量上：
+
+```java
+@ConfigurationProperties(prefix="mail")
+```
+
+使用了该注解的配置属性类，需使用`@Component`注入到容器中，或在配置类使用`@EnableConfigurationProperties`注入配置属性类。
+
+在配置属性类上添加`@Validated`注解可在配置字段绑定后对其进行校验。
+
+> 如果验证逻辑很特殊，也可以实现一个方法，并用 @PostConstruct 标记，如果验证失败，方法抛出异常即可。
+
+###### 注解属性
+
+- `ignoreInvalidFields`
+
+  属性配置错误，如类型转换失败时，springboot将启动失败，并抛出异常。使用`ignoreInvalidFields=true`避免抛出异常。
+
+- `ignoreUnknownFields`
+
+  默认情况下，Spring Boot 会忽略那些不能绑定到 `@ConfigurationProperties` 类字段的属性。将 `ignoreUnknownFields` 属性设置为 false，配置无法绑定到类字段时将抛出异常。`ignoreUnknownFields`属性将被弃用（deprecated）。
+
+###### 与@Value的区别
+
+|                | @ConfigurationProperties | @Value     |
+| -------------- | ------------------------ | ---------- |
+| 功能           | 批量注入配置文件中的属性 | 一个个指定 |
+| 松散绑定       | 支持                     | 不支持     |
+| SpEL           | 不支持                   | 支持       |
+| JSR303数据校验 | 支持                     | 不支持     |
+| 复杂类型封装   | 支持                     | 不支持     |
+
+###### spring宽松绑定规则（relaxed binding）
+
+Spring宽松绑定规则允许如下配置绑定到 hostname 属性上。
+
+```properties
+mail.hostName=localhost
+mail.host_name=localhost
+mail.host-name=localhost
+mail.HOST_NAME=localhost
+```
+
+###### 复杂属性类型的绑定
+
+**List & Set**
+
+```java
+List<String> smtpServers;
+```
+
+properties 文件以数组形式书写：
+
+```properties
+myapp.mail.smtpServers[0]=server1
+myapp.mail.smtpServers[1]=server2
+```
+
+YAML 本身支持 list 类型，yml 配置文件：
+
+```yml
+myapp:
+  mail:
+    smtp-servers:
+      - server1
+      - server2
+```
+
+**Duration**
+
+Spring Boot 内置支持从配置参数中解析 durations (持续时间)。
+
+```java
+private Duration pauseBetweenMails;
+```
+
+```properties
+myapp.mail.pause-between-mails=5s
+```
+
+配置 duration 不写单位，默认按照毫秒来指定，我们也可已通过 @DurationUnit 来指定单位。
+
+```java
+@DurationUnit(ChronnUnit.SECONDS)
+```
+
+**DataSize**
+
+与 Duration 的用法相同，默认单位是 byte (字节)，可以通过 @DataSizeUnit 单位指定。
+
+```java
+@DataSizeUnit(DataUnit.MEGABYTES)
+private DataSize maxAttachmentSize=DataSize.ofMegabytes(2);
+```
+
+```java
+myapp.mail.max-attachment-size=1MB
+```
+
+> 打印结果以 B (bytes) 来显示。
+
+###### 自定义类型
+
+要将配置属性绑定到自定义类型上，需要创建自己的转换器（Converter）。
+
+```java
+class XxxConventer implements Converter<String, Xxx> {
+    @Override
+    public Xxx convert(String source){
+        // create and return a Xxx object from the string.
+    }
+}
+```
+
+注册到springboot上：
+
+```java
+	@Bean
+	@ConfigurationPropertiesBinding
+	public XxxConverter xxxConverter(){
+        return new XxxConverter();
+    }
+```
+
+`@ConfigurationPropertiesBinding`注解是让springboot知道使用该转换器做数据绑定。
+
+###### Depraecated配置属性
+
+通过添加 `@DeprecatedConfigurationProperty` 注解到字段的 getter 方法上，可以标示该字段为 deprecated。
+
+###### Spring Boot Configuration Processor
+
+pom.xml依赖：
+
+```xml
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+```
+
+重写build项目后，configuration processor会在META_INF路径下生成一个JSON文件。
+
+这样，在 application.properties 和 application.yml 中写配置的时候会根据`@ConfigurationProperties`类成员变量自动提醒。
+
 ### Environment
 
 Environment在容器中是一个抽象的集合，是指应用环境的两个方面：profiles和properties。
@@ -70,10 +333,12 @@ Spring 4后推荐我们使用Java Config的方式来注册组件。
 
 > 通过注解方式注册组件，需使用 `AnnotationConfigApplicationContext` 来获取相应的IOC容器，入参为配置类。
 >
-> 		ApplicationContext context = new AnnotationConfigApplicationContext(WebConfig.class);
-> 	    // 查看基于注解的 IOC容器中所有组件名称
-> 	    String[] beanNames = context.getBeanDefinitionNames();
-> 	    Arrays.stream(beanNames).forEach(System.out::println);
+> ```java
+> 	ApplicationContext context = new AnnotationConfigApplicationContext(WebConfig.class);
+>     // 查看基于注解的 IOC容器中所有组件名称
+>     String[] beanNames = context.getBeanDefinitionNames();
+>     Arrays.stream(beanNames).forEach(System.out::println);
+> ```
 
 #### @ComponentScan
 

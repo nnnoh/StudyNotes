@@ -1,6 +1,6 @@
 ## OAuth 2.0
 
-[OAuth 2.0](https://www.baidu.com/link?url=JMWEEQpXxa2MY_A4ns2tKt2FkH5EcEjYqVmfgjKeRZi&wd=&eqid=8ad7befc00147d66000000045e182548)
+[OAuth 2.0](https://oauth.net/2/)
 
 OAuth（Open standard for Authorization）是一个网络开放协议。为保证用户资源的安全授权提供了简易的标准。
 

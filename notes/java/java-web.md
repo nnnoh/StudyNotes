@@ -355,7 +355,7 @@ localhost:8080/项目名
 
 WebRoot/WebContent	Web应用的根 "/"
 
-![JavaWeb目录结构](D:\GitHub\StudyNotes\notes\java\java-web.assets\172304056712920.png)
+![JavaWeb目录结构](D:\GitHub\StudyNotes\notes\java\java_web.assets\172304056712920.png)
 
 浏览器或页面直接访问的资源不能放在 WEB-INF 内。
 

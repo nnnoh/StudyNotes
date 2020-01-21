@@ -68,6 +68,8 @@ Concept
 
 schema
 
+https://blog.csdn.net/u010429286/article/details/79022484
+
 关系系统
 
 ## MySQL
@@ -284,7 +286,13 @@ case-when
 2. 范围转换
 3. 列转行操作
 
+order by xxx nulls last 替代方案
 
+通过isnull函数排序，该函数判断是否为null值，是返回1 否返回0
+
+```mysql
+select * from incr_order order by isnull(id)-1,id
+```
 
 ### ERR
 

@@ -70,19 +70,59 @@ static{ ...}
 
 > 方法间没有多态就不能称作覆盖
 
+#### null+""
+
+`null+""` 返回字符串类型的 "null"。
+
+> `null + null` 编译错误，二元运算符 '+' 的操作数类型错误
+
 ### JDK JRE JVM
 
 https://www.cnblogs.com/bolang100/p/6929514.html
 
 ### jar包
 
+jar文件实际上是class文件的zip压缩存档。
+
+基本jar包：
+
 - rt.jar：Java基础类库，也就是Java doc里面看到的所有的类的class文件。
 - tools.jar：系统用来编译一个类的时候用到的，即执行javac的时候用到。
 - dt.jar：关于运行环境的类库，主要是swing包。
 
+#### META-INF
+
+为了提供存档的便签信息，jar文件中有一个特定的目录来存放标签信息：META-INF目录。
+
+META-INF目录下的 manifest.mf 文件包含了jar文件的内容描述，在应用程序运行时向JVM提供应用程序的信息。
+
+使用jar命令默认会产生META-INF目录和manifest.mf文件。
+
+##### manifest.mf
+
+manifest 文件中的每一行都是 `key:value`属性键值对，每行最多72个字符，如果需要增加，可以在下一行续行，续行以空格开头。
+
+基本属性：
+
+Manifest-Version：生成的manifest.mf文件的版本
+
+Built-By：文件的创建用户命名，在IDEA的配置文件中可以设置
+
+Created-By：文件的生成者，一般由jar命令行工具生成，这里显示的时idea
+
+Bulid-Jdk：所使用的JDK环境
+
+除了上面的四个之外，还有很多其他属性，常用如下：
+
+Signature-Vresion：定义jar文件的签名版本
+
+Class-Path：内部的类搜索路径，提供给应用程序或者类装载器
+
+Main-Class：定义jar文件的入口类，该类必须可执行！一旦定义了该属性就可以使用 `java -jar xxx.jar` 来运行该jar文件
+
 ### 深拷贝 & 浅拷贝
 
-内存空间 堆 栈
+
 
 = 运算符 
 
@@ -116,15 +156,13 @@ https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/#ibm-pcon
 
 
 
-SPI
-
-https://juejin.im/post/5b9b1c115188255c5e66d18c?utm_source=tuicool&utm_medium=referral#heading-5
-
-http://blog.itpub.net/69912579/viewspace-2656555/
-
 异常规范
 
 早抛出,晚捕获
+
+
+
+
 
 ## 代码常见缺陷
 

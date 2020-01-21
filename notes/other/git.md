@@ -94,6 +94,8 @@ https://www.cnblogs.com/wgwyanfs/p/7290657.html
 
 `git branch -d (branchname)` 删除分支
 
+`git branch -m oldname newname` 重命名分支
+
 #### 合并分支
 
 `git merge [branchname] `
