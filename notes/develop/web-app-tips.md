@@ -8,7 +8,7 @@ SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目
 
 ### 应用分层
 
-
+> [Onemall 电商开源项目 —— 应用分层](http://www.iocoder.cn/Onemall/Application-layer/)
 
 ## 数据库
 
@@ -25,6 +25,8 @@ SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目
 - **第五章第一节第8条（强制）**——varchar是可变长字符串，不预先分配存储空间，长度不要超过5000个字符。如果存储长度大于此值，则应定义字段类型为text，独立出来一张表，用主键来对应，避免影响其他字段的索引效率；
 - **第五章第三节第6条（强制）**——不得使用外键与级联，一切外键概念必须在应用层解决；
 
+### Mybatis
+
 对于 text 字段，mybatis 生成逆向工程的时候会单独将text提取出来，生成 WithBLOBs 后缀的查询和修改的语句。可在配置 table 时使用 columnOverride 标签将 text 类型当成 varchar 类型，避免额外的方法。
 
 ```xml
@@ -37,8 +39,6 @@ status & state
 
 https://www.zhihu.com/question/21994784?sort=created
 
-
-
 ## 代码
 
 ### 规约
@@ -46,8 +46,6 @@ https://www.zhihu.com/question/21994784?sort=created
 ```java
 Collections.unmodifiableList(XXX)
 ```
-
-
 
 ### 第三方库
 

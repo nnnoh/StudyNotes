@@ -1,3 +1,9 @@
+## springboot
+
+springboot 使用“约定优先配置”（convention over configuration）的思想来摆脱Spring框架中各类纷繁复杂的配置。和Spring框架紧密结合用于提升Spring开发者体验的工具。
+
+
+
 @SpringBootApplication
 
 ```yml
@@ -389,7 +395,7 @@ Spring 4.2后提供了`@CrossOrigin`注解，该注解可以标注于方法或�
 
 继承`WebMvcConfigurer`，重写`addCorsMappings`默认实现。
 
-如下实例配置表示允许所有请求支持跨域访问，并且不限定域，但是支持持GET方法。
+如下实例配置表示允许所有请求支持跨域访问，并且不限定域，但是仅支持GET方法。
 
 ```java
 @Configuration

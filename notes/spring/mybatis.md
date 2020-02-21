@@ -26,6 +26,24 @@ mybatis:
      # log-impl指定的值为org.apache.ibatis.logging.Log接口的某个实现类，用来打印执行的sql语句
 ```
 
+### XML 映射文件
+
+SQL 映射文件只有很少的几个顶级元素（按照应被定义的顺序列出）：
+
+- cache – 对给定命名空间的缓存配置。
+- cache-ref – 对其他命名空间缓存配置的引用。
+- resultMap – 是最复杂也是最强大的元素，用来描述如何从数据库结果集中来加载对象。
+- parameterMap – 已被废弃！老式风格的参数映射。更好的办法是使用内联参数，此元素可能在将- 来被移除。文档中不会介绍此元素。
+- sql – 可被其他语句引用的可重用语句块。
+- insert – 映射插入语句
+- update – 映射更新语句
+- delete – 映射删除语句
+- select – 映射查询语句
+
+#### select
+
+
+
 ### 动态sql
 
 #### trim
@@ -51,7 +69,7 @@ mybatis:
 
 SqlSession内部维护了一个Executor，实际进行的增删改查都是通过这个Executor来进行的。
 
-![Executor子类](D:\GitHub\StudyNotes\notes\spring\mybatis.assets\5689815-8594b512995dc87c.webp)
+![Executor子类](.\mybatis.assets\5689815-8594b512995dc87c.webp)
 
 最底层的接口是Executor，其有两个实现类：BaseExecutor和CachingExecutor。CachingExecutor用于二级缓存，而BaseExecutor则用于一级缓存及基础的操作。
 

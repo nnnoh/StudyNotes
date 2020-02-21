@@ -1666,10 +1666,6 @@ public String toString() {
 
 Object 类的 clone() 只实现了浅拷贝。
 
-### Class 类
-
-
-
 ### System 类
 
 - getenv是获取环境变量，这是操作系统级的变量，
@@ -2781,7 +2777,7 @@ Iterator<?> iter = map.entrySet().iterator();
 - 自然排序 -- java.lang.Comparable 接口
 - 比较器排序 -- java.util.Comparator 接口
 
-**Collections.sort** 方法对 List 排序，默认从小到大，底层使用 TimSort 实现的，jdk1.7 以前是归并排序。TimSort 算法就是找到已经排好序数据的子序列，然后对剩余部分排序，然后合并起来。
+**Collections.sort** 方法对 List 排序，默认从**小到大**，底层使用 TimSort 实现的，jdk1.7 以前是归并排序。TimSort 算法就是找到已经排好序数据的子序列，然后对剩余部分排序，然后合并起来。
 
 #### Comparable
 

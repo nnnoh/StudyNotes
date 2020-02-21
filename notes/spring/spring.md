@@ -18,14 +18,78 @@ https://www.cnblogs.com/jingmoxukong/p/10151785.html
 
 加载配置文件到spring容器后，该容器注册的Bean就能通过`@Value`等标签获取当前容器加载的配置。
 
-application.properties在spring boot启动时默认加载此文件，自定义配置文件需要手动加载。
+另外，在 properties 配置文件中可通过 `${param}`实现参数之间的引用。
+
+application.properties 在spring boot启动时默认加载此文件，自定义配置文件需要手动加载。
 
 相同属性名的值，后加载的覆盖先加载的，即后加载的属性起作用。
 
 ##### java配置
 
+###### @PropertySource
+
 ```java
 @PropertySource("classpath:dbconfig.properties")
+```
+
+源码：
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Repeatable(PropertySources.class)
+public @interface PropertySource {
+    /**
+     * 资源的名称
+     */
+    String name() default "";
+    /**
+     * 资源文件路径，可以是数据多个文件地址
+     * 可以是classpath地址如：
+     *                  "classpath:/com/myco/app.properties"
+     * 也可以是对应的文件系统地址如：
+     *                  "file:/path/to/file"
+     */
+    String[] value();
+    /**
+     * 是否忽略文件资源是否存在，默认是false，也就是说配置不存在的文件地址spring启动将会报错
+     */
+    boolean ignoreResourceNotFound() default false;
+    /**
+     * 对应的字符编码了，默认是空值，如果配置文件中有中文应该设置为utf-8     */
+    String encoding() default "";
+    /**
+     * 读取对应资源文件的工厂类，默认的是PropertySourceFactory
+     */
+    Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
+}
+```
+
+`@PropertySource`目前不支持 yml 文件的解析。要使用 `@PropertySource` 引入 yml 配置文件，需要自己实现 `PropertySourceFactory` 类，重写 `createPropertySource` 方法。
+
+```java
+public class CommPropertyResourceFactory implements PropertySourceFactory {
+    /**
+     * Create a {@link PropertySource} that wraps the given resource.
+     *
+     * @param name     the name of the property source
+     * @param resource the resource (potentially encoded) to wrap
+     * @return the new {@link PropertySource} (never {@code null})
+     * @throws IOException if resource resolution failed
+     */
+    @Override
+    public PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {
+        String resourceName = Optional.ofNullable(name).orElse(resource.getResource().getFilename());
+        // yml
+        if (resourceName.endsWith(".yml") || resourceName.endsWith(".yaml")) {
+            List<PropertySource<?>> yamlSources = new YamlPropertySourceLoader().load(resourceName, resource.getResource());
+            return yamlSources.get(0);
+        } else {
+            return new DefaultPropertySourceFactory().createPropertySource(name, resource);
+        }
+    }
+}
 ```
 
 ##### xml配置
@@ -130,6 +194,8 @@ application.properties在spring boot启动时默认加载此文件，自定义�
 - 根据 Spring Boot 宽松的绑定规则，类的属性名称必须与外部属性的名称匹配
 - 类本身可以是包私有的
 - 类的字段必须有公共 setter 方法
+
+注意，默认只从全局配置文件中获取对应属性，即`application.yml`或`application.properties`。
 
 如下将前缀为 mail 的属性绑定到该类的成员变量上：
 
@@ -666,6 +732,14 @@ Aware 接口，从字面上理解就是感知捕获。Bean对Spring容器的存�
 子接口均提供了一个 set 方法，方法的参数就是当前 Bean 需要感知的内容，因此我们需要在 Bean 中重写该方法，声明相关的成员变量来接受这个参数。接收到这个参数后，就可以通过这个参数获取到容器的详细信息。
 
 ### 拦截器
+
+#### 拦截器执行顺序
+
+拦截器加入的顺序就是其执行的顺序。preHandle 顺序执行完，然后再逆序执行 postHandle ，最后逆序执行 postHandle。
+
+![img](https://img-blog.csdn.net/20180925212911462?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3NDY5NTQ5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+#### 拦截器与过滤器的区别
 
 ### 过滤器
 

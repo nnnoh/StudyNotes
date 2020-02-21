@@ -22,11 +22,23 @@ $SELECTION$
 
 右键菜单 -> Find Usage
 
+#### 代码格式化
+
+Code -> Reformat Code
+
+快捷键：Ctrl + Alt + L
+
 ### Question
 
 #### maven项目不识别
 
-右键菜单 add as maven
+指向 pom.xml，右键菜单 add as maven
+
+## Office
+
+光标重置：[ Ctrl + Home ]
+
+修订文档：审阅 -> 修订
 
 
 

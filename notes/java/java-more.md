@@ -1,3 +1,99 @@
+## Java 类
+
+### Optional 类
+
+Optional类是Java8为了解决null值判断问题，借鉴google guava类库的Optional类而引入的一个同名Optional类，使用Optional类可以避免显式的null值判断（null的防御性检查），避免null导致的NPE（NullPointerException）。
+
+#### 构造
+
+Optional类的两个构造方法都是private型的，因此类外部不能显示的使用`new Optional()`的方式来创建Optional对象，但是Optional类提供了三个静态方法`empty()`、`of(T value)`、`ofNullable(T value)`来创建Optinal对象。
+
+```java
+// 1、创建一个包装对象值为空的Optional对象
+Optional<String> optStr = Optional.empty();
+// 2、创建包装对象值非空的Optional对象
+Optional<String> optStr1 = Optional.of("optional");
+// 3、创建包装对象值允许为空的Optional对象
+Optional<String> optStr2 = Optional.ofNullable(null);
+```
+
+```java
+ // Optional 部分源码
+	private static final Optional<?> EMPTY = new Optional<>();
+
+    private final T value;
+
+    private Optional() {
+        this.value = null;
+    }
+
+    public static<T> Optional<T> empty() {
+        @SuppressWarnings("unchecked")
+        Optional<T> t = (Optional<T>) EMPTY;
+        return t;
+    }
+
+    private Optional(T value) {
+        this.value = Objects.requireNonNull(value);
+    }
+
+    public static <T> Optional<T> of(T value) {
+        return new Optional<>(value);
+    }
+
+    public static <T> Optional<T> ofNullable(T value) {
+        return value == null ? empty() : of(value);
+    }
+```
+
+#### 方法
+
+##### get
+
+https://www.jianshu.com/p/d81a5f7c9c4e
+
+https://www.cnblogs.com/zhangboyu/p/7580262.html
+
+### Objects 类
+
+JDK7添加了一个Objects工具类，它提供了一些方法来操作对象，它由一些静态的实用方法组成，这些方法是null-save（空指针安全的）或null-tolerant（容忍空指针的），用于计算对象的hashcode、返回对象的字符串表示形式、比较两个对象。
+
+### Scanner 类
+
+java.util.Scanner 是 Java5 的新特征，通过 Scanner 类来获取用户的输入。
+
+创建 Scanner 对象的基本语法：
+
+```java
+Scanner s = new Scanner(System.in);
+```
+
+new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuchElementException。
+
+#### next
+
+**next()**
+
+- 
+
+**nextLine()** 
+
+- 
+
+next / nextLine 返回值均为 String。
+
+对于 int 等基本数据类型，在输入之前最好先使用 **hasNextXxx()** 方法进行验证，再使用 **nextXxx()** 来读取。hasNextXxx 方法会阻塞到有输入数据，当数据可以解析为 Xxx 型返回 true，否则返回 false。
+
+#### 与 BufferedReader 的区别
+
+BufferedReader 是支持同步的，而 Scanner 不支持。如果我们处理多线程程序，应当使用 BufferedReader。
+
+BufferedReader 相对于 Scanner 有足够大的缓冲区内存。
+
+Scanner 有很少的缓冲区(1KB 字符缓冲)相对于 BufferedReader(8KB字节缓冲)，但是这是绰绰有余的。
+
+BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入数据进行类解析，而 BufferedReader 只是简单地读取字符序列。
+
 ## 注解
 
 https://blog.csdn.net/javazejian/article/details/71860633
@@ -220,47 +316,53 @@ Java 8为函数式接口引入了一个新注解@FunctionalInterface，主要用
 
   这些方法不能在接口中实现，会报编译错误（接口 xxx 中的默认方法 xxx 覆盖了 java.lang.Object 的成员）。
 
+### 常见函数式接口
+
+#### Supplier
+
+```java
+package java.util.function;
+ 
+/**
+ * Represents a supplier of results.
+ * 这是一个提供结果的函数接口.
+ * 特点:
+ * (1)只有返回值
+ * (2)没有输入参数
+ * <p>There is no requirement that a new or distinct result be returned each
+ * time the supplier is invoked.
+ *
+ * get()方法被调用时,对于一定要new出一个新对象 or 生成一个和之前结果不同的值 这两方面,都没有强制规定.
+ * 这一接口函数的功能方法为:get()
+ *
+ * <p>This is a <a href="package-summary.html">functional interface</a>
+ * whose functional method is {@link #get()}.
+ *
+ * @param <T> the type of results supplied by this supplier
+ *
+ * @since 1.8
+ */
+@FunctionalInterface
+public interface Supplier<T> {
+ 
+    /**
+     * Gets a result.
+     *
+     * @return a result
+     */
+    T get();
+}
+```
+
+
+
 ## 方法引用
 
 方法引用通过方法的名字来指向一个方法。
 
 
 
-## Scanner 类
 
-java.util.Scanner 是 Java5 的新特征，通过 Scanner 类来获取用户的输入。
-
-创建 Scanner 对象的基本语法：
-
-```java
-Scanner s = new Scanner(System.in);
-```
-
-new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuchElementException。
-
-### next
-
-**next()**
-
-- 
-
-**nextLine()** 
-
-- 
-
-next / nextLine 返回值均为 String。
-
-对于 int 等基本数据类型，在输入之前最好先使用 **hasNextXxx()** 方法进行验证，再使用 **nextXxx()** 来读取。hasNextXxx 方法会阻塞到有输入数据，当数据可以解析为 Xxx 型返回 true，否则返回 false。
-
-### 与 BufferedReader 的区别
-
-BufferedReader 是支持同步的，而 Scanner 不支持。如果我们处理多线程程序，应当使用 BufferedReader。
-
-BufferedReader 相对于 Scanner 有足够大的缓冲区内存。
-
-Scanner 有很少的缓冲区(1KB 字符缓冲)相对于 BufferedReader(8KB字节缓冲)，但是这是绰绰有余的。
-
-BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入数据进行类解析，而 BufferedReader 只是简单地读取字符序列。
 
 ## 泛型
 

@@ -1,21 +1,3 @@
-## Spring Boot
-
-使用“约定优先配置”（convention over configuration）的思想来摆脱Spring框架中各类纷繁复杂的配置。和Spring框架紧密结合用于提升Spring开发者体验的工具。
-
-
-
-### develop
-
-#### 1. 创建 Spring Boot
-
-maven webapp
-
-`src/main/java`  Application/Library sources 
-
-引入Spring Boot的开发依赖
-
-
-
 ## Spring
 
 Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的是为了解决企业级应用开发的业务逻辑层和其他各层的耦合问题。它是一个分层的JavaSE/JavaEE full-stack（一站式）轻量级开源框架，为开发Java应用程序提供全面的基础架构支持。
@@ -280,6 +262,10 @@ slf4j
 log4j2
 
 logback
+
+logback是不推荐使用相对路径来记录日志文件
+
+
 
 不少应用服务器（如 Tomcat 和 WebShpere）的类路径中已经包含 Commons Logging。
 

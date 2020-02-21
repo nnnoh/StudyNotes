@@ -120,6 +120,26 @@ Class-Path：内部的类搜索路径，提供给应用程序或者类装载器
 
 Main-Class：定义jar文件的入口类，该类必须可执行！一旦定义了该属性就可以使用 `java -jar xxx.jar` 来运行该jar文件
 
+#### 打jar包方式
+
+##### idea
+
+1. File -> Project Structure -> Artifacts -> + -> jar -> from modules with dependencies
+2. 选择要打包的**模块**和运行的**主类**
+3. 选择依赖 jars 包的存放。
+   1. 如选择 "copy to the output directory and link via manifest"，继续选择 META-INF/MANIFEST.MF。
+   2. 可选将依赖 jar 包放入 lib 文件夹中，然后修改模块 jar 包的 Class Path 以链接依赖的 jar 包。
+4. Build -> Build Artifacts -> Rebuild，即可在设置的输出目录中生成 jar 包。
+
+##### maven
+
+使用 maven 的 package/install 也可将模块及其依赖打成jar包（在target目录生成/部署到本地 maven 仓库）。
+
+```xml
+<!-- pom.xml -->  
+<packaging>jar</packaging>
+```
+
 ### 深拷贝 & 浅拷贝
 
 
