@@ -635,7 +635,11 @@ git init --shared --bare
 
 git config receive.denyCurrentBranch ignore
 
-#### 一般开发流程
+#### autocrlf
+
+[[Git使用] warning: LF will be replaced by CRLF](https://www.jianshu.com/p/d8e84e8b5b0c)
+
+[为什么我应该在Git中使用core.autocrlf = true？](https://cloud.tencent.com/developer/ask/60586)
 
 #### 注意
 

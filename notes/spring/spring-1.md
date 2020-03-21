@@ -30,7 +30,7 @@ Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的�
 
 ### Spring体系结构
 
-![img](.\spring.assets\480452-20190318225849216-2097896352.png)
+![img](spring-1.assets\480452-20190318225849216-2097896352.png)
 
 Spring框架至今已集成了20多个模块，这些模块分布在以下模块中：
 
@@ -87,7 +87,7 @@ Spring-test模块支持使用JUnit或TestNG对Spring组件进行单元测试和�
 
 ### IoC (Inversion of Control)
 
-![IoC&AOP](.\spring.assets\1765294-ee3aa36a4b45150f.png)
+![IoC&AOP](spring-1.assets\1765294-ee3aa36a4b45150f.png)
 
 Ioc，即控制反转，是一种设计思想。传统应用程序都是由我们在类内部主动创建依赖对象，从而导致类与类之间高耦合，难于测试；而 IoC 把创建和查找依赖对象的控制权交给了 IoC 容器，由容器进行注入组合对象，所以对象与对象之间是松散耦合，这样也方便测试，利于功能复用，更重要的是使得程序的整个体系结构变得非常灵活。
 
@@ -106,7 +106,7 @@ Spring 的 IoC 容器在实现控制反转和依赖注入的过程中,可以划�
 - 容器启动阶段
 - Bean 实例化阶段
 
-![img](.\spring.assets\4476195-aca580cea9d63bb8.webp)
+![img](spring-1.assets\4476195-aca580cea9d63bb8.webp)
 
 #### 容器启动阶段
 
@@ -145,7 +145,7 @@ AOP，即面向切面编程，是一种通过预编译方式和运行期动态�
 
 AOP 将涉及多业务流程的通用功能抽取并单独封装，形成独立的切面，在合适的时机将这些切面横向切入到业务流程指定的位置中。利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
-![用户登录功能切入到业务流程示意图](.\spring.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
+![用户登录功能切入到业务流程示意图](spring-1.assets\u=725733276,316358623&fm=173&app=25&f=JPEG.jpg)
 
 AOP实现可分为两类：
 
@@ -170,7 +170,7 @@ AOP实现可分为两类：
 
 **Weaving**（织入）：将 Aspect 和其他对象连接起来, 并创建 Adviced object 的过程
 
-![AOP各概念关系图](.\spring.assets\20180530175605692.png)
+![AOP各概念关系图](spring-1.assets\20180530175605692.png)
 
 #### 其他
 
@@ -232,137 +232,6 @@ q: The superclass "javax.servlet.http.HttpServlet" was not found on the Java Bui
 url-pattern
 
 https://www.cnblogs.com/fangjian0423/p/servletContainer-tomcat-urlPattern.html#springmvc
-
-## 日志
-
-日志系统，负责输出日志：
-
-1. Log4j：经典的一种日志解决方式。内部把日志系统抽象封装成Logger 、appender 、pattern 等实现。我们能够通过配置文件轻松的实现日志系统的管理和多样化配置。
-2. Log4j2：Log4j的2.0版本号。是对log4j的重写，功能更完善。比方支持參数API、支持异步appender、插件式架构等
-3. Logback：Log4j的替代产品。须要配合日志框架SLF4j使用
-4. JUL(java.util.logging)：JDK提供的日志系统。较混乱，不经常使用
-
-日志框架（日志门面），提供日志调用的接口，实际的日志输出托付给日志系统实现：
-
-1. JCL(commons-logging)：比较流行的日志框架，非常多框架都依赖JCL，比如Spring等。
-2. SLF4j：提供新的API，初衷是配合Logback使用，但同一时候兼容Log4j。
-
-
-
-https://blog.csdn.net/backbug/article/details/78655664
-
-https://blog.csdn.net/chinabestchina/article/details/85108585
-
-https://www.cnblogs.com/songxingzhu/p/8867817.html
-
-https://www.cnblogs.com/zhuawang/p/3999235.html
-
-slf4j
-
-log4j2
-
-logback
-
-logback是不推荐使用相对路径来记录日志文件
-
-
-
-不少应用服务器（如 Tomcat 和 WebShpere）的类路径中已经包含 Commons Logging。
-
-
-
-slf4j + logback 配置，其他简介。
-
-property  , no properties
-
-windows 路径使用 `\\` 分隔符
-
-### slf4j
-
-slf4j 的直接/间接实现有slf4j-simple、logback、slf4j-log4j12、log4j-slf4j-impl
-
-pom.xml 示例（还需引入日志系统包）
-
-```xml
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.25</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.21</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.9.1</version>
-    </dependency>
-```
-
-#### 使用
-
-获取slf4j提供的Logger接口具体实现：
-
-`Logger logger = LoggerFactory.getLogger(Object.class);`
-
-> getLogger 会去 classpath 下找 STATIC_LOGGER_BINDER_PATH( org/slf4j/impl/StaticLoggerBinder.class)。所有slf4j的实现在提供的jar包路径下都有该类存在。
->
-> 使用 set 接收查找结果。存在多个实现时，会执行 reportMultipleBindingAmbiguity。在这种情况下编译器会选择其中一个 StaticLoggerBinder.class 进行绑定，在 reportActualBinding 方法中报告了绑定的是哪个日志框架。
->
-> 不同 StaticLoggerBinder 的 getLoggerFactory 实现不同，获得 ILoggerFactory 之后调用 getLogger 即获得具体的Logger。
-
-slf4 循环 堆栈溢出
-
-### Tips
-
-#### SLF4J: Class path contains multiple SLF4J bindings
-
-> 可能伴随着下面错误，不过下面错误不是重点。
->
-> Logging system failed to initialize using configuration from ‘classpath:log4j2.xml’
-> java.lang.IllegalStateException: Logback configuration error detected: ...
-
-exclude logging的依赖，比如：
-
-```xml
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-```
 
 
 
@@ -618,7 +487,7 @@ Spring 各功能依赖
 > log.clearLog(); // clears debug that occurred for some reason in log output
 > // maybe failure
 > assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles\n",
->              log.getLog());
+>           log.getLog());
 > // yes
 > final String newLine = System.lineSeparator();
 > assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles" 

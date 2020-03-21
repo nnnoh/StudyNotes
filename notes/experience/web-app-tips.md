@@ -55,7 +55,50 @@ java.lang.ClassNotFoundException: com.alibaba.fastjson.JSON
 
 idea -> Project Settings -> Artifacts
 
+### 异常
+
+注意不要忽视异常的存在。
+
+可能出现的异常，尽量`try...catch`处理，或者使用统一异常处理（`@ExceptionHandler`等），然后返回错误信息给前端，或者打印报告异常后继续（按默认处理）正常执行。
+
+**AlibabaCodingGuidelines**
+
+【强制】Java 类库中定义的可以通过预检查方式规避的 RuntimeException 异常不应该通 过 catch 的方式来处理，比如：NullPointerException，IndexOutOfBoundsException 等等。 
+
+说明：无法通过预检查的异常除外，比如，在解析字符串形式的数字时，可能存在数字格式错误，不得不通过 catch NumberFormatException 来实现。
+
+【推荐】防止 NPE，是程序员的基本修养，注意 NPE 产生的场景： 
+
+- 返回类型为基本数据类型，return 包装数据类型的对象时，自动拆箱有可能产生 NPE。
+
+   反例：public int f() { return Integer 对象}， 如果为 null，自动解箱抛 NPE。
+
+- 数据库的查询结果可能为 null。 
+
+- 集合里的元素即使 isNotEmpty，取出的数据元素也可能为 null。 
+
+- 远程调用返回对象时，一律要求进行空指针判断，防止 NPE。
+
+-  对于 Session 中获取的数据，建议进行 NPE 检查，避免空指针。 
+
+-  级联调用 obj.getA().getB().getC()；一连串调用，易产生 NPE。 
+
+   正例：使用 JDK8 的 Optional 类来防止 NPE 问题。
+
 ### 编程
+
+#### Number
+
+实体类，spring数据绑定时，使用 Number 类比基本数据类型更灵活。
+
+- 基本数据类型是必须要传值的，不传值的话会报错，而且传值的话也必须是对应的基本数据类型，否则的话会报类型错误；
+
+- 包装类型可以传空值，也可以用requestParam来限制传值是否可以为空。
+
+**默认值**
+
+1. Integer默认为null
+2. int默认为0
 
 #### Serializabla
 

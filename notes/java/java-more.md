@@ -48,11 +48,9 @@ Optional<String> optStr2 = Optional.ofNullable(null);
 
 #### 方法
 
-##### get
+[理解、学习与使用 JAVA 中的 OPTIONAL](https://www.cnblogs.com/zhangboyu/p/7580262.html)
 
-https://www.jianshu.com/p/d81a5f7c9c4e
-
-https://www.cnblogs.com/zhangboyu/p/7580262.html
+[Optional详解](https://www.jianshu.com/p/d81a5f7c9c4e)
 
 ### Objects 类
 
@@ -74,11 +72,15 @@ new Scanner(System.in).close() 后再 new ，使用时会抛出 java.util.NoSuch
 
 **next()**
 
-- 
+- 一定要读取到有效字符后才可以结束输入。
+- 对输入有效字符之前遇到的空白，next() 方法会自动将其去掉。
+- 只有输入有效字符后才将其后面输入的空白作为分隔符或者结束符。
+- next() 不能得到带有空格的字符串。
 
 **nextLine()** 
 
-- 
+- 以Enter为结束符,也就是说 nextLine()方法返回的是输入回车之前的所有字符。
+- 可以获得空白。
 
 next / nextLine 返回值均为 String。
 
@@ -219,11 +221,13 @@ public @interface AnnotationDemo(){
 
 ### 注解与反射机制
 
-所有注解都继承了Annotation接口。
+所有注解都继承了`Annotation`接口。
 
-为了运行时能准确获取到注解的相关信息，java.lang.reflect 反射包下新增了AnnotatedElement接口，它主要用于表示目前正在 VM 中运行的程序中已使用注解的元素。
+为了运行时能准确获取到注解的相关信息，java.lang.reflect 反射包下新增了`AnnotatedElement`接口，它主要用于表示目前正在 VM 中运行的程序中被使用注解的元素（注解本身可以用`Annotation`接口表示）。
 
-反射包的Constructor类、Field类、Method类、Package类和Class类都实现了AnnotatedElement接口。AnnotatedElement接口方法如下：
+注意，如果需要通过反射获取注解，要在注解定义时加上`@Retention(RetentionPolicy.RUNTIME)`。
+
+反射包的`Constructor`类、`Field`类、`Method`类、`Package`类和`Class`类都实现了`AnnotatedElement`接口。`AnnotatedElement`接口方法如下：
 
 | 返回值                   | 方法名称                                                     | 说明                                                         |
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -232,9 +236,9 @@ public @interface AnnotationDemo(){
 | `boolean`                | `isAnnotationPresent(Class<? extends Annotation> annotationClass)` | 如果指定类型的注解存在于此元素上，则返回 true，否则返回 false。 |
 | `Annotation[]`           | `getDeclaredAnnotations()`                                   | 返回直接存在于此元素上的所有注解，注意，不包括父类的注解，调用者可以随意修改返回的数组；这不会对其他调用者返回的数组产生任何影响，没有则返回长度为0的数组 |
 
-#### Java8 新增元注解
+### Java8 新增
 
-##### @Repeatable
+#### @Repeatable
 
 表示在同一个位置可以重复相同的注解。在没有该注解前，一般是无法在同一个类型上使用相同的注解，只能使用数组接收多个值。
 
@@ -246,13 +250,110 @@ getAnnotationsByType()方法调用时，其内部先执行了getDeclaredAnnotati
 
 注意，旧版API中的getDeclaredAnnotation()和 getAnnotation()是不对@Repeatable注解的处理的(除非该注解没有在同一个声明上重复出现)。
 
-#### Java8 新增ElementType
+#### 新增ElementType
 
 ElementType.TYPE_USE 和 ElementType.TYPE_PARAMETER
 
 TYPE_PARAMETER可以用于标注类型参数，而TYPE_USE则可以用于标注任意类型(不包括class)。
 
 TYPE_USE，类型注解用来支持在Java的程序中做强类型检查，配合第三方插件工具（如Checker Framework），可以在编译期检测出runtime error（如UnsupportedOperationException、NullPointerException异常），避免异常延续到运行期才发现，从而提高代码质量，这就是类型注解的主要作用。
+
+### 注解使用
+
+注解的使用主要是结合反射机制实现程序的处理。
+
+比如，工厂设计模式与注解示例：
+
+```java
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+public class JavaAPIDemo {
+    public static void main(String[] args) throws Exception {
+        MessageService service=new MessageService();
+        service.send("www.baidu.com");
+    }
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@interface UserMessage{
+    Class <?> clazz();
+}
+
+@UserMessage(clazz =NetMessageImpl.class )
+class MessageService{
+    private IMessage message;
+    public MessageService(){
+        UserMessage userMessage=MessageService.class.getAnnotation(UserMessage.class);
+        Class<?> clazz=userMessage.clazz();
+        this.message = (IMessage)Factory.getInstance(clazz);
+    }
+    public void send(String message){
+        this.message.send(message);
+    }
+}
+
+class Factory  {
+    private Factory() {}
+    public static <T> T getInstance(Class<T> clazz){
+        //直接返回一个实例化对象
+        try {
+            return (T)new MessageProxy().bind(clazz.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+interface IMessage {
+    void send(String message);
+}
+
+class MessageImpl implements IMessage {
+    @Override
+    public void send(String message) {
+        System.out.println("【消息发送】"+message);
+    }
+}
+
+class NetMessageImpl implements IMessage {
+    @Override
+    public void send(String message) {
+        System.out.println("【网络消息发送】"+message);
+    }
+}
+
+class MessageProxy implements InvocationHandler {
+    private Object target;
+    public Object bind(Object target){
+        this.target = target;
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
+    }
+    public  boolean connect(){
+        System.out.println("【代理操作】进行消息发送通道的连接。");
+        return true;
+    }
+    public void close() {
+        System.out.println("【代理操作】关闭连接通道");
+    }
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        try {
+            if(connect()){
+                return method.invoke(target, args);
+            }
+            throw new Exception("【ERROR】消息无法进行发送！");
+        }finally {
+            close();
+        }
+    }
+}
+```
+
+https://blog.csdn.net/wolfcode_cn/article/details/80654730
 
 ## 流
 
@@ -400,6 +501,12 @@ https://juejin.im/post/5b9b1c115188255c5e66d18c?utm_source=tuicool&utm_medium=re
 
 https://mp.weixin.qq.com/s/vpy5DJ-hhn0iOyp747oL5A
 
-枚举 enum类
+
 
 String...
+
+
+
+反射 Accessible
+
+javaagent

@@ -92,10 +92,14 @@ URLEncode 每个字节前加 '%'
 
 
 
-get post同时存在时 spring MVC执行post，参数名相同的会结合在一起，用 ',' 分隔
+### 浏览器同源政策
 
+http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html
 
+### CORS
 
-CORS
+CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
+
+它允许浏览器向跨源服务器，发出`XMLHttpRequest`请求，从而克服了AJAX只能同源使用的限制。
 
 http://www.ruanyifeng.com/blog/2016/04/cors.html

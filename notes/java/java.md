@@ -195,9 +195,9 @@ char：
 
 ##### 包装类
 
-装箱：自动将基本数据类型转换为包装器类型，通过调用包装器的 valueOf 方法实现的。
+装箱：自动将基本数据类型转换为包装器类型，通过调用包装器的 `valueOf` 方法实现的。
 
-拆箱：自动将包装器类型转换为基本数据类型，通过调用包装器的 xxxValue 方法实现的。
+拆箱：自动将包装器类型转换为基本数据类型，通过调用包装器的 `xxxValue `方法实现的。
 
 | int（4字节）    | Integer   |
 |---|---|
@@ -209,17 +209,17 @@ char：
 | char（2字节）   | Character |
 | boolean         | Boolean   |
 
-通过 valueOf 方法创建 Integer 对象的时候，如果数值在[-128,127]之间，便返回指向IntegerCache.cache 中已经存在的对象的引用；否则创建一个新的 Integer 对象。
+通过 `valueOf` 方法创建 Integer 对象的时候，如果数值在[-128,127]之间，便返回指向IntegerCache.cache 中已经存在的对象的引用；否则创建一个新的 Integer 对象。
 
-Integer、Short、Byte、Character、Long这几个类的valueOf方法的实现是类似的。
+Integer、Short、Byte、Character、Long这几个类的`valueOf`方法的实现是类似的。
 
-Double、Float的valueOf方法的实现是类似的。
+Double、Float的`valueOf`方法的实现是类似的。
 
 当使用的是基础数据类型对象，而需要的是包装类时会触发自动装箱，相反时会触发自动拆箱。
 
 ###### 包装类初始化
 
-Integer i = new Integer(xxx) 和 Integer i =xxx 这两种方式的区别：
+`Integer i = new Integer(xxx)` 和 `Integer i =xxx` 这两种方式的区别：
 
 1）第一种方式不会触发自动装箱的过程；而第二种方式会触发；
 
@@ -406,26 +406,86 @@ s[1] = new String[3];
 
 Java 5.0 引入了枚举（enum），枚举限制变量只能是预先设定好的值。使用枚举可以减少代码中的bug。
 
-枚举可以单独声明或者声明在类里面。方法、变量、构造函数也可以在枚举中定义。
+枚举可以单独声明或者声明在类里面。
 
-
-
-所有枚举类型都是 Enum 类的子类，。
-
-例子：
+基本使用示例：
 
 ```java
 class FreshJuice {
     enum FreshJuiceSize{ SMALL, MEDIUM, LARGE }
     FreshJuiceSize size;
 }
-
 public class FreshJuiceTest {
     public static void main(String args[]){
        FreshJuice juice = new FreshJuice();
        juice.size = FreshJuice.FreshJuiceSize.MEDIUM;
        System.out.println(juice.size); 	//输出 MEDIUM
    }
+}
+```
+
+所有枚举类型都是 Enum 类的子类，可以在枚举中定义方法、变量、构造函数。每个枚举值实际都是该类的`public static final`的属性实例，类型即为该枚举类类型。
+
+静态方法：
+
+- `valueOf(Class, String)` 将字符串转成枚举类。
+
+  Color color = (Color) Enum.valueOf(Color.class, "RED");
+
+- `values()` 返回一个包含全部枚举值的数组。
+
+  `values()` 方法是编译器插入到enum定义中的static方法，所以，当将enum实例向上转型为父类Enum是，values()就不可访问了。解决办法：在Class中有一个getEnumConstants()方法，所以即便Enum接口中没有values()方法，仍然可以通过Class对象取得所有的enum实例。
+
+成员方法：
+
+- `toString()` 返回枚举常量名。
+
+- `ordinal()`  返回enum声明中枚举常量的位置，位置从0开始计数。
+
+- `compareTo( E other)`  如果枚举常量在参数other之前，则返回一个负值； 如果this==other，则返回0；否则，返回正值。 
+
+  不能直接用 `<`，`>`符号比较两个枚举值，但可以使用`==`比较。
+
+- 
+
+使用示例：
+
+```java
+public enum Color {
+    RED("红色", 1), GREEN("绿色", 2), BLANK("白色", 3), YELLO("黄色", 4);
+    
+    private String name;
+    private int index;
+
+    private Color(String name, int index) {
+        this.name = name;
+        this.index = index;
+    }
+
+    public static String getName(int index) {
+        for (Color c : Color.values()) {
+        	if (c.getIndex() == index) {
+            	return c.name;
+        	}
+        }
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }
 ```
 
@@ -458,7 +518,36 @@ public class FreshJuiceTest {
   double d1 = F1.doubleValue() ;
   ```
 
+- `Math.toIntExact(long value)` 求Long的int值，超出范围则抛异常
+
 > java中整数类型默认的int类型；小数类型默认的double；
+
+###### 基本数据类型 <=> 包装类
+
+可使用自动装/拆箱机制。
+
+基本数据类型 <= 包装类（拆箱）
+
+- xxxValue方法：将Number对象转换为xxx数据类型的值并返回
+
+  ```java
+  Integer x = 5;
+  System.out.println( x.byteValue() );//5
+  System.out.println( x.doubleValue() );//5.0
+  System.out.println( x.longValue() ); //5
+  ```
+
+基本数据类型 => 包装类（装箱）
+
+- valueOf()方法：返回给定参数的原生Number对象值，该方法为静态方法
+
+  ```
+  Integer x =Integer.valueOf(9);//9
+  Double c = Double.valueOf(5);//5.0
+  Integer b = Integer.valueOf("444",16);// 使用 16 进制//1092
+  ```
+
+###### 包装类相互转换
 
 ##### 字符串与其他数据类型的转换
 
@@ -476,7 +565,6 @@ public class FreshJuiceTest {
 > String res = new String(srtbyte,"UTF-8");  // byte[] to String
 > ```
 >
-> 
 
 ###### 字符串 => 其他数据类型
 
@@ -2666,8 +2754,10 @@ offer() 添加元素，poll() 移除元素。
 #### 主要方法
 
 - add()
-- remove()  有坑
-- 
+
+- remove()  
+
+  注意，remove的参数是syin索引，而不是要删除的值。
 
 #### 总结
 
@@ -3071,10 +3161,6 @@ FilenameFilter 接口的 accept 方法中如果需要使用文件的功能，则
 listFiles(FilenameFilter filter) 是先用字符串匹配，匹配成功后创建File对；而 listFiles(FileFilter filter) 直接先创建File对象，后使用File对象进行匹配。 
 
 因此，如果从效率上说 listFiles(FilenameFilter filter) 是更快的。而如果需要对文件进行操作，则 listFiles(FileFilter filter) 更加方便。
-
-
-
-list 疑惑 黑人问号*？？？*
 
 ### RandomAccessFile
 

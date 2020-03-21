@@ -361,11 +361,13 @@ Environment环境能决定当前激活的是哪个profile配置，和哪个profi
 
 properties属性可能来源于properties文件、JVM properties、system环境变量、JNDI、servlet context parameters上下文参数、专门的properties对象，Maps等等。
 
-### 注解
+### 常用注解
 
 #### @Order
 
 注解@Order或者接口Ordered的作用是定义Spring IOC容器中Bean的执行顺序的优先级，而不是定义Bean的加载顺序，Bean的加载顺序不受@Order或Ordered接口的影响。
+
+通常配合 CommandLineRunner 和 ApplicationRunner 使用。
 
 默认是最低优先级,值越小优先级越高。
 
@@ -378,8 +380,6 @@ https://www.cnblogs.com/supercj/p/10303645.html
 限定描述符除了能根据名字进行注入，更能进行更细粒度的控制如何选择候选者。
 
 默认使用bean name选择注入对象。
-
-@ConfigurationProperties
 
 ### 组件注册
 

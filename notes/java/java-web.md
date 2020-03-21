@@ -20,15 +20,13 @@ JSP等模板引擎作为伪前端技术（实际上是服务器端技术）有�
 
 4. 前端与后端数据交换XML/JSON支持不够灵活，不是天生支持Ajax
 
-页面跳转
+### 使用
 
-
-
+```xml
 <%@page isELIgnored="false"%>
+```
 
-${pageContext.request.contextPath}
-
-
+如果设定为真，那么JSP中的表达式被当成字符串处理。比如下面这个表达式`＜p＞${2000 % 20}＜/p＞`在isELIgnored＝"true"时输出为`${2000 % 20}`，而isELIgnored＝"false"时输出为`100`。Web容器默认isELIgnored＝"false"。
 
 ```jsp
 <%@ page import="servlet.CountServlet"%>
@@ -141,33 +139,18 @@ https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
 
 请求转发 参数
 
+默认单例多线程
 
+https://www.cnblogs.com/yjhrem/articles/3160864.html
 
 ### Tips
 
-#### 统计在线人数
-
-1. 使用 HttpSessionListener
-
-   HttpSession 创建/删除时更新人数。
-
-   使用 ServletContext 存储在线人数属性值。
-
-   `event.getSession().getServletContext()`
-
-2. 使用 ServletContextListener, HttpSessionAttributeListener, HttpSessionListener
-
-   HttpSession 创建/删除时设置/移除用户名属性。
-
-   HttpSessionAttributeListener 中维护用户列表。
-
-   ServletContextListener 创建用户列表。
-
-
+#### 使用示例
 
 ```java
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	// 执行sql
 		response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try{
@@ -201,8 +184,8 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
 //            out.println("params: " + request.getParameterMap());
 //        }
     	
+		// use jsp file
 //    	response.setContentType("text/html;charset=UTF-8");
-        // use jsp file
 //        request.setAttribute("title", "Hello Servlet");
 //        request.setAttribute("content", "你好");
 //        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp");
@@ -222,6 +205,24 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
 //        }
     }
 ```
+
+#### 统计在线人数
+
+1. 使用 HttpSessionListener
+
+   HttpSession 创建/删除时更新人数。
+
+   使用 ServletContext 存储在线人数属性值。
+
+   `event.getSession().getServletContext()`
+
+2. 使用 ServletContextListener, HttpSessionAttributeListener, HttpSessionListener
+
+   HttpSession 创建/删除时设置/移除用户名属性。
+
+   HttpSessionAttributeListener 中维护用户列表。
+
+   ServletContextListener 创建用户列表。
 
 ## web.xml
 
@@ -355,7 +356,7 @@ localhost:8080/项目名
 
 WebRoot/WebContent	Web应用的根 "/"
 
-![JavaWeb目录结构](D:\GitHub\StudyNotes\notes\java\java_web.assets\172304056712920.png)
+![JavaWeb目录结构](java-web.assets\172304056712920.png)
 
 浏览器或页面直接访问的资源不能放在 WEB-INF 内。
 
@@ -392,9 +393,9 @@ CATALINA_HOME与CATALINA_BASE
 
 ### F12 
 
-https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox
+[如何使用浏览器的F12开发者工具调试页面？](https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox)
 
-https://www.jianshu.com/p/d01eb74bf06c
+[Chrome浏览器F12讲解](https://www.jianshu.com/p/d01eb74bf06c)
 
 
 

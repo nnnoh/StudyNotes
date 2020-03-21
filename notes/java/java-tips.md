@@ -78,7 +78,31 @@ static{ ...}
 
 ### JDK JRE JVM
 
-https://www.cnblogs.com/bolang100/p/6929514.html
+- **JDK（Java Development Kit）**
+
+  JDK是Java开发工具包，是Sun Microsystems针对Java开发员的产品。
+
+  JDK中包含JRE，在JDK的安装目录下有一个名为jre的目录，里面有两个文件夹bin和lib，在这里可以认为bin里的就是jvm，lib中则是jvm工作所需要的类库，而jvm和 lib和起来就称为jre。
+
+  JDK是整个JAVA的核心，包括了Java运行环境JRE（Java Runtime Envirnment）、一堆Java工具（javac/java/jdb等）和Java基础的类库（即Java API 包括rt.jar）。
+
+- **Java Runtime Environment（JRE）**
+
+  运行基于Java语言编写的程序所不可缺少的运行环境。也是通过它，Java的开发者才得以将自己开发的程序发布到用户手中，让用户使用。
+
+  JRE中包含了Java virtual machine（JVM），runtime class libraries和Java application launcher，这些是运行Java程序的必要组件。
+
+  JRE是Java运行环境，并不是一个开发环境，所以没有包含任何开发工具（如编译器和调试器），只是针对于使用Java程序的用户。
+
+- **JVM（java virtual machine）**
+
+  java虚拟机，它是整个java实现跨平台的最核心的部分，所有的java程序会首先被编译为.class的类文件，这种类文件可以在虚拟机上执行。
+
+  也就是说class并不直接与机器的操作系统相对应，而是经过虚拟机间接与操作系统交互，由虚拟机将程序解释给本地系统执行。
+
+  只有JVM还不能成class的执行，因为在解释class的时候JVM需要调用解释所需要的类库lib，而jre包含lib类库。
+
+  JVM屏蔽了与具体操作系统平台相关的信息，使得Java程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行。
 
 ### jar包
 
@@ -139,6 +163,118 @@ Main-Class：定义jar文件的入口类，该类必须可执行！一旦定义�
 <!-- pom.xml -->  
 <packaging>jar</packaging>
 ```
+
+### 异常时的返回值
+
+`finally`块中的语句无论是否发生异常都会执行。其执行顺序同普通块，按在方法中的顺序从前往后执行。
+
+不同异常处理情况：
+
+- （捕获异常）跳过`try`块中剩下语句，进入`catch`块，然后执行`finally`块。
+
+  如果`catch`中没有`return`会继续执行`finally`块后的语句直到返回值，否则不执行。
+
+  `finally`中有`return`语句时`finally`块后不能有语句（编译错误，无法访问的语句）。
+
+- （抛出异常）跳过剩下的语句，只执行`finally`块的语句。
+
+  如果`finally`块有`return`语句，异常不会继续往上抛出（即使在`catch`中捕获后又抛出）。
+
+> `throw` 和 `return` 语句后不能直接跟着的语句（编译错误，无法访问的语句）
+
+关于`catch`和`finally`块里的`return`：
+
+- `finally`里的`return`会覆盖`catch`的返回值。
+- `catch`里返回的变量即使在`finally`内修改了，其返回值不变。
+
+java中两种退出方法的方式，
+
+1. 遇到一个返回的指令（`return`语句）；
+
+2. 遇到一个异常，并且没有搜索到异常处理器，不会给调用返回任何值。
+
+建议：在`catch`中返回异常时的返回值，在方法最后返回正常的返回值，`finally`块中只是执行最后的清理工作。
+
+> Reports return statements inside of finally blocks. While occasionally intended, such return statements may mask exceptions thrown, and tremendously complicate debugging. 
+
+### 字符串转日期
+
+方法总结：
+
+- `Timestamp.valueOf(String time)`
+
+  返回`Timestamp`类。
+
+  必须是`yyyy-[m]m-[d]d hh:mm:ss[.fffffffff]`格式，否则报错。
+
+注意处理异常，而不是忽视异常。
+
+> 持续更新
+
+### 特殊注释
+
+`//TODO: 说明`：
+说明在标识处有功能代码待编写，待实现的功能在说明中会简略说明。
+
+`//FIXME: 说明`：
+说明标识处代码需要修正，甚至代码是错误的，不能工作，需要修复，如何修正会在说明中简略说明。
+
+`//XXX: 说明`：
+说明标识处代码虽然实现了功能，但是实现的方法有待商榷，希望将来能改进，要改进的地方会在说明中简略说明。
+
+### isAssignableFrom() & instanceof
+
+`isAssignableFrom()`方法与`instanceof`关键字的区别：
+
+- isAssignableFrom()方法是从类继承的角度去判断，instanceof关键字是从实例继承的角度去判断。
+
+- isAssignableFrom()方法是判断是否为某个类的父类，instanceof关键字是判断是否某个类的子类。
+
+使用：
+
+```java
+父类.class.isAssignableFrom(子类.class)
+子类实例 instanceof 父类类型
+```
+
+### 中文字符判断
+
+- 正则表达式
+
+  ```java
+  public static boolean isContainChinese(String str) {
+      Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+      Matcher m = p.matcher(str);
+      if (m.find()) {
+          return true;
+      }
+      return false;
+  }
+  ```
+
+  只能检测出中文汉字（中文汉字的编码范围：[\u4e00-\u9fa5]），不能检测中文标点。
+
+- `Character`类
+
+  [Java 中文字符判断 中文标点符号判断](https://www.cnblogs.com/zztt/p/3427452.html)
+
+#### Character
+
+`Character` 类中有3个静态内部类：
+
+- `Character.Subset ` 该类的实例表示Unicode字符集的特定子集。
+- `Character.UnicodeBlock` 代表一片连续的Unicode号码段
+- `Character.UnicodeScript` 一个字符或者其他书写符号的集合
+
+UnicodeBlock 与 UnicodeScript 关系：
+
+UnicodeScript 是从语言书写规则层次对Unicode字符的分类，这是用使用角度划分，而UnicodeBlock是从硬的编码角度划分。
+
+- UnicodeBlock是简单的数值范围 (其中可能有些Block中会有一些尚未分配字符的“空号”)。
+
+- 在一个UnicodeScript中的字符可能分散在多个UnicodeBlock中；
+
+- 一个UnicodeBlock中的字符可能会被划进多个UnicodeScript中。
 
 ### 深拷贝 & 浅拷贝
 

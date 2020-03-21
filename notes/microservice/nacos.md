@@ -126,7 +126,7 @@ spring:
 
 在`NacosProvideApplication.java`添加注解`@EnableDiscoveryClient` 开启服务注册发现功能
 
-在Controller层提供http请求接口。
+在Controller层提供http请求接口即可。
 
 ##### 服务消费子模块
 
@@ -264,6 +264,59 @@ RestTemplate发送DELETE请求，使用的是它的`delete`方法，`delete`方�
 3. `delete(URI url)`。
 
 在进行REST请求时，通常都将delete请求的唯一标识拼接在url中，所以delete请求也不需要requestType的body信息。
+
+##### exchange
+
+`exchange()`方法可以指定请求的HTTP类型。
+
+`exchange`的方法中几乎都有`@Nullable HttpEntity requestEntity`这个参数，使用`HttpEntity`来传递请求体。
+
+示例：
+
+```java
+public void rtExchangeTest() throws JSONException {
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://xxx/list";
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    JSONObject jsonObj = new JSONObject();
+    jsonObj.put("limit",5);
+    jsonObj.put("page",1);
+
+    HttpEntity<String> entity = new HttpEntity<>(jsonObj.toString(), headers);
+    ResponseEntity<JSONObject> exchange = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class);
+    System.out.println(exchange.getBody());
+}
+```
+
+##### excute
+
+`excute`方法的用法与`exchange`大同小异了，它同样可以指定不同的HttpMethod，不同的是它返回的对象是响应体所映射成的对象，而不是`ResponseEntity`。
+
+`execute`方法是以上所有方法的底层调用。如：
+
+```java
+	@Override
+    @Nullable
+    public <T> T postForObject(String url, @Nullable Object request, Class<T> responseType, Map<String, ?> uriVariables)
+            throws RestClientException {
+ 
+        RequestCallback requestCallback = httpEntityCallback(request, responseType);
+        HttpMessageConverterExtractor<T> responseExtractor =
+                new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+        return execute(url, HttpMethod.POST, requestCallback, responseExtractor, uriVariables);
+    }
+```
+
+##### 转换器
+
+RestTemplate默认使用`HttpMessageConverter`实例将HTTP消息转换成POJO或者从POJO转换成HTTP消息。可以通过`setMessageConverters`注册其他的转换器。
+
+很多方法有一个responseType 参数，传入一个响应体所映射成的对象，然后底层用HttpMessageConverter将其做映射。
+
+```java
+HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+```
 
 ##### 异常捕获
 

@@ -2,9 +2,15 @@
 
 springboot 使用“约定优先配置”（convention over configuration）的思想来摆脱Spring框架中各类纷繁复杂的配置。和Spring框架紧密结合用于提升Spring开发者体验的工具。
 
-
+[Spring Boot](https://spring.io/projects/spring-boot)
 
 @SpringBootApplication
+
+
+
+### Application配置
+
+[Common Application properties](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html)
 
 ```yml
 server:
@@ -13,9 +19,7 @@ server:
     context-path: /app
 ```
 
-
-
-静态文件路径
+### 静态文件路径
 
 静态资源路径是指系统可以直接访问的路径，且路径下的所有文件均可被用户通过浏览器直接读取。
 
@@ -49,16 +53,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 }
 ```
-
-
-
-spring.factories
-
-
-
-WebMvcConfigurationSupport
-
-https://www.jianshu.com/p/c5c1503f5367
 
 ### 热部署
 
@@ -132,13 +126,17 @@ spring.devtools.restart.trigger-file=
 
 ### CommandLineRunner & ApplicationRunner
 
-CommandLineRunner和ApplicationRunner是Spring Boot所提供的接口，Spring Boot服务启动之后会自动地调用这两接口实现类Bean。通常用于在应用程序启动之初进行一些数据初始化的工作。
+CommandLineRunner和ApplicationRunner是Spring Boot所提供的接口，**Spring Boot服务启动之后**会自动地调用这两接口实现类Bean。通常用于在应用程序启动之初进行一些数据初始化的工作。
+
+注意，实现接口的类要注册到Spring容器中（类上加`@Component`）。
 
 在注入Bean的方法上添加`@Order`注解，Spring Boot就会按照注解指定的顺序从小到大的执行。
 
 > 寻找Order值的时候是会从目标Object的Class上去获取Order信息。因此在方法上使用该注解无效。
 
 这两个接口的区别只在于方法的参数，一个是原始的命令行参数，一个是经过解析后的。
+
+> CommandLineRunner/ApplicationRunner 服务于整个项目，如果是针对于某个类可使用`@PostConstruct`注解。
 
 #### CommandLineRunner
 
@@ -387,7 +385,7 @@ Spring 4.2后提供了`@CrossOrigin`注解，该注解可以标注于方法或�
 - `origins`	同value
 - `allowedHeaders`	允许请求头中的header，默认都支持
 - `exposedHeaders`	响应头中允许访问的header，默认为空
-- `methods`	支持请求的方法，比如GET，POST，PUT等，默认和Controller中的方法上标注的一致。
+- `methods`	支持请求的方法，比如GET，POST，PUT等，默认和Controller中的方法上标注的一致。（如果方法上只标注了 GET 方法，使用 OPTION 请求依旧跨域，需在方法上标注相应请求）。
 - `allowCredentials`	是否允许cookie随请求发送，使用时必须指定具体的域
 - `maxAge`	预请求的结果的有效期，默认30分钟
 
@@ -426,3 +424,9 @@ public FilterRegistrationBean corsFilter() {
     return bean;
 }
 ```
+
+## Tips
+
+#### controller使用多个@RequestBody
+
+https://blog.csdn.net/w605283073/article/details/82119284

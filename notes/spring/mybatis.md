@@ -1,16 +1,147 @@
-## Mybatis
+## MyBatis
 
-resultMap 
+MyBatis 是一种ORM持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生类型、接口和 Java 的 POJO（Plain Old Java Objects，普通老式 Java 对象）为数据库中的记录。
 
-list map JSON
+由于Mybatis是直接基于JDBC做了简单的映射包装，从性能角度看，JDBC>Mybatis>Hibernate。
+
+[mybatis](https://mybatis.org/mybatis-3/zh/index.html)
+
+### 配置
+
+> Spring + Mybatis
+
+#### 依赖 pom.xml
+
+```xml
+<!-- 3.4.6 will be the last version that supports Java 6. -->
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.4.6</version>
+</dependency>
+```
+
+#### properties
+
+属性可外部配置且可动态替换的，既可以在典型的 Java 属性文件中配置，亦可通过 properties 元素的子元素来传递。例如：
+
+```xml
+<properties resource="org/mybatis/example/config.properties">
+  <property name="username" value="dev_user"/>
+</properties>
+```
+
+`"${propertyname}"` 表示需要动态配置的属性值。
+
+如果属性在不只一个地方进行了配置，那么 MyBatis 将按照下面的顺序来加载：
+
+1. 在 properties 元素体内指定的属性首先被读取。
+2. 然后根据 properties 元素中的 resource 属性读取类路径下属性文件或根据 url 属性指定的路径读取属性文件，并覆盖已读取的同名属性。
+3. 最后读取作为方法参数传递的属性，并覆盖已读取的同名属性。
+
+从 MyBatis 3.4.2 开始，可以为占位符指定一个默认值。示例：`"${propertyname:defaultvalue}"`
+
+这个特性默认是关闭的。添加一个指定的属性来开启这个特性。
+
+```xml
+<properties>
+  <property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value" value="true"/> <!-- 启用默认值特性 -->
+</properties>
+```
+
+如果 `:` 已用作其他用途，应该通过设置特定的属性来修改分隔键名和默认值的字符。
+
+```xml
+<properties>
+  <property name="org.apache.ibatis.parsing.PropertyParser.default-value-separator" value="?:"/> <!-- 修改默认值的分隔符 -->
+</properties>
+```
+
+#### 全局配置文件 mybatis-config.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+  "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 根标签 -->
+<configuration>
+  <properties>
+	<property name="driver" value="com.mysql.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/mine?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8"/>
+	<property name="username" value="root"/>
+    <property name="password" value="123mysql"/>
+  </properties>
+
+  <!-- 环境，可以配置多个，default：指定采用哪个环境 -->
+  <environments default="test">
+    <!-- id：唯一标识 -->
+    <environment id="test">
+      <!-- 事务管理器，JDBC类型的事务管理器 -->
+      <transactionManager type="JDBC" />
+      <!-- 数据源，池类型的数据源 -->
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}" />
+        <property name="url" value="${url}" />
+        <property name="username" value="${username}" />
+        <property name="password" value="${password}" />
+      </dataSource>
+    </environment>
+  </environments>
+</configuration>
+```
+
+配置文档结构如下：
+
+- configuration（配置）
+  - properties（属性）
+  - settings（设置）
+  - typeAliases（类型别名）
+  - typeHandlers（类型处理器）
+  - objectFactory（对象工厂）
+  - plugins（插件）
+  - environments（环境配置）
+    - environment（环境变量）
+    - transactionManager（事务管理器）
+    - dataSource（数据源）
+  - databaseIdProvider（数据库厂商标识）
+  - mappers（映射器）
+
+
+
+搜索目录
+
+无参构造函数
+
+java 配置
+
+https://www.cnblogs.com/gede/p/11061859.html
+
+spring resource
+
+
+
+
+
+sqlSessionFactoryBeanName要用value而不用ref.
+
+在mybatis-spring1.1.0以前，是通过`<property name="sqlSessionFactory" ref="sqlSessionFactory"/>`将SqlSessionFactory对象注入到sqlSessionFactory，这样做可能会有一个问题，就是在初始化MyBatis时，jdbc.properties文件还没被加载进来，dataSource的属性值没有被替换，就开始构造sqlSessionFactory类，属性值就会加载失败。在1.1.0以后，MapperScannerConfigure提供了String类型的sqlSessionFactoryBeanName，这样将bean name注入到sqlSessionFactoryBeanName，这样就会等到spring初始化完成后，再构建sqlSessionFactory。
+
+
+
+insert 返回主键
+
+https://www.cnblogs.com/wsxdev/p/11714184.html
+
+
+
+https://blog.csdn.net/huangyaa729/article/details/84564711
+
+
 
 
 
 mybatis主要处理的就是sqlMap，\<select>的话，使用executeQuery来实现的，而\<insert>是用executeUpdate来实现的。两个的主要区别就是在结果返回上，executeQuery返回的是resultSet，而\<insert>是返回int的，虽然sql语句都可以执行但是意义不一样。
-
-
-
-Mybatis Generator
 
 selective 注意事项
 
@@ -40,7 +171,7 @@ SQL 映射文件只有很少的几个顶级元素（按照应被定义的顺序�
 - delete – 映射删除语句
 - select – 映射查询语句
 
-#### select
+
 
 
 
@@ -64,6 +195,14 @@ SQL 映射文件只有很少的几个顶级元素（按照应被定义的顺序�
 #### foreach
 
 批量插入
+
+
+
+
+
+resultMap 
+
+list map JSON
 
 ### Executor
 
@@ -134,8 +273,31 @@ MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，在 MyBatis 的�
 
 ## Mybatis Generater
 
-
-
 mybatis-generator-plugin
 
 mybatis-generator-plugin 通过该插件机制来强化Mybatis Generator本身，方便和减少我们平时的代码开发量。
+
+pom插件：
+
+```xml
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+                <configuration>
+                    <configurationFile>
+                        mybatis-generator/generatorConfig.xml
+                    </configurationFile>
+                    <overwrite>true</overwrite>
+                    <verbose>true</verbose>
+                </configuration>
+                <dependencies>
+                    <!- 数据库依赖及config中使用的包的依赖 ->
+                </dependencies>
+            </plugin>
+		</plugins>
+    </build>
+```
+
