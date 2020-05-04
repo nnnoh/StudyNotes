@@ -4,7 +4,7 @@
 
 `DefaultMQProducer`是生产者的默认实现。
 
-![img](C:\Users\Administrator\Desktop\tmp\Github\StudyNotes\notes\mq\rocketmq-2.assets\44770-93882440fe1c9b92.webp)
+![img](rocketmq-2.assets\44770-93882440fe1c9b92.webp)
 
 - MQAdmin用于定义一些管理接口
 - MQProducer用于定义一些生产者特有的接口
@@ -48,7 +48,7 @@
 
 ## 消费者
 
-![image-20200305165434483](C:\Users\Administrator\Desktop\tmp\Github\StudyNotes\notes\mq\rocketmq-2.assets\image-20200305165434483.png)
+![image-20200305165434483](rocketmq-2.assets\image-20200305165434483.png)
 
 RocketMQ实际上都是拉模式。`DefaultMQPushConsumer`实现了推模式，只是对拉消息服务做了一层封装，即拉到消息的时候触发业务消费者注册到这里的callback，而具体拉消息的服务是由`PullMessageService`实现。
 

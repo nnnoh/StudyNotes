@@ -151,9 +151,15 @@ AnnotationParserConverter的convert方法，最后几行调用了ParserConvert�
 
 @JsonFormat
 
+### 内容协商
 
+[自定义Spring Boot 内容协商](https://mrbird.cc/Spring-Boot-Diy-Resolver.html)
 
+**内容协商**机制是指客户端和服务器端就响应的资源内容进行交涉，然后提供给客户端最为适合的资源。
 
+在Spring Boot中，一个完整的内容协商过程如下图所示：
+
+![flow](../../img/springmvc.assets/askfljasdfneiw.png)
 
 ### 过滤器
 

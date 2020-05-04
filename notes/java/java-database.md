@@ -2,7 +2,7 @@
 
 ### JDBC
 
-https://www.runoob.com/java/java-mysql-connect.html
+[Java MySQL连接](https://www.runoob.com/java/java-mysql-connect.html)
 
 ### 数据库连接池
 

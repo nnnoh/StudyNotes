@@ -15,25 +15,27 @@
 
 ### 配置
 
+application.properties
+
 ```properties
 # Redis数据库索引（默认为0）
 spring.redis.database=0
 # Redis服务器地址
-spring.redis.host=localhost
+spring.redis.host=127.0.0.1
 # Redis服务器连接端口
 spring.redis.port=6379
 # Redis服务器连接密码（默认为空）
 spring.redis.password=
 # 连接池最大连接数（使用负值表示没有限制）
-spring.redis.pool.max-active=200
+spring.redis.jedis.pool.max-active=1000
 # 连接池最大阻塞等待时间（使用负值表示没有限制）
-spring.redis.pool.max-wait=10000
+spring.redis.jedis.pool.max-wait=10000ms
 # 连接池中的最大空闲连接
-spring.redis.pool.max-idle=10
+spring.redis.jedis.pool.max-idle=200
 # 连接池中的最小空闲连接
-spring.redis.pool.min-idle=0
+spring.redis.jedis.pool.min-idle=0
 # 连接超时时间（毫秒）
-spring.redis.timeout=1000
+spring.redis.timeout=5000ms
 ```
 
 ### RedisTemplate 配置
@@ -76,7 +78,7 @@ public class RedisConfig {
 }
 ```
 
-https://blog.csdn.net/yifanSJ/article/details/79513179
+[RedisTemplate和StringRedisTemplate的区别](https://blog.csdn.net/yifanSJ/article/details/79513179)
 
 ### RedisTemplate使用
 
@@ -645,6 +647,12 @@ public final class RedisUtil {
     }
 }
 ```
+
+消息队列
+
+RedisMessageListenerContainer
+
+MessageListenerAdapter
 
 ## MongoDB
 

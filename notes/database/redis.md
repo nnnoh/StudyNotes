@@ -1,5 +1,15 @@
 ## Redis
 
+**应用场景**：
+
+1. 会话Session存储
+2. 页面/信息缓存
+3. 消息队列，比如支付
+4. 顺序排列或计数
+5. 发布、订阅消息（消息通知）
+
+
+
 ### Redis 持久化
 
 Redis 提供了不同级别的持久化方式：
@@ -18,3 +28,7 @@ https://www.cnblogs.com/rjzheng/p/9096228.html#!comments
 ### Redis 事务
 
 ### Redis 哨兵机制
+
+### Tips
+
+远程访问

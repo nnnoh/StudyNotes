@@ -6,8 +6,6 @@ springboot 使用“约定优先配置”（convention over configuration）的�
 
 @SpringBootApplication
 
-
-
 ### Application配置
 
 [Common Application properties](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html)
@@ -58,6 +56,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 热部署就是在修改了后端代码后不需要手动重启，工具会帮我们快速的自动重启使修改生效。
 
+> 修改文件，build project后，热部署工具就会自动重启使修改生效。
+
 其深层原理是使用了两个`ClassLoader`，一个`Classloader`加载那些不会改变的类（第三方Jar包），另一个`ClassLoader`加载会更改的类，称为`restart ClassLoader`，这样在有代码更改的时候，原来的`restart ClassLoader` 被丢弃，重新创建一个`restart ClassLoader`，由于需要加载的类相比较少，所以实现了较快的重启时间。
 
 通过使用`Spring-Boot-devtools`可以实现Spring Boot项目的热部署。
@@ -75,6 +75,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 devtools会监听classpath下的文件变动，并且会立即重启应用（发生在保存时机），因为其采用的虚拟机机制，该项重启是很快的。
 
 在Eclipse中生效还需要增加`spring-boot-maven-plugin`插件，并开启Build Automatically。
+
+开启热部署支持：
 
 ```xml
 <build>
@@ -124,6 +126,18 @@ spring.devtools.restart.quiet-period=400ms
 spring.devtools.restart.trigger-file=
 ```
 
+### 自定义 Favicon
+
+Spring Boot 提供了一个默认的 Favicon，也就是 Spring 的 logo ，我们可以根据自己企业的需要来定制它。
+
+首先需要在 application.propertie 中关闭原有的logo
+
+```
+spring.mvc.favicon.enable=false 
+```
+
+在将自己的 favicon.ico 放到`src/main/resources/static`下 ，然后再重新启动项目就可以了。
+
 ### CommandLineRunner & ApplicationRunner
 
 CommandLineRunner和ApplicationRunner是Spring Boot所提供的接口，**Spring Boot服务启动之后**会自动地调用这两接口实现类Bean。通常用于在应用程序启动之初进行一些数据初始化的工作。
@@ -167,6 +181,10 @@ public interface ApplicationRunner {
 ```
 
 - args参数为封装过后的命令行参数。该对象既可以拿到原始命令行参数，也可以拿到解析后的参数。
+
+### Servlet注册
+
+https://blog.csdn.net/javarrr/article/details/89920656
 
 ### 防御XSS
 
@@ -424,6 +442,24 @@ public FilterRegistrationBean corsFilter() {
     return bean;
 }
 ```
+
+### Actuator监控
+
+Actuator 用于监控应用，提供了一系列的RESTful API让我们可以更为细致的了解各种信息。
+
+[Actuator 服务监控与管理](https://www.cnblogs.com/lywJ/p/10715191.html)
+
+### 元数据
+
+元数据文件，提供所有支持的配置属性的详细信息，旨在允许编写application.properties 或application.yml文件时提供上下文帮助和“代码完成” 。
+
+主要的元数据文件是在编译器通过处理所有被@ConfigurationProperties注解的节点来自动生成的。
+
+[配置元数据](https://blog.csdn.net/L_Sail/article/details/70342023)
+
+[自定义配置](https://www.cnblogs.com/yangtianle/p/9065365.html)
+
+[configuration-metadata](https://docs.spring.io/spring-boot/docs/2.1.7.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-format)
 
 ## Tips
 

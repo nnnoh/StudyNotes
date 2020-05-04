@@ -105,11 +105,28 @@ sh bin/mqshutdown namesrv
 sh bin/mqshutdown broker
 ```
 
+#### 配置
+
+```shell
+cp ./conf/broker.conf ./conf/broker1.properties
+nohup bin/mqbroker -c ./conf/broker1.properties -n localhost:9876 
+```
+
+配置参数：
+
+[rocketmq配置](https://www.jianshu.com/p/12194f8738d7)
+
+> Windows环境的目录配置使用形如`d:/Soft/WorkDep/rocketmq-all-4.7.0-bin-release/store`的格式。
+
+##### Q&A
+
+[解决rocketmq发送消息报错： service not available now, maybe disk full, CL: 0.87 CQ: 0.87 INDEX: 0.87, maybe your broker machine memory too small](https://www.cnblogs.com/shenrong/p/12670555.html)
+
 ### 集群部署
 
 #### 集群特点
 
-![img](C:\Users\Administrator\Desktop\tmp\Github\StudyNotes\notes\mq\rocketmq.assets\12619159-a858d38e0b38c406.webp)
+![img](../../img/rocketmq-1.assets/12619159-a858d38e0b38c406.webp)
 
 ##### Name Server
 
@@ -169,6 +186,10 @@ Consumer每隔30s（由ClientConfig中heartbeatBrokerInterval决定）向所有�
 ### Console
 
 [rocketmq-console](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
+
+```cmd
+java -jar rocketmq-console-ng-1.0.0.jar --server.port=12581 --rocketmq.config.namesrvAddr=10.89.0.64:9876;10.89.0.65:9876
+```
 
 > Q: `nested exception is java.lang.NoClassDefFoundError: javax/xml/bind/ValidationException`
 >

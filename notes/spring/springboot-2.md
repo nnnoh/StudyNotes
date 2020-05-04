@@ -18,8 +18,21 @@ https://www.cnblogs.com/leihuazhe/p/7743479.html
 
 spring.factories
 
+
+
+### SpringBootServletInitializer 
+
+[SpringBoot 中的 ServletInitializer](https://blog.csdn.net/qq_28289405/article/details/81279742)
+
+[SpringBootServletInitializer 启动spring boot](https://blog.csdn.net/yanyuan1993/article/details/82108829)
+
+[Spring中WebApplicationInitializer](https://blog.csdn.net/zq17865815296/article/details/79464403)
+
+
+
 启动原理
 
 https://www.cnblogs.com/zheting/p/6707035.html
 
 https://www.cnblogs.com/davidwang456/p/9172685.html
+

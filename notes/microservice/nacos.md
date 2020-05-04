@@ -157,7 +157,7 @@ pom.xml依赖，配置文件与服务提供模块类似。
 向服务发起请求时直接使用服务名，Spring Cloud会将请求拦截下来，然后（通过负载均衡器）选出节点，并替换服务名部分为具体的ip和端口，从而实现基于服务名的负载均衡调用。也可以使用spring cloud common中的负载均衡接口选取服务提供节点。
 
 ```java
-ServiceInstance serviceInstance = loadBalancerClient.choose("nacos-provide");
+			ServiceInstance serviceInstance = loadBalancerClient.choose("nacos-provide");
             String url = serviceInstance.getUri() + "/xxx"
 ```
 
@@ -424,7 +424,7 @@ WebClient是Spring 5中最新引入的，可以将其理解为reactive版的Rest
 
 ##### Data ID
 
-Data ID格式：`${prefix}-${spring.profile.active}.${file-extension}`
+Data ID默认格式：`${prefix}-${spring.profile.active}.${file-extension}`
 
 - prefix 默认为 spring.application.name 的值，也可以通过配置项 spring.cloud.nacos.config.prefix来配置。
 - spring.profile.active 即为当前环境对应的 profile，注意：当 spring.profile.active 为空时，对应的连接符 - 也将不存。
@@ -592,3 +592,24 @@ spring.cloud.nacos.config.refreshable-dataids=actuator.properties,log.properties
 ### 配置中心原理
 
 http://blog.didispace.com/nacos-yuanli-1/
+
+### Tips
+
+#### 指定ip
+
+```yml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        network-interface: eth0
+        #当IP未配置时，注册的IP为此网卡所对应的IP地址，如果此项也未配置，则默认取第一块网卡的地址
+		ip: 10.2.11.11
+		# 优先级最高
+		port: 8080
+		# 默认情况下不用配置，会自动探测
+```
+
+https://blog.csdn.net/zimou5581/article/details/91041239
+
+多网卡配置

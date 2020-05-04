@@ -25,6 +25,22 @@ SpringBoot项目中静态资源都放在`resources`目录下，其中`static`目
 - **第五章第一节第8条（强制）**——varchar是可变长字符串，不预先分配存储空间，长度不要超过5000个字符。如果存储长度大于此值，则应定义字段类型为text，独立出来一张表，用主键来对应，避免影响其他字段的索引效率；
 - **第五章第三节第6条（强制）**——不得使用外键与级联，一切外键概念必须在应用层解决；
 
+### Tips
+
+#### 单表多次查询 & 多表连接查询
+
+- 单表多次查询 与 多表连接查询 相比有更多好处。
+
+  但目前多表连接查询更常见。所以，建议在保证性能的情况下，使用多表连查。
+
+#### UUID & 自增ID
+
+https://www.zhihu.com/question/43500172
+
+https://blog.csdn.net/weixin_43101678/article/details/82229438
+
+https://blog.csdn.net/u010266988/article/details/88530093
+
 ### Mybatis
 
 对于 text 字段，mybatis 生成逆向工程的时候会单独将text提取出来，生成 WithBLOBs 后缀的查询和修改的语句。可在配置 table 时使用 columnOverride 标签将 text 类型当成 varchar 类型，避免额外的方法。
@@ -84,6 +100,10 @@ idea -> Project Settings -> Artifacts
 -  级联调用 obj.getA().getB().getC()；一连串调用，易产生 NPE。 
 
    正例：使用 JDK8 的 Optional 类来防止 NPE 问题。
+
+#### Question
+
+[Service层返回错误信息,异常 or 返回值 ? ](https://www.v2ex.com/t/58022)
 
 ### 编程
 

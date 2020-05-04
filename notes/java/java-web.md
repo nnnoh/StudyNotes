@@ -143,6 +143,10 @@ https://www.w3cschool.cn/servlet/servlet-sxoy2p19.html
 
 https://www.cnblogs.com/yjhrem/articles/3160864.html
 
+HttpContext
+
+ServletContext
+
 ### Tips
 
 #### 使用示例
@@ -373,6 +377,12 @@ https://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/index.html
 
 https://www.ibm.com/developerworks/cn/java/j-lo-servlet/
 
+### 日志
+
+https://www.cnblogs.com/qlqwjy/p/8036091.html
+
+https://www.cnblogs.com/operationhome/p/9680040.html
+
 ### Tips
 
 #### 修改 Tomcat 服务器默认端口
@@ -388,6 +398,29 @@ https://www.ibm.com/developerworks/cn/java/j-lo-servlet/
 
 
 CATALINA_HOME与CATALINA_BASE
+
+以Tomcat6.0为例，其Tomcat目 录结构如下：
+
+bin (运行脚本） conf (配置文件） lib (核心库文件） logs (日志目录) temp (临时目录)
+
+webapps (自动装载的应用程序的目录） work (JVM临时文件目录[java.io.tmpdir])
+
+其中只有 bin 和 lib 目录被多个tomcat示例公用，其它目录conf、logs、temp、webapps和work 每个Tomcat实例必须拥有其自己独立的备份。
+
+- catalina.home(安装目录)：指向公用信息的位置，就是bin和lib的父目录。
+- catalina.base(工作目录)：指向每个Tomcat目录私有信息的位置，就是conf、logs、temp、webapps和work的父目录。
+
+https://blog.csdn.net/wojiushiwo945you/article/details/73480205
+
+https://www.iteye.com/blog/yuri-liuyu-960964
+
+
+
+war exploded
+
+https://blog.csdn.net/xlgen157387/article/details/56498938
+
+tomcat-users.xml
 
 ## Tips
 

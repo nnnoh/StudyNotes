@@ -148,6 +148,8 @@ Spring Cloud框架下pom.xml依赖：
 
 ### 自定义Token获取方式
 
+[OAuth2自定义Token获取方式](https://mrbird.cc/Spring-Security-OAuth2-Customize.html)
+
 #### 自定义用户名密码方式获取令牌
 
 Spring Security OAuth2自带的令牌获取方式可以归纳为以下几个步骤：
@@ -167,3 +169,9 @@ graph TD
 ```
 
 #### 短信验证码获取令牌
+
+
+
+[OAuth2自定义令牌配置](https://mrbird.cc/Spring-Security-OAuth2-Token-Config.html)
+
+[OAuth2 SSO](https://mrbird.cc/Spring-Security-OAuth2-SSO.html)

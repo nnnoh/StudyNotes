@@ -12,8 +12,6 @@
 1. JCL(commons-logging)：比较流行的日志框架，非常多框架都依赖JCL，比如Spring等。
 2. SLF4j：提供新的API，初衷是配合Logback使用，但同一时候兼容Log4j。
 
-
-
 https://blog.csdn.net/backbug/article/details/78655664
 
 https://blog.csdn.net/chinabestchina/article/details/85108585
@@ -36,7 +34,7 @@ logback是不推荐使用相对路径来记录日志文件
 
 
 
-slf4j + logback 配置，其他简介。
+slf4j + logback 配置
 
 property  , no properties
 
@@ -94,6 +92,10 @@ pom.xml 示例（还需引入日志系统包）
 > 不同 StaticLoggerBinder 的 getLoggerFactory 实现不同，获得 ILoggerFactory 之后调用 getLogger 即获得具体的Logger。
 
 slf4 循环 堆栈溢出
+
+### Logback
+
+[logback的使用和配置](https://blog.csdn.net/zzzgd_666/article/details/80458444)
 
 ### Tips
 

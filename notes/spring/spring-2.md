@@ -1,6 +1,6 @@
 ### 配置文件
 
-配置优先级排列：
+配置优先级排列（从高到低）：
 
 1. 命令行参数
 2. java:comp/env 里的 JNDI 属性
@@ -13,6 +13,18 @@
 9. SpringApplication.setDefaultProperties 声明的默认属性
 
 https://www.cnblogs.com/jingmoxukong/p/10151785.html
+
+spring boot项目中同时存在application.properties和application.yml文件时，两个文件都有效，但是application.properties的优先级会比application.yml高。
+
+不同位置的application配置文件优先级（从高到低）：
+
+1. ./config/application.yml
+
+2. ./application.yml
+
+3. ./src/main/resources/config/application.yml
+
+4. ./src/main/resources/application.yml
 
 #### 加载配置文件
 
@@ -536,7 +548,13 @@ IOC容器中的组件默认是单例的，容器启动的时候会调用方法�
 
 `@Lazy` 懒加载的功能是，在单例模式中，IOC容器创建的时候不会马上去调用方法创建对象并注册，只有当组件**第一次**被使用的时候才会调用方法创建对象并加入到容器中。
 
-#### 条件注册组件
+#### 基本条件注册组件
+
+通常，通过以下任何方式使用：
+
+1. 在任何直接或间接使用@Component和@Configuration的类上作为一个类型注解使用
+2. 作为元注解，用于组成自定义构造型注解
+3. 作为任何@Bean方法的方法级注解
 
 ##### @Conditional
 
@@ -701,6 +719,10 @@ Object cherryFactoryBean = context.getBean("&xxxFactoryBean");
 
 ### 自动装配
 
+
+
+https://blog.csdn.net/rongxiang111/article/details/78881371
+
 @Component 与 @Bean：
 
 - @Component和@Bean都是用来注册Bean并装配到Spring容器中。
@@ -709,9 +731,42 @@ Object cherryFactoryBean = context.getBean("&xxxFactoryBean");
 
 - 对于第三方库中的组件，没有办法在它的类上添加@Component注解的，因此就不能使用自动化装配的方案。
 
-https://blog.csdn.net/ttjxtjx/article/details/49866011
+[@Bean在@Configuration和在@Component中的区别](https://blog.csdn.net/ttjxtjx/article/details/49866011)
 
 https://mrbird.cc/deepin-springboot-autoconfig.html
+
+#### 条件注册注解
+
+### 依赖注入
+
+##### @Resource
+
+默认按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来注入。
+
+属性：
+
+1. name: Spring 将 name 的属性值解析为 bean 的名称， 使用 byName 的自动注入策略
+2. type: Spring 将 type的属性值解析为 bean 的类型，使用 byType 的自动注入策略
+
+装配顺序：
+
+1. 如果同时指定了 name 属性和 type 属性，那么 Spring 将从容器中找唯一匹配的 bean 进行装配，找不到则抛出异常
+2. 如果指定了 name 属性值，则从容器中查找名称匹配的 bean 进行装配，找不到则抛出异常
+3. 如果指定了 type 属性值，则从容器中查找类型匹配的唯一的 bean 进行装配，找不到或者找到多个都会抛出异常
+4. 如果都不指定，则会自动按照 byName 方式进行装配， 如果没有匹配，则回退一个原始类型进行匹配，如果匹配则自动装配
+
+##### @Autowried
+
+默认按照类型进行装配注入。默认情况下，它要求依赖对象必须存在，如果允许 null 值，可以设置它 required 为false。
+
+如果想要按名称进行装配的话，可以添加一个 @Qualifier 注解指定名称。
+
+**@Resource 和 @Autowried 区别**
+
+- @Resource默认是按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来装配注入；
+- @Autowired默认是按照类型装配注入的，如果想按照名称来转配注入，则需要结合@Qualifier一起使用；
+- @Resource注解是由J2EE提供，而@Autowired是由Spring提供，故减少系统对spring的依赖建议使用@Resource的方式；
+- @Resource和@Autowired都可以书写标注在字段或者该字段的setter方法之上
 
 ### Aware接口
 
@@ -730,6 +785,61 @@ Aware 接口，从字面上理解就是感知捕获。Bean对Spring容器的存�
 - BeanFactoryAware  BeanFactory感知
 
 子接口均提供了一个 set 方法，方法的参数就是当前 Bean 需要感知的内容，因此我们需要在 Bean 中重写该方法，声明相关的成员变量来接受这个参数。接收到这个参数后，就可以通过这个参数获取到容器的详细信息。
+
+示例：
+
+```java
+@Component
+public class ApplicationContextUtil
+        implements ApplicationContextAware {
+    private static ApplicationContext context;
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
+    public static ApplicationContext getApplicationContext() {
+        return context;
+    }
+    /**
+     * 通过name获取 Bean.
+     *
+     * @param className
+     * @return
+     */
+    public Object getBean(String className) {
+        return getApplicationContext().getBean(className);
+    }
+    /**
+     * 通过class获取Bean.
+     *
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> T getBean(Class<T> clazz) {
+        return getApplicationContext().getBean(clazz);
+    }
+    /**
+     * 通过name,以及Clazz返回指定的Bean
+     *
+     * @param name
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> T getBean(String name, Class<T> clazz) {
+        return getApplicationContext().getBean(name, clazz);
+    }
+}
+```
+
+### 国际化
+
+https://www.jianshu.com/p/e2eae08f3255
+
+https://blog.csdn.net/x_iya/article/details/78430023
+
+https://blog.51cto.com/lavasoft/184605
 
 ### 拦截器
 
@@ -786,6 +896,8 @@ public class TestEventListener implements ApplicationListener<TestEvent>{
 ```
 
 通过`ApplicationContext`的`publishEvent`方法进行事件发布。`ApplicationContext`实现了`ApplicationEventPublisher`接口具有事件发布能力。
+
+也可直接实现`ApplicationEventPublisherAware`，通过`ApplicationEventPublisher `的`publishEvent`方法触发事件。
 
 ```java
 @Component

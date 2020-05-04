@@ -915,11 +915,9 @@ var str=unescape("token=-1223249887; username=user".match(/(^| )username=([^;]*)
 
 ### 新增
 
-let
+let & const & 块级作用域
 
-const
-
-块级作用域
+[JavaScript let 和 const](https://www.runoob.com/js/js-let-const.html)
 
 ### Tips
 

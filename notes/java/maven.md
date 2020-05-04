@@ -262,9 +262,29 @@ Archetype项目：
 
 ### pom示例
 
-#### 基本元素
-
 #### 常用插件
+
+##### 指定编译的工具和jdk版本
+
+```xml
+ 	<properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+```
 
 ### Tips
 

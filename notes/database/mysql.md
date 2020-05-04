@@ -231,7 +231,9 @@ MySQL中没有专门存储货币的数据类 型，一般情况下使用DECIMAL(
 
 varchar "" ? '' ?
 
+https://segmentfault.com/a/1190000019179789
 
+https://www.cnblogs.com/zhuyeshen/p/11642211.html
 
 MySQL没有boolean类型。建表时使用 boolean 类型，MySQL 会将它替换成`tinyint(1)`。
 
@@ -246,6 +248,8 @@ https://blog.csdn.net/yirentianran/article/details/79318103
 int(M)
 
 https://www.imooc.com/article/41543
+
+https://www.cnblogs.com/i6010/articles/11124993.html
 
 ### 索引
 
@@ -844,9 +848,15 @@ select for update
 
 ### Tips
 
+[MySQL常用的SHOW语句](https://www.cnblogs.com/hankyoon/p/5169638.html)
+
+#### 时间默认值
+
 create_time 设置 DEFAULT CURRENT_TIMESTAMP属性
 
 update_time 设置 DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP属性
+
+一般情况，create_time 和 update_time 由后台指定，而不用 DEFAULT 设置。
 
 datetime timestamp 区别
 
@@ -871,6 +881,108 @@ order by xxx nulls last 替代方案
 ```mysql
 select * from incr_order order by isnull(id)-1,id
 ```
+
+#### 远程访问
+
+grant all privileges on *.* to '用户名'@'IP地址' identified by '密码';
+
+#### 数据库导入导出
+
+**数据库导出:**
+
+```cmd
+mysqldump -u用户名 -p 数据库名 > 数据库名.sql
+```
+
+**只导出表结构:**
+
+```cmd
+mysqldump -u用户名 -p -d 数据库名 > 数据库名.sql 
+```
+
+**数据库导入：**
+
+1. `create database dbname;`
+2. `use dbname;`
+3. `set names utf8mb4;`
+4. `source xxx.sql;`
+
+或者
+
+```cmd
+mysqldump -uroot -p dbname > dbname .sql
+```
+
+#### utf8 & utf8mb4
+
+MySQL在5.5.3之后增加了这个utf8mb4的编码，mb4就是most bytes 4的意思，专门用来兼容四字节的unicode。
+
+mysql支持的 utf8 编码最大字符长度为 3 字节，如果遇到 4 字节的宽字符就会插入异常。
+
+三个字节的 UTF-8 最大能编码的 Unicode 字符是 0xffff，也就是 Unicode 中的基本多文种平面(BMP)。也就是说，任何不在基本多文本平面的 Unicode字符，都无法使用 Mysql 的 utf8 字符集存储。包括 Emoji 表情和很多不常用的汉字，以及任何新增的 Unicode 字符等等。
+
+> 最初的 UTF-8 格式使用一至六个字节，最大能编码 31 位字符。最新的 UTF-8 规范只使用一到四个字节，最大能编码21位，正好能够表示所有的 17个 Unicode 平面。
+
+Mysql 中的字符串长度算的是字符数而非字节数，对于 CHAR 数据类型来说，需要为字符串保留足够的长。当使用 utf8 字符集时，需要保留的长度就是 utf8 最长字符长度乘以字符串长度，所以这里理所当然的限制了 utf8 最大长度为 3，比如 CHAR(100)  Mysql 会保留 300字节长度。
+
+对于 CHAR 类型数据，utf8mb4 会多消耗一些空间，根据 Mysql 官方建议，使用 VARCHAR  替代 CHAR。
+
+#### 注释
+
+**创建表的时候写注释**
+
+```sql
+create table tbl_name(
+	field_name int comment '字段的注释'
+)comment='表的注释';
+```
+
+**修改表的注释**
+
+```sql
+alter table tbl_name comment '修改后的表的注释';
+```
+
+**修改字段的注释**
+
+```sql
+alter table tbl_name modify column field_name int comment '修改后的字段注释';
+```
+
+字段名和字段类型照写即可
+
+**查看表注释的方法**
+
+```sql
+-- 在生成的SQL语句中看
+show create table tbl_name;
+-- 在元数据的表里面看
+use information_schema;
+select * from TABLES where TABLE_SCHEMA='db_name' and TABLE_NAME='tbl_name' \G
+```
+
+**查看字段注释的方法**
+
+```sql
+-- show
+show full columns from test1;
+-- 在元数据的表里面看
+select * from COLUMNS where TABLE_SCHEMA='db_name' and TABLE_NAME='tbl_name' \G
+```
+
+#### 保留字
+
+[Keywords and Reserved Words](https://dev.mysql.com/doc/refman/8.0/en/keywords.html)
+
+#### 引号
+
+https://www.cnblogs.com/xuhaojun/p/9145581.html
+
+https://www.cnblogs.com/xuejianbest/p/10285069.html
+
+https://blog.csdn.net/czh500/article/details/90721286
+
+https://www.imooc.com/wenda/detail/555237
 
 ### ERR
 

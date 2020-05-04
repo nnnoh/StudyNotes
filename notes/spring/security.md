@@ -435,7 +435,6 @@ public class ImageCode {
         sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
         ImageIO.write(imageCode.getImage(), "jpeg", response.getOutputStream());
     }
-
 ```
 
 - `org.springframework.social.connect.web.HttpSessionSessionStrategy`对象封装了一些处理Session的方法，包含了`setAttribute`、`getAttribute`和`removeAttribute`方法。
@@ -1507,4 +1506,6 @@ Spring Security为我们提供了一个`AfterInvocationManager`接口，它允�
 
 ### 角色的继承
 
-当要求`ROLE_ADMIN`拥有所有的`ROLE_USER`所具有的权限，我们可以给拥有`ROLE_ADMIN`角色的用户同时授予`ROLE_USER`角色来达到这一效果或者修改需要`ROLE_USER`进行访问的资源使用`ROLE_ADMIN`也可以访问。Spring Security为我们提供了一种更为简便的办法，那就是角色的继承，它允许我们的`ROLE_ADMIN`直接继承`ROLE_USER`，这样所有`ROLE_USER`可以访问的资源`ROLE_ADMIN`也可以访问。定义角色的继承我们需要在`ApplicationContext`中定义一个`RoleHierarchy`，然后再把它赋予给一个`RoleHierarchyVoter`，之后再把该`RoleHierarchyVoter`加入到我们基于`Voter`的`AccessDecisionManager`中，并指定当前使用的`AccessDecisionManager`为我们自己定义的那个。
+当要求`ROLE_ADMIN`拥有所有的`ROLE_USER`所具有的权限，我们可以给拥有`ROLE_ADMIN`角色的用户同时授予`ROLE_USER`角色来达到这一效果或者修改需要`ROLE_USER`进行访问的资源使用`ROLE_ADMIN`也可以访问。Spring Security为我们提供了一种更为简便的办法，那就是角色的继承，它允许我们的`ROLE_ADMIN`直接继承`ROLE_USER`，这样所有`ROLE_USER`可以访问的资源`ROLE_ADMIN`也可以访问。
+
+定义角色的继承我们需要在`ApplicationContext`中定义一个`RoleHierarchy`，然后再把它赋予给一个`RoleHierarchyVoter`，之后再把该`RoleHierarchyVoter`加入到我们基于`Voter`的`AccessDecisionManager`中，并指定当前使用的`AccessDecisionManager`为我们自己定义的那个。

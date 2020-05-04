@@ -96,6 +96,39 @@ Scanner 有很少的缓冲区(1KB 字符缓冲)相对于 BufferedReader(8KB字�
 
 BufferedReader 相对于 Scanner 来说要快一点，因为 Scanner 对输入数据进行类解析，而 BufferedReader 只是简单地读取字符序列。
 
+### Properties 类
+
+Java.util.Properties，该类主要用于读取Java的配置文件。
+
+不同的编程语言有自己所支持的配置文件，配置文件中很多变量是经常改变的，为了方便用户的配置，能让用户够脱离程序本身去修改相关的变量设置。
+
+在Java中，其配置文件常为.properties文件，是以键值对的形式进行参数配置的。
+
+#### 常用方法
+
+`getProperty(String key)` 在此属性列表中搜索具有指定键的属性。如果在此属性列表中找不到该键，则会检查默认属性列表及其默认值（递归）。如果未找到该属性，则该方法返回默认值参数。
+
+`list(PrintStream out)` 将此属性列表打印到指定的输出流。此方法对于调试很有用。
+
+`load(InputStream inStream)` 从输入字节流中读取属性列表（键和元素对）。输入流采用加载（Reader）中指定的简单的面向行的格式，并假定使用ISO 8859-1字符编码;即每个字节是一个Latin1字符。不在Latin1中的字符和某些特殊字符在使用Unicode转义符的键和元素中表示。 此方法返回后，指定的流仍保持打开状态。
+
+`setProperty(String key, String value)` 调用 Hashtable 的方法 put 。他通过调用基类的put方法来设置 键值对。
+
+`store(OutputStream out, String comments)` 将此Properties表中的此属性列表（键和元素对）以适合使用load（InputStream）方法加载到Properties表的格式写入输出流。 此Properties方法不会写出此Properties表的defaults表中的属性（如果有）。
+
+`storeToXML(OutputStream os, String comment, String encoding)` 使用指定的编码发出表示此表中包含的所有属性的XML文档。
+
+`clear()` 清除此哈希表，使其不包含任何键。
+
+`stringPropertyNames()` 返回此属性列表中的一组键，其中键及其对应的值是字符串，如果尚未从主属性列表中找到相同名称的键，则包括默认属性列表中的不同键。键或键不是String类型的属性将被省略。
+
+### Runtime 类
+
+Runtime类封装了运行时的环境。每个 Java 应用程序都有一个 Runtime 类实例，使应用程序能够与其运行的环境相连接。
+
+[java中Runtime类](https://www.cnblogs.com/lixiaolun/p/4320754.html)
+
+
 ## 注解
 
 https://blog.csdn.net/javazejian/article/details/71860633
