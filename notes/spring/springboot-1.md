@@ -182,10 +182,6 @@ public interface ApplicationRunner {
 
 - args参数为封装过后的命令行参数。该对象既可以拿到原始命令行参数，也可以拿到解析后的参数。
 
-### Servlet注册
-
-https://blog.csdn.net/javarrr/article/details/89920656
-
 ### 防御XSS
 
 跨站脚本攻击(Cross Site Scripting)，恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。

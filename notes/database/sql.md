@@ -830,7 +830,7 @@ select * from tbl1 join tbl2 using(xxx);
 
 ##### SQL JOINS
 
-![img](C:/Users/Administrator/Desktop/tmp/Github/StudyNotes/notes/database/mysql.assets/sql-join.png)
+![img](../../img/sql.assets/sql-join.png)
 
 #### 组合查询
 

@@ -1,4 +1,4 @@
-## JSP
+# JSP
 
 JSP，全名为Java Server Pages，其根本就是一个简化的 Servlet 设计，实现了在 Java 当中使用 HTML 标签，JSP 是一种动态网页技术标准也是 JavaEE 标准，JSP 与 Servlet 一样是在服务器端执行的。
 
@@ -20,7 +20,7 @@ JSP等模板引擎作为伪前端技术（实际上是服务器端技术）有�
 
 4. 前端与后端数据交换XML/JSON支持不够灵活，不是天生支持Ajax
 
-### 使用
+## 使用
 
 ```xml
 <%@page isELIgnored="false"%>
@@ -34,7 +34,7 @@ JSP等模板引擎作为伪前端技术（实际上是服务器端技术）有�
 
 引入 servlet 类使用其提供的功能。
 
-## Servlet
+# Servlet
 
 Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。
 
@@ -58,7 +58,7 @@ Java Servlet 是运行在带有支持 Java Servlet 规范的解释器的 web 服
 
 Servlet 可以使用 **javax.servlet** 和 **javax.servlet.http** 包创建，它是 Java 企业版的标准组成部分。这些类实现 Java Servlet 和 JSP 规范。
 
-### Session
+## Session
 
 HTTP 是一种无状态协议，这意味着每次客户端检索网页时，客户端打开一个单独的连接到 Web 服务器，服务器会自动不保留之前客户端请求的任何记录。
 
@@ -82,7 +82,7 @@ HTTP 是一种无状态协议，这意味着每次客户端检索网页时，客
 
   URL 重写在浏览器不支持 cookie 时也能够很好地工作，但是它的缺点是会动态生成每个 URL 来为页面分配一个 session 会话 ID。
 
-#### HttpSession
+### HttpSession
 
 Servlet 使用 HttpSession 接口创建一个 HTTP 客户端和 HTTP 服务器之间的 session 会话。会话持续一个指定的时间段，跨多个连接或页面请求。
 
@@ -95,7 +95,7 @@ getSession(boolen isNew)
 - true : 等同于 getSession()
 - false : 如存在会话，则返回该会话，否则返回 null
 
-#### HttpSession 常用方法
+### HttpSession 常用方法
 
 移除特定的属性：`public void removeAttribute(String name) `
 
@@ -147,9 +147,11 @@ HttpContext
 
 ServletContext
 
-### Tips
+[servlet的url-pattern匹配规则](https://www.cnblogs.com/canger/p/6084846.html)
 
-#### 使用示例
+## Tips
+
+### 使用示例
 
 ```java
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -210,7 +212,7 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
     }
 ```
 
-#### 统计在线人数
+### 统计在线人数
 
 1. 使用 HttpSessionListener
 
@@ -228,7 +230,7 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
 
    ServletContextListener 创建用户列表。
 
-## web.xml
+# web.xml
 
 web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页面、servlet、servlet-mapping、filter、listener、启动加载级别等。
 
@@ -236,9 +238,9 @@ web.xml 文件是用来初始化配置信息（非必须）。比如 Welcome 页
 
 https://www.cnblogs.com/yqskj/articles/2233061.html
 
-### 路径
+## 路径
 
-#### classpath
+### classpath
 
 classpath 指 **WEB-INF/classes/** 这个目录的路径。
 
@@ -275,9 +277,9 @@ version 3.1 -- Tomcat8.5, Servlet 3.1 ok
 </web-app>
 ```
 
-### 标签
+## 标签
 
-#### load-on-startup
+### load-on-startup
 
 1. load-on-startup 元素标记容器是否应该在web应用程序启动的时候就加载这个servlet，(实例化并调用其init()方法)。
 2. 它的值必须是一个整数，表示servlet被加载的先后顺序。
@@ -286,13 +288,13 @@ version 3.1 -- Tomcat8.5, Servlet 3.1 ok
 
 
 
-## Tomcat
+# Tomcat
 
-### Install
+## Install
 
 > Tomcat 有安装版和解压版两种
 
-#### 配置环境变量
+### 配置环境变量
 
 1. 新建变量名：CATALINA_HOME，变量值：D:\WorkSpaceByJava\DevtTools\Apache-Tomcat-8.0.23
 
@@ -311,7 +313,9 @@ service.bat remove 可以移除注册服务
 
 [Eclipse开发JavaWeb项目配置Tomcat](https://blog.csdn.net/zs20082012/article/details/79138204)
 
-### 目录结构
+## 目录结构
+
+### Tomcat目录
 
 bin：目录存放一些启动运行Tomcat的可执行程序和相关内容。
 
@@ -327,7 +331,7 @@ wabapps：目默认的站点根目录，可以更改。当服务器启动时，�
 
 work：目录用于在服务器运行时过度资源，简单来说，就是存储jsp、servlet翻译、编译后的结果。
 
-
+### Java Web项目目录
 
 WEB-INF目录结构
 
@@ -360,14 +364,16 @@ localhost:8080/项目名
 
 WebRoot/WebContent	Web应用的根 "/"
 
-![JavaWeb目录结构](java-web.assets\172304056712920.png)
+![JavaWeb目录结构](../../img/java-web.assets/172304056712920.png)
 
 浏览器或页面直接访问的资源不能放在 WEB-INF 内。
 
 Web 项目中的相对路径
 
+### 配置文件
 
-### 部署
+
+## 部署
 
 Tomcat 部署 Java Web 应用程序有两种方式：静态部署和动态部署。
 
@@ -377,15 +383,88 @@ https://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/index.html
 
 https://www.ibm.com/developerworks/cn/java/j-lo-servlet/
 
-### 日志
+## 日志
 
 https://www.cnblogs.com/qlqwjy/p/8036091.html
 
 https://www.cnblogs.com/operationhome/p/9680040.html
 
-### Tips
+## 执行流程
 
-#### 修改 Tomcat 服务器默认端口
+### 体系结构
+
+![img](../../img/java-web.assets/2412598-329309a00c669548.webp)
+
+- Server：
+
+   A Server element represents the entire Catalina servlet container. (Singleton)，一个Server包括多个Service。
+
+- Service：
+
+  A Service element represents the combination of one or more Connector components that share a single Engine.
+
+  Service由一个或者多个Connector组成，以及一个Engine，负责处理所有Connector所获得的客户请求。
+
+- Connector：
+
+  一个Connector将在某个指定端口上侦听客户请求，并将获得的请求交给Engine来处理，从Engine处获得回应并返回客户。
+
+  TOMCAT有两个典型的Connector，一个直接侦听来自browser的http请求，一个侦听来自其它WebServer的请求：
+
+  1. Coyote Http/1.1 Connector 在端口8080处侦听来自客户browser的http请求
+  2. Coyote JK2 Connector 在端口8009处侦听来自其它WebServer(Apache)的servlet/jsp代理请求
+
+- Engine：
+
+  The Engine element represents the entire request processing machinery associated with a particular Service. It receives and processes all requests from one or more Connectors and returns the completed response to the Connector for ultimate transmission back to the client.
+
+  Engine下可以配置多个虚拟主机Virtual Host，每个虚拟主机都有一个域名。当Engine获得一个请求时，它把该请求匹配到某个Host上，然后把该请求交给该Host来处理。
+  Engine有一个默认虚拟主机，当请求无法匹配到任何一个Host上的时候，将交给该默认Host来处理。
+
+- Host：
+
+  每个虚拟主机Virtual Host和某个网络域名Domain Name相匹配。
+
+  每个虚拟主机下都可以部署(deploy)一个或者多个Web App，每个Web App对应于一个Context，有一个Context path。
+
+  当Host获得一个请求时，将把该请求匹配到某个Context上，把该请求交给该Context来处理匹配的方法是“最长匹配”，所以一个path值为空值的Context将成为该Host的默认Context，所有无法和其它Context的路径名匹配的请求都将最终和该默认Context匹配。
+
+- Context：
+
+  一个Context对应于一个Web Application，一个WebApplication由一个或者多个Servlet组成。
+   Context在创建的时候将根据配置文件`$CATALINA_HOME/conf/web.xml`和​`$WEBAPP_HOME/WEB-INF/web.xml`载入Servlet类。当Context获得请求时，将在自己的映射表(mapping table)中寻找相匹配的Servlet类。如果找到，则执行该类，获得请求的回应，并返回。
+
+![01-startup.gif](../../img/java-web.assets/01-startup.gif)
+
+**tomcat server 处理http请求过程示例：**
+
+> http://localhost:8080/name/index.jsp
+
+1. 请求被发送到本机端口8080，被在那里侦听的Coyote HTTP/1.1 Connector获得
+2. Connector把该请求交给它所在的Service的Engine来处理，并等待来自Engine的回应
+3. Engine获得请求localhost:8080/name/index.jsp，匹配它所拥有的所有虚拟主机Host
+4. Engine匹配到名为localhost的Host（即使匹配不到也把请求交给该Host处理，因为该Host被定义为该Engine的默认主机）
+5. localhost Host获得请求/name/index.jsp，匹配它所拥有的所有Context
+6. Host匹配到路径为/name的Context（如果匹配不到就把该请求交给路径名为""的Context去处理）
+7. path="/name"的Context获得请求/index.jsp，在它的mapping table中寻找对应的servlet
+8. Context匹配到URL PATTERN为*.jsp的servlet，对应于JspServlet类
+9. 构造HttpServletRequest对象和HttpServletResponse对象，作为参数调用JspServlet的doGet或doPost方法
+10. Context把执行完了之后的HttpServletResponse对象返回给Host
+11. Host把HttpServletResponse对象返回给Engine
+12. Engine把HttpServletResponse对象返回给Connector
+13. Connector把HttpServletResponse对象返回给客户browser
+
+### 执行流程
+
+[Tomcat笔记：Tomcat的执行流程解析](https://www.cnblogs.com/xifengxiaoma/p/9513978.html)
+
+#### 类加载器
+
+[tomcat启动分析(3)](https://www.it610.com/article/2592767.htm)
+
+## Tips
+
+### 修改 Tomcat 服务器默认端口
 
 修改 `conf/server.xml` 文件如下 `port` 值。
 
@@ -422,9 +501,9 @@ https://blog.csdn.net/xlgen157387/article/details/56498938
 
 tomcat-users.xml
 
-## Tips
+# Tips
 
-### F12 
+## F12 
 
 [如何使用浏览器的F12开发者工具调试页面？](https://blog.csdn.net/weixin_41819731/article/details/80472232#commentBox)
 

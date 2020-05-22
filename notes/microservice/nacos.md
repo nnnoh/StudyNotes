@@ -392,7 +392,7 @@ public interface GitHubClient {
 
 - url: url一般用于调试，可以手动指定@FeignClient调用的地址
 
-- decode404:当发生http 404错误时，如果该字段位true，会调用decoder进行解码，否则抛出FeignException
+- decode404: 当发生http 404错误时，如果该字段位true，会调用decoder进行解码，否则抛出FeignException
 
 - configuration: Feign配置类，可以自定义Feign的Encoder、Decoder、LogLevel、Contract
 

@@ -32,7 +32,7 @@ Swagger 文档本身看起来并不美观，需要一个好的 UI 工具将其�
 
 ### Swagger工具
 
-![img](D:\GitHub\StudyNotes\notes\lib\swagger.assets\14459419-434423083f10d101.webp)
+![img](../../img/swagger.assets/14459419-434423083f10d101.webp)
 
 1. Swagger-tools: 提供各种与Swagger进行集成和交互的工具。例如模式检验、Swagger 1.2文档转换成Swagger 2.0文档等功能。
 

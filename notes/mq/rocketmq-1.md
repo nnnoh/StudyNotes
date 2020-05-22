@@ -1,3 +1,5 @@
+
+
 # RocketMQ
 
 ## 基本概念
@@ -744,7 +746,7 @@ consumer.subscribe("TopicTest", MessageSelector.bySql("a between 0 and 3");
 
 事务消息的大致流程如下，其中分为两个流程：正常事务消息的发送及提交、事务消息的补偿流程。
 
-![transcation](C:\Users\Administrator\Desktop\tmp\Github\StudyNotes\notes\mq\rocketmq.assets\transaction.png)
+![transcation](../../img/rocketmq-1.assets/transaction.png)
 
 **事务消息发送及提交**
 
@@ -979,7 +981,9 @@ RocketMQ充分利用了上述特性，也就是所谓的“零拷贝”技术，
 
 RocketMQ消息的存储是由`ConsumeQueue`和`CommitLog`配合完成 的，消息真正的物理存储文件是`CommitLog`，`ConsumeQueue`是消息的逻辑队列，类似数据库的索引文件，存储的是指向物理存储的地址。每 个Topic下的每个Message Queue都有一个对应的`ConsumeQueue`文件。
 
-![img](.\rocketmq.assets\storeStru.png)
+
+
+
 
 - CommitLog：存储消息的元数据
 - ConsumerQueue：存储消息在CommitLog的索引

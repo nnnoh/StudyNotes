@@ -29,7 +29,7 @@ oauth的好处：
 
 #### 抽象协议流程
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904103628678-329605467.png)
+![img](../../img/oauth.assets/963904-20160904103628678-329605467.png)
 
 （A）用户打开客户端以后，客户端要求用户给予授权。
 
@@ -77,7 +77,7 @@ oauth2.0提供了四种授权模式：
 
 ##### 流程
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904103730949-1759423169.png) 
+![img](../../img/oauth.assets/963904-20160904103730949-1759423169.png) 
 
 （A）用户访问客户端，客户端将用户引导向认证服务器。
 
@@ -151,7 +151,7 @@ https://www.authorization.com/oauth/token?client_id=CLIENT_ID&grant_type=authori
 
 ##### 流程
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904105328094-1969461112.png)
+![img](../../img/oauth.assets/963904-20160904105328094-1969461112.png)
 
 （A）客户端将用户引导向认证服务器。
 
@@ -205,7 +205,7 @@ https://CALLBACK_URL#access_token =ACCESS_TOKEN&state=xyz&token_type=example&exp
 
 ##### 流程
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904113855317-2042330087.png)
+![img](../../img/oauth.assets/963904-20160904113855317-2042330087.png)
 
 （A）用户向客户端提供用户名和密码。
 
@@ -251,7 +251,7 @@ https://www.authorization.com/token?grant_type=password&username=USERNAME&passwo
 
 ##### 流程介绍
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904114645553-50785995.png)　　
+![img](../../img/oauth.assets/963904-20160904114645553-50785995.png)　　
 
 （A）客户端向认证服务器进行身份认证，并要求一个访问令牌。
 
@@ -297,7 +297,7 @@ https://www.authorization.com/token?grant_type=client_credentials&client_id=CLIE
 
 ##### 流程介绍
 
-![img](D:\GitHub\StudyNotes\notes\network\oauth.assets\963904-20160904115728036-456177447.png)
+![img](../../img/oauth.assets/963904-20160904115728036-456177447.png)
 
 （A）--（D）通过授权流程获取access_token，并调用业务api接口。
 

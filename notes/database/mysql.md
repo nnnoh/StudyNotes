@@ -9,22 +9,31 @@ Windows10：
 - 在 mysql 根目录下添加 my.ini 配置文件
 
   ```ini
-  [mysql]
-  # 设置mysql客户端默认字符集
-  default-character-set=utf8 
   [mysqld]
-  #设置3306端口
-  port = 3306 
-  # 设置mysql的安装目录(可用"")
-  basedir=E:/Java/Mysql/
+  # 设置3306端口
+  port=3306
+  # 设置mysql的安装目录
+  basedir=C:\mysql-8.0
   # 设置mysql数据库的数据的存放目录
-  datadir=C:/ProgramData/MySQL/MySQL Server 5.5/Data/
+  datadir=C:\mysql-8.0\Data
   # 允许最大连接数
   max_connections=200
-  # 服务端使用的字符集默认为8比特编码的latin1字符集
-  character-set-server=utf8
+  # 允许连接失败的次数。
+  max_connect_errors=10
+  # 服务端使用的字符集默认为utf8mb4
+  character-set-server=utf8mb4
   # 创建新表时将使用的默认存储引擎
   default-storage-engine=INNODB
+  # 默认使用“mysql_native_password”插件认证
+  #mysql_native_password
+  default_authentication_plugin=mysql_native_password
+  [mysql]
+  # 设置mysql客户端默认字符集
+  default-character-set=utf8mb4
+  [client]
+  # 设置mysql客户端连接服务端时默认使用的端口
+  port=3306
+  default-character-set=utf8mb4
   ```
 
 - 环境变量 Path : %MYSQL_HOME%\bin
@@ -1009,3 +1018,4 @@ q: BLOB/TEXT column 'name' used in key specification without a key length
 MySQL 数据库对于 BLOB/TEXT 这样类型的数据结构只能索引前 N 个字符。所以这样的数据类型不能作为主键，也不能是 UNIQUE 的。
 
 可以换成 VARCH，但是 VARCHAR 类型的大小也不能大于 255，当 VARCHAR 类型的字段大小如果大于 255 的时候也会转换成小的 TEXT 来处理。
+

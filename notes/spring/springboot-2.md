@@ -30,9 +30,14 @@ spring.factories
 
 
 
-启动原理
+### 启动原理
 
 https://www.cnblogs.com/zheting/p/6707035.html
 
 https://www.cnblogs.com/davidwang456/p/9172685.html
 
+
+
+### tomcat 加载
+
+[Tomcat在SpringBoot中是如何启动的](https://my.oschina.net/luozhou/blog/3088908)

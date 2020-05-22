@@ -35,6 +35,8 @@
 `@RequestParam Map<String,String> map`
 
 > js ajax上传query string parameters时会将多层的js对象转换为（多个）键值对，值为基本数据类型，键为其路径，如，`param[0][key]`。
+>
+> query string parameters键值对的值会被解析成 java.lang.String 类型，如`?param1=`会解析成`{"param1":""}`
 
 **@RequestBody**
 
@@ -50,7 +52,7 @@ https://blog.csdn.net/weixin_38004638/article/details/99655322
 
 支持的请求方法的方式MultipartFile，属于SpringMultipartResolver类。
 
-@RequestParam也同样支持multipart/form-data请求。他们最大的不同是，当请求方法的请求参数类型不再是String类型的时候。@RequestParam适用于name-valueString类型的请求域，@RequestPart适用于复杂的请求域（像JSON，XML）。
+@RequestParam也同样支持multipart/form-data请求。他们最大的不同是，当请求方法的请求参数类型不再是String类型的时候。@RequestParam适用于name-value "String"类型的请求域，@RequestPart适用于复杂的请求域（像JSON，XML）。例如：key = user, value = {"name":"aaa","xx":"xx"}。
 
 #### 自定义参数解析器
 
@@ -150,6 +152,16 @@ AnnotationParserConverter的convert方法，最后几行调用了ParserConvert�
 @ResponseBody
 
 @JsonFormat
+
+### 其他注解
+
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+
+### Servlet注册
+
+https://blog.csdn.net/javarrr/article/details/89920656
+
+https://www.jianshu.com/p/be2dafc8c644
 
 ### 内容协商
 

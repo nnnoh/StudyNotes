@@ -219,7 +219,7 @@ Sentinel自身就支持了多种不同的数据源来持久化规则配置，目
 
 如前使用Nacos存储限流规则的配置数据流向图如下：
 
-![before](D:\GitHub\StudyNotes\notes\microservice\sentinel.assets\pasted-224.png)
+![before](../../img/sentinel.assets/pasted-224.png)
 
 配置中心的修改都可以实时的刷新到业务服务，从而被`Sentinel Dashboard`读取到，但是对于这些规则的更新到达各个业务服务之后，并没有一个机制去同步到配置中心，作为配置中心的客户端也不会提供这样的逆向更新方法。
 
@@ -230,7 +230,7 @@ Sentinel自身就支持了多种不同的数据源来持久化规则配置，目
 
 只需要通过这两个接口，实现对配置中心中存储规则的读写，就能实现`Sentinel Dashboard`中修改规则与配置中心存储同步的效果。具体的配置数据流向图如下：
 
-![upload successful](D:\GitHub\StudyNotes\notes\microservice\sentinel.assets\pasted-225.png)
+![upload successful](../../img/sentinel.assets/pasted-225.png)
 
 `Sentinel Dashboard`代码修改：
 
