@@ -1,6 +1,6 @@
-### Controller入参
+## Controller入参
 
-#### 参数注解
+### 参数注解
 
 > 可注解value为接收参数的key，如：`@XXX("key") type param`
 
@@ -54,7 +54,7 @@ https://blog.csdn.net/weixin_38004638/article/details/99655322
 
 @RequestParam也同样支持multipart/form-data请求。他们最大的不同是，当请求方法的请求参数类型不再是String类型的时候。@RequestParam适用于name-value "String"类型的请求域，@RequestPart适用于复杂的请求域（像JSON，XML）。例如：key = user, value = {"name":"aaa","xx":"xx"}。
 
-#### 自定义参数解析器
+### 自定义参数解析器
 
 自定义解析器需要实现`HandlerMethodArgumentResolver`接口，用于解析request请求参数并绑定数据到Controller的入参上。
 
@@ -107,9 +107,9 @@ public class XxxResolverHandlerConfig extends WebMvcConfigurationSupport {
 }
 ```
 
-#### 日期参数
+### 日期参数
 
-##### @RequestParam
+#### @RequestParam
 
 ```java
 public String formX(@RequestParam(name="date") Date d) {
@@ -125,7 +125,7 @@ ObjectToObjectConvert转换器是尝试去寻找目标类（Date）构造方法�
 
 因此，是否支持传过来的字符串日期格式，测试 `new Date(“your pattern”)` 是否抛出异常即可。
 
-##### @DateTimeFormat
+#### @DateTimeFormat
 
 在日期参数或javabean日期属性前加 `@DateTimeFormat(pattern="yyyy-MM-dd  HH:mm:ss")` 即可接收**指定格式的日期字符串**。
 
@@ -147,23 +147,27 @@ AnnotationParserConverter的convert方法，最后几行调用了ParserConvert�
 
 在前面解析结束得到Date类型数据后，由于Date不符合需要参数类型要求，于是继续调用conversionService的convert进行解析。SpringMVC注册了Date转Calendar和转Long的转换器。
 
+## 响应注解
 
+### Json
 
-@ResponseBody
-
-@JsonFormat
-
-### 其他注解
+#### @JsonInclude
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 
-### Servlet注册
+#### @JsonFormat
+
+#### @ResponseBody
+
+
+
+## Servlet注册
 
 https://blog.csdn.net/javarrr/article/details/89920656
 
 https://www.jianshu.com/p/be2dafc8c644
 
-### 内容协商
+## 内容协商
 
 [自定义Spring Boot 内容协商](https://mrbird.cc/Spring-Boot-Diy-Resolver.html)
 
@@ -173,15 +177,15 @@ https://www.jianshu.com/p/be2dafc8c644
 
 ![flow](../../img/springmvc.assets/askfljasdfneiw.png)
 
-### 过滤器
+## 过滤器
 
 过滤器依赖于servlet容器，在实现上基于函数回调，可以对request请求进行过滤。
 
-#### 注册过滤器
+### 注册过滤器
 
 除了使用 web.xml 配置注册过滤器，还可以通过`@WebFilter` 和 `FilterRegistrationBean` 进行配置。
 
-#### @WebFilter
+### @WebFilter
 
 在配置类上添加`@WebFilter`注册过滤器，如：
 
@@ -204,7 +208,7 @@ https://www.jianshu.com/p/be2dafc8c644
 - asyncSupported  指定Filter是否支持异步模式
 - dispatcherTypes  指定Filter对哪种方式的请求进行过滤。支持的属性：ASYNC、ERROR、FORWARD、INCLUDE、REQUEST。默认过滤所有方式的请求
 
-#### FilterRegistrationBean
+### FilterRegistrationBean
 
 通过注入`FilterRegistrationBean`注册过滤器，如：
 
@@ -231,7 +235,7 @@ public class FilterConfig {
 }
 ```
 
-#### 拦截器与过滤器区别
+### 拦截器与过滤器区别
 
 - 使用范围不同：Filter是Servlet规范规定的，只能用于Web程序中。
 

@@ -90,7 +90,16 @@ public class ComputeService {
    }
    ```
 
-   
+
+## Fallback
+
+https://blog.csdn.net/KradMe/article/details/102922464
+
+https://www.jianshu.com/p/8a003709da22
+
+
+
+
 
 [Hystrix快速入门](https://www.cnblogs.com/xiong2ge/p/hystrix_faststudy.html)
 

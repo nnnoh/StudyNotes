@@ -381,7 +381,7 @@ public class MySecurity(){
   对于 token 鉴权系统中，验证token后手动填充SecurityContextHolder，填充时机只要在执行投票器之前即可，或者干脆可以在投票器中填充，然后在登出操作中清空SecurityContextHolder。
   
   ```java
-  UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test","test",list);	
+  UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test","test",list);
   SecurityContextHolder.getContext().setAuthentication(token);
   ```
 

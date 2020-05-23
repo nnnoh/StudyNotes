@@ -1,3 +1,9 @@
+#### 项目初始启动
+
+1. `npm install`
+2. `npm run dll`
+3. `npm start`
+
 ### 表单
 
 #### 多选框
@@ -61,11 +67,3 @@
 </body>
 </html>
 ```
-
-### Tips
-
-#### 项目初始启动
-
-1. `npm install`
-2. `npm run dll`
-3. `npm start`
