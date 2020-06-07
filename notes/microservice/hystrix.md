@@ -78,7 +78,7 @@ public class ComputeService {
    }
    ```
 
-2. 创建回调类，实现`@FeignClient`的接口，此时实现的方法就是对应`@FeignClient`接口中映射的fallback函数。
+2. 创建回调类，实现`@FeignClient`的接口，此时实现的方法就是对应`@FeignClient`接口中映射的fallback函数。（或者使用注解方式，指定fallback方法）
 
    ```java
    @Component

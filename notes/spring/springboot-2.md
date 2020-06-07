@@ -12,6 +12,16 @@ https://blog.csdn.net/shihlei/article/details/84914268
 
 https://blog.csdn.net/wolfcode_cn/article/details/80654730
 
+@AliasFor
+
+当相同的别名声明了不同的值，运行时会报如下错误：
+
+```cmd
+org.springframework.core.annotation.AnnotationConfigurationException: Different @AliasFor mirror values for annotation [org.springframework.web.bind.annotation.RequestParam] declared on public java.lang.String com.inspur.modeldesigner.manage.controller.HelloController.get8(java.lang.String); attribute 'name' and its alias 'value' are declared with values of [name2] and [name1].
+```
+
+
+
 ### 自动配置
 
 https://www.cnblogs.com/leihuazhe/p/7743479.html

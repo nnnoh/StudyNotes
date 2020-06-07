@@ -2,9 +2,9 @@
 
 配置优先级排列（从高到低）：
 
-1. 命令行参数
+1. 命令行参数（`--key=value`）
 2. java:comp/env 里的 JNDI 属性
-3. JVM 系统属性
+3. JVM 系统属性（`-Dkey=value` or `System.setProperty(key, value)`）
 4. 操作系统环境变量
 5. RandomValuePropertySource 属性类生成的 random.* 属性
 6. 应用以外的 application.properties（或 yml）文件

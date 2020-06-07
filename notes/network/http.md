@@ -80,7 +80,9 @@ Transfer-Encoding: chunked
 
    针对请求和响应报文的实体部分使用的首部，补充资源内容更新时间等郁实体有关的信息。
 
+##### Header
 
+[X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)
 
 ### Cookie
 

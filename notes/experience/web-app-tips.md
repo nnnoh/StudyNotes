@@ -41,6 +41,12 @@ https://blog.csdn.net/weixin_43101678/article/details/82229438
 
 https://blog.csdn.net/u010266988/article/details/88530093
 
+#### 逻辑删除 & 物理删除
+
+https://www.v2ex.com/t/410612
+
+https://segmentfault.com/q/1010000003938997
+
 ### Mybatis
 
 对于 text 字段，mybatis 生成逆向工程的时候会单独将text提取出来，生成 WithBLOBs 后缀的查询和修改的语句。可在配置 table 时使用 columnOverride 标签将 text 类型当成 varchar 类型，避免额外的方法。

@@ -613,7 +613,7 @@ BOM，Browser Object Model，即浏览器对象模型。浏览器页面初始化
 
 使用 window 对象的属性和方法时可省略 window。
 
-![window](javascript.assets\1470710607319368.gif)
+![window](../../img/javascript.assets/1470710607319368.gif)
 
 #### 计时器
 
@@ -656,7 +656,7 @@ location 表示窗口中当前显示的文档的 Web 地址。用于获取或设
 
 ##### 属性
 
-![location](javascript.assets\53605c5a0001b26909900216.jpg)
+![location](../../img/javascript.assets/53605c5a0001b26909900216.jpg)
 
 ##### 方法
 
@@ -1045,7 +1045,7 @@ var h= document.documentElement.offsetHeight
 
 #### 网页卷去的距离与偏移量
 
-![scroll](javascript.assets\5347b2b10001e1a307520686.jpg)
+![scroll](../../img/javascript.assets/5347b2b10001e1a307520686.jpg)
 
 scrollLeft：设置或获取位于给定对象左边界与窗口中目前可见内容的最左端之间的距离 ，即左边灰色的内容。
 

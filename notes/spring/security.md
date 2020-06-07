@@ -304,7 +304,7 @@ http
 
 访问权限设置方法：
 
-![func](D:\GitHub\StudyNotes\notes\spring\security.assets\4676695-5cc2b3734d9f686a.webp)
+![func](../../img/security.assets/4676695-5cc2b3734d9f686a.webp)
 
 **access**
 
@@ -1395,7 +1395,7 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
 
 安全拦截器和安全对象模型：
 
-![Abstract Security Interceptor](D:\GitHub\StudyNotes\notes\spring\security.assets\security-interception.png)
+![Abstract Security Interceptor](../../img/security.assets/security-interception.png)
 
 > 在AccessDecisionManager鉴权成功后，可以通过RunAsManager在现有Authentication基础上构建一个新的Authentication，如果新的Authentication不为空则将产生一个新的SecurityContext，并把新产生的Authentication存放在其中。
 >
@@ -1424,7 +1424,7 @@ Spring Security内置了几个基于投票的`AccessDecisionManager`。
 
 使用这种方式，一系列的`AccessDecisionVoter`将会被`AccessDecisionManager`用来对`Authentication`是否有权访问受保护对象进行投票，然后再根据投票结果来决定是否要抛出`AccessDeniedException`。
 
-![img](D:\GitHub\StudyNotes\notes\spring\security.assets\1099841-20170621164503132-862636988.png)
+![img](../../img/security.assets/1099841-20170621164503132-862636988.png)
 
 `AccessDecisionVoter` 接口：
 
@@ -1498,7 +1498,7 @@ Spring Security有两个默认的投票器。
 
 Spring Security为我们提供了一个`AfterInvocationManager`接口，它允许我们在受保护对象访问完成后对返回值进行修改或者进行权限鉴定，决定是否需要抛出`AccessDeniedException`，其将由`AbstractSecurityInterceptor`的子类进行调用。
 
-![img](D:\GitHub\StudyNotes\notes\spring\security.assets\512771-20160927164143516-1860475152.png)
+![img](../../img/security.assets/512771-20160927164143516-1860475152.png)
 
 类似于`AuthenticationManager`，`AfterInvocationManager`拥有一个默认的实现类`AfterInvocationProviderManager`，其中拥有一个由`AfterInvocationProvider`组成的集合，`AfterInvocationProvider`与`AfterInvocationManager`具有相同的方法定义，在调用`AfterInvocationProviderManager`中的方法时实际上就是依次调用其中包含的`AfterInvocationProvider`对应的方法。
 

@@ -221,15 +221,54 @@ java中两种退出方法的方式，
 
 > Reports return statements inside of finally blocks. While occasionally intended, such return statements may mask exceptions thrown, and tremendously complicate debugging. 
 
-### 字符串转日期
+### 字符串日期互转
 
-方法总结：
+#### 字符串 -> 日期
 
 - `Timestamp.valueOf(String time)`
 
   返回`Timestamp`类。
 
   必须是`yyyy-[m]m-[d]d hh:mm:ss[.fffffffff]`格式，否则报错。
+
+#### SimpleDateFormat
+
+[深入理解Java：SimpleDateFormat安全的时间格式化](https://www.cnblogs.com/peida/archive/2013/05/31/3070790.html)
+
+![Alibaba Coding Guidelines](../../img/java-tips.assets/image-20200528103334850.png)
+
+#### DateTimeFormatter
+
+```java
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    public static String formatDate(LocalDateTime date){
+        return formatter.format(date);
+    }
+    
+    public static LocalDateTime parse(String strDate){
+        return LocalDateTime.parse(strDate, formatter);
+    }
+```
+
+#### 外部库
+
+##### org.apache.commons.lang3
+
+```java
+ 		String target = "";
+        String[] srcPattern = new String[]{"yyyyMMdd HH:mm:ss"};
+        String dstPattern = "yyyy-MM-dd HH:mm:ss";
+        try {
+            // 字符串 -> 时间
+            Date date = DateUtils.parseDate(dateStr, srcPattern);
+            // 时间 -> 字符串
+            target = DateFormatUtils.format(date, dstPattern);
+        } catch (ParseException e) {
+            log.error("时间格式转换错误！字符串参数为：{}", dateStr);
+            e.printStackTrace();
+        }
+```
 
 注意处理异常，而不是忽视异常。
 
@@ -309,6 +348,14 @@ UnicodeScript 是从语言书写规则层次对Unicode字符的分类，这是�
 ### java命令
 
 [java命令详解](https://blog.csdn.net/Trival_dreamy/article/details/86740281)
+
+### 环境变量 & 系统属性
+
+- `System.getenv()`：获取的是操作系统的变量如，path，java_home等，在系统环境变量里面进行配置；
+
+- `System.getProperties()`：获取的是JAVA虚拟机的运行时系统属性，是java虚拟机自己的，通过-Dxxxx参数进行指定；如java.runtime.name，sun.boot.library.path等；
+
+[Java中System.getProperties()和System.getenv()的区别](https://www.dazhuanlan.com/2019/12/09/5dedf7478f261/)
 
 ### 深拷贝 & 浅拷贝
 

@@ -1,12 +1,25 @@
+## Controller层注解
+
+### @RequestMapping
+
+[Spring @RequestMapping 注解使用](https://www.oschina.net/translate/using-the-spring-requestmapping-annotation?lang=chs&p=1)
+
+[Spring @RequestMapping 注解各属性](https://blog.csdn.net/menghuanzhiming/article/details/79282805)
+
 ## Controller入参
 
 ### 参数注解
 
-> 可注解value为接收参数的key，如：`@XXX("key") type param`
+> 如果一个参数存在多个可以解析出的同名参数
+>
+> - `@RequestParam`：
+>   - String类型参数的值为这些参数`String.join(",", paramArr)`。 
+>   - Map类型参数的值只接收key的第一个对应的value。
+> - `@PathVariable`：值为path中同名的最后一个。
 
 **@PathVariable**
 
-处理request的uri部分的参数，使用restful访问方式时， 即 someUrl/{paramId}，这时的参数可通过 @Pathvariable注解来获取。
+处理request的uri部分的参数，使用restful访问方式时， 即 someUrl/{paramId}，这时的参数可通过 @Pathvariable("paramId") 注解来获取。
 
 **@RequestHeader**
 
@@ -30,7 +43,7 @@
 - `defaultValue` 可设置请求参数的默认值。
 - `value` 为接收url的参数名（相当于key值）。
 
-接收剩余未绑定的参数键值对：
+接收所有的参数键值对：
 
 `@RequestParam Map<String,String> map`
 
