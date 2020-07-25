@@ -1,8 +1,14 @@
-#### 项目初始启动
+## 语法
 
-1. `npm install`
-2. `npm run dll`
-3. `npm start`
+## 内置对象
+
+[Angular的 $q, defer, promise](https://www.jianshu.com/p/ed6e9886fa76)
+
+[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+[Angularjs中的拦截器](https://www.cnblogs.com/littlemonk/p/5512253.html)
+
+## 示范
 
 ### 表单
 
@@ -67,3 +73,18 @@
 </body>
 </html>
 ```
+
+## 其他
+
+### 项目运行
+
+#### 项目初始启动
+
+1. `npm install`
+2. `npm run dll`
+3. `npm start`
+
+#### 项目部署
+
+1. `npm run build`
+2. 将`dist`目录放至 tomcat wabapps 下，并重命名为项目的 context-path
