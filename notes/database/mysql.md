@@ -859,6 +859,30 @@ select for update
 
 [MySQL常用的SHOW语句](https://www.cnblogs.com/hankyoon/p/5169638.html)
 
+#### 连接MySQL时的错误
+
+##### Public Key Retrieval
+
+Public Key Retrieval is not allowed
+
+解决方法：
+
+```cmd
+allowPublicKeyRetrieval=true
+```
+
+[MySQL 8.0 Public Key Retrieval is not allowed 错误的解决方法](https://blog.csdn.net/u013360850/article/details/80373604)
+
+##### time zone
+
+The server time zone value '�й���׼ʱ��' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+解决方法：
+
+```cmd
+serverTimezone=UTC
+```
+
 #### 时间默认值
 
 create_time 设置 DEFAULT CURRENT_TIMESTAMP属性
