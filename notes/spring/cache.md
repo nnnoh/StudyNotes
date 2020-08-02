@@ -24,3 +24,5 @@ spring 旧方法：https://blog.csdn.net/czr11616/article/details/84205599
 
 
 
+> 注意，`@CacheEvict(value="redisCacheManager",key="'getArticleByCategory'")` 的 key 字符串需要包含单引号。
+

@@ -62,9 +62,7 @@ win10四月更新后可以通过命令激活文件名区分大小写。
 
 #### CMD快捷打开
 
-shift+右键 
-
-https://www.jianshu.com/p/aada247d22ed
+[Win10 Shift+右键菜单打开Cmd窗口](https://www.jianshu.com/p/aada247d22ed)
 
 ### 常用命令
 
@@ -73,3 +71,4 @@ https://www.jianshu.com/p/aada247d22ed
 1. 按下`Win+R`调出命令行窗口，输入`netstat -aon|findstr "8081"`，找到指定行最后一列的数字（PID），我们这里是9548.
 2. 输入`tasklist|findstr "9548"`，发现是`javaw.exe`占用了8081端口。
 3. 再次输入`taskkill /f /t /im javaw.exe`结束该进程。
+
