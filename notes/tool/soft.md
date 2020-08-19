@@ -64,6 +64,13 @@ win10四月更新后可以通过命令激活文件名区分大小写。
 
 [Win10 Shift+右键菜单打开Cmd窗口](https://www.jianshu.com/p/aada247d22ed)
 
+### .bat
+
+```cmd
+@echo off
+pause
+```
+
 ### 常用命令
 
 #### 查看端口占用
