@@ -1,10 +1,10 @@
-## Spring Security
+# Spring Security
 
 Spring Security是一款基于Spring的安全框架，主要包含**认证**（Authentication）和**授权**（Authorization）两大安全模块。
 
 安全框架比较
 
-### 基本使用
+## 基本使用
 
 pom.xml 依赖
 
@@ -33,7 +33,7 @@ security:
     role: USER      #认证角色
 ```
 
-#### 基于表单认证
+### 基于表单认证
 
 通过一些配置将HTTP Basic认证修改为基于表单的认证方式。
 
@@ -57,7 +57,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
 > HTTP Basic认证方式： `http.httpBasic().and()...`
 
-#### 基本原理
+### 基本原理
 
 Spring Security采用的是责任链的设计模式，其中包含了众多的过滤器，这些过滤器形成了一条链，所有请求都必须通过这些过滤器后才能成功访问到资源。
 
@@ -81,9 +81,9 @@ Spring Security采用的是责任链的设计模式，其中包含了众多的�
 
 `ExceptionTranslateFilter`捕获抛出的异常并处理，比如需要身份认证时将请求重定向到相应的认证页面，当认证失败或者权限不足时返回相应的提示信息。
 
-### 自定义认证过程
+## 自定义认证过程
 
-#### 用户信息获取
+### 用户信息获取
 
 自定义认证的过程需要实现Spring Security提供的`UserDetailService`接口，该接口只有一个抽象方法`loadUserByUsername`。
 
@@ -151,7 +151,7 @@ public class UserDetailService implements UserDetailsService {
     }
 ```
 
-#### 替换默认登录页
+### 替换默认登录页
 
 `configure`配置
 
@@ -179,7 +179,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
   只配置loginPage，loginProcessingUrl默认就是loginPage。
 
-- ``.antMatchers("/login.html").permitAll()`表示跳转到登录页面的请求不被拦截，否则会进入无限循环。
+- `.antMatchers("/login.html").permitAll()`表示跳转到登录页面的请求不被拦截，否则会进入无限循环。
 
 > 关闭CSRF攻击防御：
 >
@@ -209,11 +209,11 @@ public class BrowserSecurityController {
 - `HttpSessionRequestCache`为Spring Security提供的用于缓存请求的对象，通过调用它的`getRequest`方法可以获取到本次请求的HTTP信息。
 - `DefaultRedirectStrategy`的`sendRedirect`为Spring Security提供的用于处理重定向的方法。
 
-#### 处理成功与失败
+### 处理成功与失败
 
 Spring Security有一套默认的处理登录成功和失败的方法：当用户登录成功时，页面会跳转会引发登录的请求；登录失败时则是跳转到Spring Security默认的错误提示页面。
 
-##### 自定义登录成功逻辑
+#### 自定义登录成功逻辑
 
 要改变默认的处理成功逻辑，需要实现`org.springframework.security.web.authentication.AuthenticationSuccessHandler`接口的`onAuthenticationSuccess`方法。
 
@@ -237,14 +237,14 @@ http.formLogin() // 表单登录
 
 登录成功后，便可以使用`SecurityContextHolder.getContext().getAuthentication()`获取到`Authentication`对象信息。或者在controller的方法上直接添加`Authentication authentication`参数。
 
-##### 自定义登录失败逻辑
+#### 自定义登录失败逻辑
 
 自定义登录失败处理逻辑需要实现`org.springframework.security.web.authentication.AuthenticationFailureHandler`的`onAuthenticationFailure`方法。
 
 ```java
 public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-    }
+}
 ```
 
 `AuthenticationException`参数是一个抽象类，Spring Security根据登录失败的原因封装了许多对应的实现类。
@@ -258,9 +258,9 @@ http.formLogin() // 表单登录
     .failureHandler(authenticationFailureHandler) // 处理登录失败
 ```
 
-### 配置方法
+## 配置方法
 
-#### configure(AuthenticationManagerBuilder auth)
+### configure(AuthenticationManagerBuilder auth)
 
 AuthenticationManager 的建造器，配置 AuthenticationManagerBuilder 会让Security 自动构建一个 AuthenticationManager；如果想要使用该功能你需要配置一个 UserDetailService 和 PasswordEncoder。
 
@@ -268,11 +268,11 @@ UserDetailsService 用于在认证器中根据用户传过来的用户名查找�
 
 如果重写了该方法，Security 会启用 DaoAuthenticationProvider 这个认证器，该认证就是先调用 UserDetailsService.loadUserByUsername 然后使用 PasswordEncoder.matches() 进行密码比对，如果认证成功成功则返回一个 Authentication 对象。
 
-#### configure(WebSecurity web)
+### configure(WebSecurity web)
 
 这个配置方法用于配置静态资源的处理方式，可使用 Ant 匹配规则。
 
-#### configure(HttpSecurity http)
+### configure(HttpSecurity http)
 
  HttpSecurity 使用的是链式编程，`and()`是返回一个securityBuilder对象。
 
@@ -301,6 +301,16 @@ http
 ```
 
 框架原有的 Filter 在启动 HttpSecurity 配置的过程中，都由框架完成了其一定程度上固定的配置，是不允许更改替换的。根据测试结果来看，调用 addFilterAt 方法插入的 Filter ，会在这个位置上的原有 Filter 之前执行。
+
+url 匹配规则可以采用 Ant 风格的路径匹配符：
+
+| 通配符 | 含义             |
+| :----- | :--------------- |
+| **     | 匹配多层路径     |
+| *      | 匹配一层路径     |
+| ?      | 匹配任意单个字符 |
+
+匹配是按照从上往下的顺序来匹配，一旦匹配到了就不继续匹配。未配置的请求路径默认都需要登录才能访问。
 
 访问权限设置方法：
 
@@ -351,7 +361,7 @@ public class MySecurity(){
 }
 ```
 
-### 权限系统
+## 权限系统
 
 - **UserDetails**
 
@@ -385,7 +395,7 @@ public class MySecurity(){
   SecurityContextHolder.getContext().setAuthentication(token);
   ```
 
-### Security 扩展
+## Security 扩展
 
 - 鉴权失败处理器
 - 验证器
@@ -396,7 +406,7 @@ public class MySecurity(){
 - 登录失败处理器
 - 自定义 UsernamePasswordAuthenticationFilter
 
-### 添加图像验证码
+## 添加图像验证码
 
 Spring Security的认证校验是由`UsernamePasswordAuthenticationFilter`过滤器完成的，因此验证码校验逻辑应该在这个过滤器之前。
 
@@ -563,12 +573,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加验证码校验过滤器
 ```
 
-### remember-me
+## remember-me
 
 当用户勾选了记住我选项并登录成功后，Spring Security会生成一个token标识，然后将该token标识持久化到数据库，并且生成一个与该token相对应的cookie返回给浏览器。当用户过段时间再次访问系统时，如果该cookie没有过期，Spring Security便会根据cookie包含的信息从数据库中获取相应的token信息，然后帮用户自动完成登录操作。
 
 ```java
-@Autowired
+	@Autowired
     private DataSource dataSource;
 
     @Bean
@@ -608,7 +618,7 @@ http.rememberMe()
 - `tokenValiditySeconds`配置了token的有效时长，单位为秒；
 - `userDetailsService(userDetailService)`用于处理通过token对象自动登录。
 
-### 短信验证码登录
+## 短信验证码登录
 
 Spring Security默认只提供了账号密码的登录认证逻辑，所以要实现手机短信验证码登录认证功能，需要模仿Spring Security账号密码登录逻辑代码来实现一套自己的认证逻辑。
 
@@ -641,7 +651,7 @@ public class SmsCode {
     }
 ```
 
-#### 认证流程
+### 认证流程
 
 ```mermaid
 graph TD
@@ -660,7 +670,7 @@ graph TD
 
 认证后我们便可以通过`Authentication`对象获取到认证的信息了。
 
-#### 短信验证码认证流程
+### 短信验证码认证流程
 
 ```mermaid
 graph TD
@@ -673,7 +683,7 @@ graph TD
 
 为了实现这个流程，我们需要定义`SmsAuthenticationFitler`、`SmsAuthenticationToken`和`SmsAuthenticationProvider`。
 
-##### SmsAuthenticationToken
+#### SmsAuthenticationToken
 
 ```java
 public class SmsAuthenticationToken extends AbstractAuthenticationToken {
@@ -721,7 +731,7 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken {
 
 `UsernamePasswordAuthenticationToken`原来还包含一个`credentials`属性用于存放密码，这里不需要就去掉了。
 
-##### SmsAuthenticationFilter
+#### SmsAuthenticationFilter
 
 ```java
 public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -790,7 +800,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 然后`SmsAuthenticationFilter`将`SmsAuthenticationToken`交给`AuthenticationManager`处理。
 
-##### SmsAuthenticationProvider
+#### SmsAuthenticationProvider
 
 ```java
 public class SmsAuthenticationProvider implements AuthenticationProvider {
@@ -839,7 +849,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
 
 短信验证码的校验是在`SmsAuthenticationFilter`之前完成的，即只有当短信验证码正确以后才开始走认证的流程。
 
-##### SmsCodeFilter
+#### SmsCodeFilter
 
 ```java
 @Component
@@ -888,7 +898,7 @@ public class SmsCodeFilter extends OncePerRequestFilter {
 }
 ```
 
-##### SecurityConfigurerAdapter 配置
+#### SecurityConfigurerAdapter 配置
 
 ```java
 @Component
@@ -924,7 +934,7 @@ public class SmsAuthenticationConfig extends SecurityConfigurerAdapter<DefaultSe
 2. 将`UserDetailService`注入到`SmsAuthenticationProvider`。
 3. 调用`HttpSecurity`的`authenticationProvider`方法指定了`AuthenticationProvider`为`SmsAuthenticationProvider`，并将`SmsAuthenticationFilter`过滤器添加到了`UsernamePasswordAuthenticationFilter`后面。
 
-##### WebSecurityConfigurerAdapter 配置
+#### WebSecurityConfigurerAdapter 配置
 
 ```java
 http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加短信验证码校验过滤器
@@ -934,9 +944,9 @@ http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class) 
 
 > 有时间断点调试下，看看原理
 
-### Session管理
+## Session管理
 
-#### 超时设置
+### 超时设置
 
 用户登录成功后，信息保存在服务器Session中。
 
@@ -959,7 +969,7 @@ http...
          .invalidSessionUrl("/session/invalid") // Session失效后跳转到这个链接
 ```
 
-#### 并发控制
+### 并发控制
 
 ```java
 http...
@@ -993,7 +1003,7 @@ public class MySessionExpiredStrategy implements SessionInformationExpiredStrate
 
 > Session并发控制只对Spring Security默认的登录方式——账号密码登录有效，而像短信验证码登录，社交账号登录并不生效，解决方案可以参考开源项目https://github.com/wuyouzhuguli/FEBS-Security
 
-#### Session 集群处理
+### Session 集群处理
 
 当应用集群部署的时候，用户在A应用上登录认证了，后续通过负载均衡可能会把请求发送到B应用，而B应用服务器上并没有与该请求匹配的认证Session信息，所以用户就需要重新进行认证。
 
@@ -1022,7 +1032,7 @@ spring:
 
 Redis配置采用默认配置即可实现集群化Session管理。
 
-#### 其他操作
+### 其他操作
 
 `SessionRegistry`包含了一些使用的操作Session的方法，比如：
 
@@ -1039,7 +1049,7 @@ Redis配置采用默认配置即可实现集群化Session管理。
    List<Object> principals = sessionRegistry.getAllPrincipals();
    ```
 
-### 退出登录
+## 退出登录
 
 Spring Security默认的退出登录URL为`/logout`，退出登录后，Spring Security会做如下处理：
 
@@ -1048,7 +1058,7 @@ Spring Security默认的退出登录URL为`/logout`，退出登录后，Spring S
 3. 清空当前的SecurityContext；
 4. 重定向到登录页。
 
-#### 自定义退出登录行为
+### 自定义退出登录行为
 
 ```java
 http....
@@ -1077,7 +1087,7 @@ public class MyLogOutSuccessHandler implements LogoutSuccessHandler {
 }
 ```
 
-### 权限控制
+## 权限控制
 
 Spring Security权限控制可以配合授权注解使用。要开启这些注解，需要在Spring Security配置文件中添加如下注解：
 
@@ -1085,7 +1095,7 @@ Spring Security权限控制可以配合授权注解使用。要开启这些注�
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 ```
 
-#### 保护方法注解
+### 保护方法注解
 
 Spring Security提供了三种不同的安全注解：
 
@@ -1095,7 +1105,7 @@ Spring Security提供了三种不同的安全注解：
 
 3. 表达式驱动的注解，包括@PreAuthorize、@PostAuthorize、@PreFilter和 @PostFilter。
 
-##### @Secured
+#### @Secured
 
 在Spring-Security.xml中启用@Secured注解：
 
@@ -1114,7 +1124,7 @@ public void test(){
 
 权限不足时，方法抛出Access Denied异常。
 
-##### @RolesAllowed
+#### @RolesAllowed
 
 @RolesAllowed注解和@Secured注解在各个方面基本上都是一致的。启用@RolesAllowed注解：
 
@@ -1122,7 +1132,7 @@ public void test(){
 <global-method-security jsr250-annotations="enabled"/>
 ```
 
-##### SpEL注解
+#### SpEL注解
 
 启用该注解：
 
@@ -1136,7 +1146,7 @@ java配置启用注解：
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 ```
 
-###### @PreAuthorize
+##### @PreAuthorize
 
 该注解用于方法前验证权限，比如限制非VIP用户提交blog的note字段字数不得超过1000字：
 
@@ -1149,7 +1159,7 @@ public void writeBlog(Form form){
 
 表达式中的#form部分直接引用了方法中的同名参数。这使得Spring Security能够检查传入方法的参数，并将这些参数用于认证决策的制定。
 
-###### @PostAuthorize
+##### @PostAuthorize
 
 方法后调用权限验证，比如校验方法返回值：
 
@@ -1163,7 +1173,7 @@ public User getUserById(long id){
 
 Spring Security在SpEL中提供了名为returnObject 的变量。在这里方法返回一个User对象，所以这个表达式可以直接访问user对象中的userName属性。
 
-#### AccessDeniedHandler
+### AccessDeniedHandler
 
 可以实现`AccessDeniedHandler`接口自定义权限不足处理器来处理权限不足时候的操作。
 
@@ -1186,11 +1196,11 @@ http.exceptionHandling()
     .accessDeniedHandler(authenticationAccessDeniedHandler)
 ```
 
-### 自定义决策管理器
+## 自定义决策管理器
 
 `Spring Security`使用决策管理器`AccessDecisionManager`进行动态的权限验证。
 
-#### 权限资源 SecurityMetadataSource
+### 权限资源 SecurityMetadataSource
 
 要实现动态的权限验证，首先要有对应的访问权限资源。`Spring Security`是通过`SecurityMetadataSource`来加载访问请求所需要的具体权限。
 
@@ -1268,7 +1278,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 
 > ConfigAttribute只是一个简单的配置属性，其具体的解释将由AccessDecisionManager来决定，比如只存储角色名称。
 
-#### 权限决策 AccessDecisionManager
+### 权限决策 AccessDecisionManager
 
 `AccessDecisionManager`是由`AbstractSecurityInterceptor`调用的，它负责鉴定用户是否有访问对应资源（方法或URL）的权限。
 
@@ -1319,7 +1329,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 
 `AccessDecisionManager` 接口的 `decide` 方法决定是否具有权限进行本次访问。抛出`AccessDeniedException`异常即为无权限，正常返回则具有权限。本例为具有任意一个所需权限即可访问。
 
-#### 拦截器 AbstractSecurityInterceptor
+### 拦截器 AbstractSecurityInterceptor
 
 `AbstractSecurityInterceptor` 是一个实现了对受保护对象的访问进行拦截的抽象类。每种受支持的安全对象类型（方法调用或Web请求）都有自己的拦截器类，其为`AbstractSecurityInterceptor`的子类。
 
@@ -1418,7 +1428,7 @@ htttp.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>
 }
 ```
 
-### 投票器
+## 投票器
 
 Spring Security内置了几个基于投票的`AccessDecisionManager`。
 
@@ -1443,7 +1453,7 @@ public interface AccessDecisionVoter<S> {
 }
 ```
 
-#### 基于投票的决策管理器
+### 基于投票的决策管理器
 
 Spring Security提供了3个决策管理器，默认是一票制`AffirmativeBased`。
 
@@ -1468,7 +1478,7 @@ Spring Security提供了3个决策管理器，默认是一票制`AffirmativeBase
    - 如果没有反对票，但是有赞成票，则表示通过。
    - 如果全部弃权了，则将视参数`allowIfAllAbstainDecisions`的值而定，`true`则通过，`false`则抛出`AccessDeniedException`。
 
-#### 内置的投票器
+### 内置的投票器
 
 Spring Security有两个默认的投票器。
 
@@ -1494,7 +1504,7 @@ Spring Security有两个默认的投票器。
 
   `AuthenticatedVoter`是通过`AuthenticationTrustResolver`的`isAnonymous`()方法和`isRememberMe`()方法来判断`SecurityContextHolder`持有的`Authentication`是否为`AnonymousAuthenticationToken`或`RememberMeAuthenticationToken`的，即是否为`IS_AUTHENTICATED_ANONYMOUSLY`和`IS_AUTHENTICATED_REMEMBERED`。
 
-### 调用后的处理
+## 调用后的处理
 
 Spring Security为我们提供了一个`AfterInvocationManager`接口，它允许我们在受保护对象访问完成后对返回值进行修改或者进行权限鉴定，决定是否需要抛出`AccessDeniedException`，其将由`AbstractSecurityInterceptor`的子类进行调用。
 
@@ -1504,8 +1514,17 @@ Spring Security为我们提供了一个`AfterInvocationManager`接口，它允�
 
 需要注意的是`AfterInvocationManager`需要在受保护对象成功被访问后才能执行。
 
-### 角色的继承
+## 角色的继承
 
-当要求`ROLE_ADMIN`拥有所有的`ROLE_USER`所具有的权限，我们可以给拥有`ROLE_ADMIN`角色的用户同时授予`ROLE_USER`角色来达到这一效果或者修改需要`ROLE_USER`进行访问的资源使用`ROLE_ADMIN`也可以访问。Spring Security为我们提供了一种更为简便的办法，那就是角色的继承，它允许我们的`ROLE_ADMIN`直接继承`ROLE_USER`，这样所有`ROLE_USER`可以访问的资源`ROLE_ADMIN`也可以访问。
+当要求`ROLE_ADMIN`拥有所有的`ROLE_USER`所具有的权限，我们可以给拥有`ROLE_ADMIN`角色的用户同时授予`ROLE_USER`角色来达到这一效果或者修改需要`ROLE_USER`进行访问的资源使用`ROLE_ADMIN`也可以访问。
+
+Spring Security为我们提供了一种更为简便的办法，那就是角色的继承，它允许我们的`ROLE_ADMIN`直接继承`ROLE_USER`，这样所有`ROLE_USER`可以访问的资源`ROLE_ADMIN`也可以访问。
 
 定义角色的继承我们需要在`ApplicationContext`中定义一个`RoleHierarchy`，然后再把它赋予给一个`RoleHierarchyVoter`，之后再把该`RoleHierarchyVoter`加入到我们基于`Voter`的`AccessDecisionManager`中，并指定当前使用的`AccessDecisionManager`为我们自己定义的那个。
+
+- [聊聊spring security的role hierarchy - 简书](https://www.jianshu.com/p/cdc597e6d546)
+
+## 参考
+
+- [标签: Spring Security | MrBird](https://mrbird.cc/tags/Spring-Security/)
+- [#SpringSecurity系列](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI1NDY0MTkzNQ==&action=getalbum&album_id=1319828555819286528&scene=173#wechat_redirect)

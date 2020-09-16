@@ -38,8 +38,6 @@
 
 ## 消息发送
 
-![Producer发送消息顺序图](C:\Users\Administrator\Desktop\tmp\Github\StudyNotes\notes\mq\rocketmq-2.assets\02.png)
-
 消息发送的实现方法在` this.defaultMQProducerImpl.send(msg)`中。主要过程如下：
 
 1. 消息参数校验

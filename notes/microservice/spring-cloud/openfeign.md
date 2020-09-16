@@ -41,8 +41,8 @@ ribbon 1秒（ReadTimeout）后重试
 ribbon 默认重试1次（不包括首次）
 hystrix 超时时间过短的话，到时间直接fallback。虽然fallback了，但请求还是会重试（时间太短的话，甚至会在feign请求发起前就fallback了）
 
-hystrix 超时时间 feign请求总消耗时间
-ribbon ReadTimeout 被调用方方法执行消耗时间
+hystrix 超时时间： feign请求总消耗时间
+ribbon ReadTimeout： 被调用服务执行消耗时间
 
 ## 体系结构
 

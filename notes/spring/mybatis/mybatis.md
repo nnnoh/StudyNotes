@@ -208,7 +208,7 @@ list map JSON
 
 SqlSession内部维护了一个Executor，实际进行的增删改查都是通过这个Executor来进行的。
 
-![Executor子类](.\mybatis.assets\5689815-8594b512995dc87c.webp)
+![Executor子类](../../../img/mybatis.assets/5689815-8594b512995dc87c.webp)
 
 最底层的接口是Executor，其有两个实现类：BaseExecutor和CachingExecutor。CachingExecutor用于二级缓存，而BaseExecutor则用于一级缓存及基础的操作。
 

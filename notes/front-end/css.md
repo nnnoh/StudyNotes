@@ -122,7 +122,7 @@ color:#FF0;/*黄色*/
 
 CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明:
 
-![selector](css.assets\selector.gif)
+![selector](../../img/css.assets/selector.gif)
 
 - 选择器通常是需要改变样式的 HTML 元素。
 - 每条声明由一个属性和一个值组成。

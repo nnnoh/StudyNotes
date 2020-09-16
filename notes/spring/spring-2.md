@@ -851,7 +851,7 @@ https://blog.51cto.com/lavasoft/184605
 
 拦截器加入的顺序就是其执行的顺序。preHandle 顺序执行完，然后再逆序执行 postHandle ，最后逆序执行 postHandle。
 
-![img](https://img-blog.csdn.net/20180925212911462?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3NDY5NTQ5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![img](../../img/spring-2.assets/20180925212911462)
 
 #### 拦截器与过滤器的区别
 

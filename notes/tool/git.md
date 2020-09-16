@@ -629,6 +629,18 @@ eclipse 会自动忽略了后缀为gitkepp的文件。
 !.gitkeep 
 ```
 
+#### 从https转ssh协议
+
+在 `git clone` 项目后，只需将 `.git/config` 文件中
+
+`url = http://xxx.com/Name/project.git`
+
+改为
+
+`url = git@xxx.com:Name/project.git`
+
+即可。
+
 
 
 git init --shared --bare

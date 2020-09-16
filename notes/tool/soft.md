@@ -77,5 +77,5 @@ pause
 
 1. 按下`Win+R`调出命令行窗口，输入`netstat -aon|findstr "8081"`，找到指定行最后一列的数字（PID），我们这里是9548.
 2. 输入`tasklist|findstr "9548"`，发现是`javaw.exe`占用了8081端口。
-3. 再次输入`taskkill /f /t /im javaw.exe`结束该进程。
+3. 再次输入`taskkill /f /t /im 9548`结束该进程。
 

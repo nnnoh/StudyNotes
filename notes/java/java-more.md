@@ -388,9 +388,15 @@ class MessageProxy implements InvocationHandler {
 
 https://blog.csdn.net/wolfcode_cn/article/details/80654730
 
+## 安全管理器
+
+[java安全沙箱（四）之安全管理器及Java API - duanxz - 博客园](https://www.cnblogs.com/duanxz/p/6108357.html)
+
+[java安全管理器SecurityManager入门 - 已往之不谏 - 博客园](https://www.cnblogs.com/yiwangzhibujian/p/6207212.html)
+
 ## 流
 
-[流](https://www.w3cschool.cn/java/java-stream-operation.html)
+[stream](https://www.w3cschool.cn/java/java-stream-operation.html)
 
 ## Lambda 表达式
 

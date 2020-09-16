@@ -104,7 +104,7 @@ https://www.cnblogs.com/douyage/p/8630529.html
 
 ### jQuery HTML
 
-![jQuery Dimensions](jquery.assets\img_jquerydim-1583999822870.gif)
+![jQuery Dimensions](../../img/jquery.assets/img_jquerydim-1583999822870.gif)
 
 设置了 box-sizing 后，width() 获取的是 css 设置的 width 减去 padding 和 border 的值。
 
