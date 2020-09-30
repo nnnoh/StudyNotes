@@ -1,3 +1,9 @@
+## Sping document
+
+- [Core Technologies](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#validation-beanvalidation-overview)
+
+- [Web on Servlet Stack](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/web.html#spring-web)
+
 ## Hibernate Validator
 
 hibernate validator（[官方文档](http://hibernate.org/validator/documentation/)）提供了一套比较完善、便捷的验证实现方式。

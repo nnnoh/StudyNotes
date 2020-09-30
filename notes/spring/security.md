@@ -1528,3 +1528,6 @@ Spring Security为我们提供了一种更为简便的办法，那就是角色�
 
 - [标签: Spring Security | MrBird](https://mrbird.cc/tags/Spring-Security/)
 - [#SpringSecurity系列](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI1NDY0MTkzNQ==&action=getalbum&album_id=1319828555819286528&scene=173#wechat_redirect)
+- [spring-security核心类解析--整理中...._徐靖峰的专栏-CSDN博客](https://blog.csdn.net/u013815546/article/details/68923710)
+- [SpringSecurity动态鉴权流程解析 | segmentfault新人第二弹_争做认真学习冠军 - SegmentFault 思否](https://segmentfault.com/a/1190000023215402)
+- [Document](https://macrozheng.github.io/mall-learning/#/)

@@ -2,7 +2,7 @@
 
 Spring Security OAuth2主要包含认证服务器和资源服务器这两大块的实现：
 
-![Oauth2](../../img/oauth.assets/20190624155418-1591062282680.png)
+![Oauth2](../../../img/oauth.assets/20190624155418-1591062282680.png)
 
 - 认证服务器主要包含了四种授权模式的实现和Token的生成与存储。
 
@@ -168,10 +168,6 @@ graph TD
 	--> B(response)
 ```
 
-#### 短信验证码获取令牌
-
-
-
 [OAuth2自定义令牌配置](https://mrbird.cc/Spring-Security-OAuth2-Token-Config.html)
 
 [OAuth2 SSO](https://mrbird.cc/Spring-Security-OAuth2-SSO.html)
@@ -183,4 +179,10 @@ graph TD
 https://blog.csdn.net/lixiang987654321/article/details/88132204
 
 https://stackoverflow.com/questions/28537181/spring-security-oauth2-which-decides-security/28604260#28604260
+
+## 参考
+
+- [标签: OAuth2 | MrBird](https://mrbird.cc/tags/OAuth2/)
+
+- [Spring Security OAuth2_徐靖峰的专栏_下一秒升华-CSDN博客](https://blog.csdn.net/u013815546/category_7090661.html)
 
