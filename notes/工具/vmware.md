@@ -1,0 +1,1 @@
+- 配置好网络后，还是无法 ping 通时，确认相关服务是否启动。如，VMware NAT Service。
