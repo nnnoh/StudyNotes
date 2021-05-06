@@ -148,9 +148,12 @@ List x Array
 思路
 
 - 在题目有限制的情况下（如，打家劫舍），确定不同情况下的迁移方程及对应的计算范围。
+- 抓住题目本质，迁移方程变量数尽可能小，减少 `for` 循环数量。
 - 空间优化：当 `f[i]` 时只依赖 `f[i-1]` 和 `f[i-2]` 等有限个状态时，可以利用**滚动数组**思想进行优化。
 - 迁移方程尽量简洁，特殊情况一般化。
+- 根据题意剪枝。
 - 利用公式传递性简化计算过程。
+- 当迁移限制在几种有限的情况下可以考虑使用dfs遍历，配合记忆化求解。
 
 ### 矩阵求区间和
 
@@ -176,9 +179,23 @@ List x Array
 
 ## Math
 
+### 公式求值
+
+思路：
+
+- 在暴力枚举的情况下，剪枝优化时间复杂度。
+- 两个变量的变化可视为在二维矩阵上搜索，帮助理解找出搜索路径，利用双指针求解。
+- 数论等知识的解法并不一定最好，不强求。
+
 ### 位运算
 
 - [Integer.bitCount() 函数理解（尽量通俗易懂）_雷震子的博客-CSDN博客](https://blog.csdn.net/qq_27007509/article/details/112246576?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-0&spm=1001.2101.3001.4242)
+
+有限状态自动机
+
+数字电路设计
+
+- [只出现一次的数字 II - 只出现一次的数字 II - 力扣（LeetCode）](https://leetcode-cn.com/problems/single-number-ii/solution/single-number-ii-mo-ni-san-jin-zhi-fa-by-jin407891/)
 
 #### 位运算分治
 
@@ -199,6 +216,10 @@ List x Array
 
 - 特殊排序过程中，compare 可行性的证明。
   - [最大数 - 最大数 - 力扣（LeetCode）](https://leetcode-cn.com/problems/largest-number/)
+
+### 理论知识
+
+- 平方数之和：[Which Numbers are the Sum of Two Squares?](https://wstein.org/edu/124/lectures/lecture21/lecture21/node2.html)
 
 ## Two Pointers
 
