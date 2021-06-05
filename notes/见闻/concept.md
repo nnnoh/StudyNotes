@@ -27,3 +27,15 @@ webservice
 
 
 [结合项目来谈谈 Puppeteer - 知乎](https://zhuanlan.zhihu.com/p/76237595)
+
+Puppeteer 是 Chrome 开发团队在 2017 年发布的一个 Node.js 包，用来模拟 Chrome 浏览器的运行。
+
+
+
+并发模型
+
+`thread-per-connection` 
+
+`Communicating Sequential Processes（顺序通信处理）`（CSP, C. Hoare 发明的）
+
+ `message passing-model（消息传递）`（已经运用在了其他语言中，比如 Erlang）

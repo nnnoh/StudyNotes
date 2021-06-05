@@ -373,6 +373,12 @@ Environment环境能决定当前激活的是哪个profile配置，和哪个profi
 
 properties属性可能来源于properties文件、JVM properties、system环境变量、JNDI、servlet context parameters上下文参数、专门的properties对象，Maps等等。
 
+### Properties
+
+- PropertyPlaceholderConfigurer可以在XML配置文件中加入外部属性文件。
+
+  [PropertyPlaceholderConfigurer读取属性文件使用详解_王如霜-CSDN博客](https://blog.csdn.net/wrs120/article/details/84554366)
+
 ### 常用注解
 
 #### @Order
@@ -851,7 +857,7 @@ https://blog.51cto.com/lavasoft/184605
 
 拦截器加入的顺序就是其执行的顺序。preHandle 顺序执行完，然后再逆序执行 postHandle ，最后逆序执行 postHandle。
 
-![img](../../img/spring-2.assets/20180925212911462.png)
+![img](../../../img/spring-2.assets/20180925212911462.png)
 
 #### 拦截器与过滤器的区别
 

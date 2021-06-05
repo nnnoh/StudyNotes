@@ -417,13 +417,14 @@ Lambda 表达式是一种匿名函数，也可称为闭包。Lambda 允许把函
 
 ```java
 // 函数式接口定义
+@FunctionalInterface
 interface GreetingService {
     void sayMessage(String message);
 }	
 ```
 
 ```java
-// 使用java
+// lambda赋值
 GreetingService greetService = message ->
   System.out.println("Hello " + message);
 greetService.sayMessage("Runoob");
@@ -431,14 +432,22 @@ greetService.sayMessage("Runoob");
 
 Lambda 表达式的使用前提:
 
-- 必须有接口（不能是抽象类），接口中有且仅有一个需要被重写的抽象方法。
+- 必须有接口（不能是抽象类），接口中**有且仅有一个**需要被重写的抽象方法。
 - 必须支持上下文推导，要能够推导出来 Lambda 表达式表示的是哪个接口中的内容。
+
+> Lambda 表达式 相当于在所在类下的一个内部匿名类，并实现了指定的接口。
 
 ### 变量作用域
 
-- lambda 表达式只能引用标记了 final 的外部局部变量，即不能在 lambda 内部修改定义在域外的局部变量，否则会编译错误。
+- lambda 表达式只能引用标记了 final 的外部局部变量（变量捕获，类似于函数传参），即不能在 lambda 内部修改定义在域外的局部变量，否则会编译错误，但可以修改域外的局部变量里的成员属性。
+
 - lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）。
+
 - 在 Lambda 表达式当中不允许声明一个与局部变量同名的参数或者局部变量。
+
+- Lambda 表达式可以访问和修改成员变量（权限与所在方法相同）。
+
+  实际上，Lambda 表达式并没有直接引用成员变量，而是引用当前的外部对象本身 this；因此，Lambda 表达式**只是限定它直接引用的变量引用不可变**。
 
 ## Functional Inteface
 
@@ -547,6 +556,8 @@ String...
 
 
 反射 Accessible
+
+[编程语言的反射中有什么需求要根据属性的名字得到属性的值，以及通过函数名字调用函数？ - 知乎](https://www.zhihu.com/question/432306303)
 
 javaagent
 

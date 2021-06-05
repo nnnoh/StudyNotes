@@ -183,6 +183,10 @@ glob 模式是指 shell 所使用的简化了的正则表达式。规则如下�
 - 问号（`?`）只匹配一个任意字符；
 - 如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 `[0-9]` 表示匹配所有 0 到 9 的数字）。
 
+参考：
+
+- [GitHub - github/gitignore: A collection of useful .gitignore templates](https://github.com/github/gitignore)
+
 ## 基本使用
 
 ### 取得项目的 Git 仓库
@@ -641,6 +645,20 @@ eclipse 会自动忽略了后缀为gitkepp的文件。
 - [git删除中间某次提交 - qiqi715 - 博客园](https://www.cnblogs.com/qiqi715/p/11540999.html)
 
 - [【转】Git删除commit提交的log记录 - 程序小工 - 博客园](https://www.cnblogs.com/zqunor/p/8620335.html)
+
+### .gitignore不起作用
+
+`.gitignore` 只能忽略那些原来没有被 track 的文件，如果某些文件已经被纳入了版本管理中，则修改 `.gitignore` 是无效的。
+
+解决方法：
+
+```bash
+git rm -r --cached .
+git add .
+git commit -m 'update .gitignore'
+```
+
+使用 rm 命令清除一下相关的缓存内容。这样文件将以未追踪的形式出现。然后再重新添加提交一下，`.gitignore` 文件里的规则就起作用。
 
 
 

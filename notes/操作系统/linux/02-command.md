@@ -6,10 +6,17 @@
 
 在Fedora和RedHat以及CentOS中的软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
 
-安装命令：
+安装：
 
-1. yum search 命令 
-2. yum install 软件包
+- yum install 软件包
+
+查询：
+
+- `yum search xxx`：搜寻某个软件名称或者是描述 (description) 的重要关键字。
+- `yum list`：列出目前 yum 所管理的所有的软件名称与版本。
+- `yum provides xxx`：根据文件去搜寻软件。
+- `yum whatprovides */xxx `：查找某个命令属于哪个包。
+- `yum info xxx`：查询软件信息。
 
 ### apt-get & apt-cache
 
@@ -628,6 +635,8 @@ tunnel <地址>    建立隧道通信。
 
 ### useradd
 
+参考：[linux账户管理](.\06-account.md)
+
 ### pinky
 
 pinky命令是一个用户信息查找命令，它提供了所有登录用户的详细信息。
@@ -703,3 +712,17 @@ pinky命令是一个用户信息查找命令，它提供了所有登录用户的
 ### systemctl
 
 参考：[linux systemctl命令详解_Linux_脚本之家](https://www.jb51.net/article/136559.htm)
+
+### getent
+
+查看系统的数据库中的相关记录，即使这些数据不在本机上。
+
+数据库配置文件：/etc/nsswitch.conf。
+
+`getent --help` 可查看支持的数据库。
+
+```bash
+# 从本机passwd库中查看账号的信息
+$ getent passwd root
+```
+

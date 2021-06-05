@@ -285,11 +285,13 @@ Archetype项目：
     </build>
 ```
 
-### Tips
+### Issue
 
-#### 修改仓库
+#### 修改仓库位置
 
-修改 Maven 根目录下 conf/setting.xml 文件。在 `<mirrors>` 标签中添加下列内容。然后 update  setting。
+修改 Maven 根目录下 `conf/setting.xml` 文件（或在 IDE 设置中覆盖默认设置）。在 `<mirrors>` 标签中添加下列内容。然后 update  setting。
+
+默认位置为 `用户目录/.m2/repository`。
 
 ```xml
 	<mirror>
@@ -299,6 +301,10 @@ Archetype项目：
       <mirrorOf>central</mirrorOf>
 	</mirror>
 ```
+
+查看仓库位置：
+
+- `mvn help:effective-settings`
 
 #### Gradle 项目转 Maven
 
@@ -345,6 +351,23 @@ Archetype项目：
 #### setting.xml
 
 eclipse -> Preferences -> Maven -> User Setting 确认路径。
+
+#### 运行spring-boot项目
+
+- 方法1：直接启动springboot项目
+
+  ```bash
+  mvn compile  # 编译源码
+  mvn spring-boot:run # 启动项目
+  ```
+
+- 方法2：将项目打包为jar，再启动
+
+  ```bash
+  mvn package # 将项目打包(会自动编译的)，也可以使用mvn install 这个命令的打包同时会打包到我们的maven仓库中
+  cd target # 进入打包后的jar包的目录
+  java -jar xxx.jar # 启动jar包
+  ```
 
 #### pom.xml Errors/Warnings
 

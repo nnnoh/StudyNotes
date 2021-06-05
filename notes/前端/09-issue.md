@@ -29,11 +29,6 @@
 - [如何判断JS类型 - 知乎](https://zhuanlan.zhihu.com/p/89238840)
 - [JavaScript学习总结(六)——JavaScript判断数据类型总结 - 孤傲苍狼 - 博客园](https://www.cnblogs.com/xdp-gacl/p/3490065.html)
 
-## Pormise
-
-- [Promise - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/1022910821149312/1023024413276544)
-- [使用 Promise - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
-
 ## 时间格式化
 
 ```javascript
@@ -62,9 +57,22 @@ Date.prototype.format = function (fmt) {
 }
 ```
 
+## BLOB
 
+- [video标签中src属性值的"blob:网址"中的blob什么意思？ - 知乎](https://www.zhihu.com/question/446432610)
 
+## 前端模块规范AMD、CMD、CommonJS、UMD
 
+#### 参考资料
+
+- [认识AMD、CMD、UMD、CommonJS](https://www.cnblogs.com/humin/p/5389901.html)
+- [AMD, CMD, CommonJS和UMD](https://www.jianshu.com/p/bd4585b737d7)
+
+## 内容安全策略（*CSP*）
+
+### 参考资料
+
+- [内容安全策略( CSP )](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP)
 
 clearfix
 
@@ -76,7 +84,7 @@ cookie 跨域
 
 SameSite
 
-## Tips
+## Others
 
 - [浅谈js防抖和节流 - SegmentFault 思否](https://segmentfault.com/a/1190000018428170)
 - [js的几种sleep函数](https://juejin.cn/post/6844903808410058760)

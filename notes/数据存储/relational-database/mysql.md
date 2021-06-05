@@ -262,7 +262,8 @@ https://www.cnblogs.com/i6010/articles/11124993.html
 
 ### 索引
 
-
+- [SQL 索引 - SQL 语法入门 - 极客学院Wiki](https://wiki.jikexueyuan.com/project/sql/indexes.html)
+- [SQL索引一步到位 - 老Key - 博客园](https://www.cnblogs.com/AK2012/archive/2013/01/04/2844283.html)
 
 ### 全文本搜索
 

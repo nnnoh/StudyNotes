@@ -67,12 +67,16 @@
 
   底层数据类型决定了内部结构和表达方式，也决定是否可以像底层类型一样对内置运算符的支持。但注意不同类型即使底层类型相同也是**不兼容的**，无法比较进行比较和运算。（类型可以和其底层类型比较，前提是底层类型是基础数据结构）
 
-- 对于每一个类型T，都有一个对应的类型转换操作T(x)，用于将x转为T类型（译注：如果T是指针类型，可能会需要用小括弧包装T，比如`(*int)(0)`）。只有当两个类型的底层基础类型相同时，才允许这种转型操作，或者是两者都是指向相同底层结构的指针类型，这些转换只改变类型而不会影响值本身。如果x是可以赋值给T类型的值，那么x必然也可以被转为T类型，但是一般没有这个必要。
+- 对于每一个类型T，都有一个对应的类型转换操作T(x)，用于将x转为T类型（译注：如果T是指针类型，可能会需要用小括弧包装T，比如`(*int)(0)`）。只有当两个类型的底层基础类型相同时，才允许这种转型操作，或者是两者都是指向相同底层结构的指针类型，这些转换只改变类型而不会影响值本身。
+
+  如果x是可以赋值给T类型的值，那么x必然也可以被转为T类型，但是一般没有这个必要。
 
   数值类型之间的转型也是允许的，并且在字符串和一些特定类型的slice之间也是可以转换的，这类转换可能改变值的表现。
-
+  
   在任何情况下，运行时不会发生转换失败的错误（译注: 错误只会发生在编译阶段）。
   
+- 类型别名，如 `type MyInt = int`
+
 - Go语言的习惯是在if中处理错误然后直接返回，这样可以确保正常执行的语句不需要代码缩进。
 
 - bool、byte、error、true、iota等并不是关键字，在Go中它们被称为**预定义标识符**。这些标识符拥有**universe block作用域**。
@@ -80,6 +84,15 @@
   Go语言的关键字是保留的，我们无法将其用于规范之外的其他场合，比如作为变量的标识符。但是预定义标识符不是关键字，我们可以override它们。
 
 - Go中的内建函数仅仅是一个标识符，在Go源码编译期间，Go编译器遇到内建函数标识符时会将其替换为若干runtime的调用。
+
+- `i++`和`i--`在Go语言中是语句，不是表达式，因此不能赋值给另外的变量。此外没有`++i`和`--i`。
+
+- 多变量赋值，首先将右侧涉及的变量赋值一份副本，利用副本进行计算再赋值给左侧变量。
+
+  ```go
+  x, y := 1, 2
+  x, y = x+y, x+y // 3 3
+  ```
 
 
 ### 基础数据类型
@@ -94,7 +107,11 @@
 
   `%T`参数打印类型信息。
 
+  `%#v` 会给出实例的完整输出，包括它的字段。
+
   `%*s`中的`*`会在字符串之前填充一些空格。
+
+  `%p`参数用于打印指针类型变量的地址。
 
   [Go语言基础--Printf格式化输出、Scanf格式化输入详解_一只IT小小鸟-CSDN博客](https://blog.csdn.net/qq_34777600/article/details/81266453)
 
@@ -103,6 +120,37 @@
 - 只有常量可以是无类型的。通过延迟明确常量的具体类型，无类型的常量不仅可以提供更高的运算精度，而且可以直接用于更多的表达式而不需要显式的类型转换。这里有六种未明确类型的常量类型，分别是无类型的布尔型、无类型的整数、无类型的字符、无类型的浮点数、无类型的复数、无类型的字符串。
 
 - 类型整数常量转换为int，它的内存大小是不确定的，但是无类型浮点数和复数常量则转换为内存大小明确的float64和complex128。 如果不知道浮点数类型的内存大小是很难写出正确的数值算法的。
+
+- 如果一个数组的元素类型是可以相互比较的，那么数组类型也是可以相互比较的，这时候我们可以直接通过==比较运算符来比较两个数组，只有当两个数组的所有元素都是相等的时候数组才是相等的。
+
+  当调用一个函数的时候，函数的每个调用参数将会被赋值给函数内部的参数变量，所以函数参数变量接收的是一个复制的副本，并不是原始调用的变量。因为函数参数传递的机制导致传递大的数组类型将是低效的，并且对数组参数的任何的修改都是发生在复制的数组上，并不能直接修改调用时原始的数组变量。
+
+  当然，我们可以显式地传入一个数组指针，那样的话函数通过指针对数组的任何修改都可以直接反馈到调用者。
+
+- Slice（切片）代表变长的序列，序列中每个元素都有相同的类型。一个slice类型一般写作[]T，其中T代表slice中元素的类型；slice的语法和数组很像，只是没有固定长度而已。
+
+- make & new
+
+  - new(T) 为类型T分配一片内存，**返回一个指向类型为 T，值为 零值 的地址的指针**，它适用于值类型如数组和结构体；它相当于 `&T{}`。
+  - make(T) **返回一个类型为 T 的初始值**，它只适用于3种内建的引用类型：切片、map 和 channel。
+
+  1. slice、map以及channel都是golang内建的一种引用类型，三者在内存中存在多个组成部分， 需要对内存组成部分初始化后才能使用，而make就是对三者进行初始化的一种操作方式。
+
+  2. new 获取的是存储指定变量内存地址的一个变量，对于变量内部结构并不会执行相应的初始化操作，只是设置为零值，如int: 0，string: ""，对于结构体则是将结构体内的每个成员设置为零值，内部的结构体同理。而 slice、map、channel 需要make进行初始化并获取对应的内存地址，而非new简单的获取内存地址。
+
+  空切片 & nil切片：[深度解析 Go 语言「切片」的三种特殊状态 零切片、空切片和nil 切片](http://www.meirixz.com/archives/80658.html)
+
+  ```go
+  newArr := *new([]int) //能用于append
+  newArrPointer := new([]int)
+  arr := *newArrPointer // 与newArr性质不一样，不能用于append
+  ```
+
+- `copy` 函数的目标对象需确保其长度（len）与想拷贝的数据一致。
+
+- 结构体匿名成员可以通过简短形式访问匿名成员嵌套的成员。
+
+- 对于能为 `nil` 的类型 `append` 会给分组添加个空对象，若不能为`nil`，则会（编译）报错。
 
 #### 字符串
 
@@ -150,6 +198,8 @@
   `for range`语句会自动隐式解码UTF8字符串，逐一地迭代出字符串值里的每个 Unicode 字符。但是，相邻的 Unicode 字符的索引值并不一定是连续的。这取决于前一个 Unicode 字符是否为单字节字符。
 
   或者我们可以直接调用 `utf8.RuneCountInString(s)` 函数。
+  
+- 字符串比较：`"abd">"abcd"` 为 `true`（按字母顺序比较）。比较操作符从前往后依此比较对应位上两字符的 ascii 码值，遇到不相等的字符时返回该字符比较结果。
 
 ##### strings.Builder
 
@@ -231,9 +281,16 @@ readingIndex := reader1.Size() - int64(reader1.Len()) // 计算出的已读计�
 
 #### 切片（slice）
 
-- slice和数组的字面值语法很类似，它们都是用花括弧包含一系列的初始化元素，但是对于slice并没有指明序列的长度。这会隐式地创建一个合适大小的数组，然后slice的指针指向底层的数组。就像数组字面值一样，slice的字面值也可以按顺序指定初始化值序列，或者是通过索引和元素值指定，或者用两种风格的混合语法初始化。
+- slice和数组的字面值语法很类似，它们都是用花括弧包含一系列的初始化元素，但是对于**slice并没有指明序列的长度**。这会隐式地创建一个合适大小的数组，然后slice的指针指向底层的数组。就像数组字面值一样，slice的字面值也可以按顺序指定初始化值序列，或者是通过索引和元素值指定，或者用两种风格的混合语法初始化。
 
 - 和数组不同的是，slice之间不能比较，因此我们不能使用==操作符来判断两个slice是否含有全部相等元素。不过标准库提供了高度优化的bytes.Equal函数来判断两个字节型slice是否相等（[]byte），但是对于其他类型的slice，我们必须自己展开每个元素进行比较。
+
+- 数组转切片：
+
+  ```go
+  a := [3]int{1, 2, 3}
+  b = append(a[:], 4)
+  ```
 
 - 内置的make函数创建一个指定元素类型、长度和容量的slice。容量部分可以省略，在这种情况下，容量将等于长度。
 
@@ -241,12 +298,89 @@ readingIndex := reader1.Size() - int64(reader1.Len()) // 计算出的已读计�
 
   ```Go
   make([]T, len)
-  make([]T, len, cap) // same as make([]T, cap)[:len] 额外的元素是留给未来的增长用的。
+  make([]T, len, cap) // same as make([]T, cap)[:len] 预声明的空间是留给未来的增长用的。
   ```
 
 - 多个slice之间可以共享底层的数据，并且引用的数组部分区间可能重叠。
 
 - 因为slice值包含指向第一个slice元素的指针，因此向函数传递slice将允许在函数内部修改底层数组的元素。换句话说，复制一个slice只是对底层的数组创建了一个新的slice别名。
+
+- range 遍历
+
+  ```go
+  for i, item := range items {
+      fmt.Printf("items[%d]=%s\n", i, item)
+      // 注意items只是值的拷贝，使用 items[i] 设置数组的值
+  } 
+  // 只需要索引
+  for i:= range items {
+  	items[i] = i
+  }
+  ```
+
+#### map
+
+```go
+// 声明变量，默认 map 是 nil
+var map_variable map[key_data_type]value_data_type
+// 使用 make 函数
+map_variable := make(map[key_data_type]value_data_type)
+// map字面量
+noteFrequency := map[string]float32 {
+    "C0": 16.35, "D0": 18.35, "E0": 20.60, "F0": 21.83,
+    "G0": 24.50, "A0": 27.50, "B0": 30.87, "A4": 440}
+
+// 删除map中的指定key
+delete(map_variable, key_data)
+// 设置kv值
+kvs[k] = v
+
+// 获取map指定kv
+if v, ok := kvs[k];ok {
+    fmt.Printf("%s -> %s\n", k, v)
+}
+// range遍历map
+for k, v := range kvs {
+    fmt.Printf("%s -> %s\n", k, v)
+}
+// 只遍历key
+for k := range kvs {
+}
+```
+
+如果你错误的使用 new() 分配了一个引用对象，你会获得一个空引用的指针，相当于声明了一个未初始化的变量并且取了它的地址。
+
+map 可以根据新增的 key-value 对动态的伸缩，因此它不存在固定长度或者最大限制。但是也可以选择标明 map 的初始容量 `capacity`，就像这样：`make(map[keytype]valuetype, cap)`。
+
+出于性能的考虑，对于大的 map 或者会快速扩张的 map，即使只是大概知道容量，也最好先标明。
+
+map 默认是无序的。
+
+map的key必须是可比较的类型。对于 slice 这种不满足条件的类型，可以通过一下步骤绕过这个限制。
+
+1. 定义一个辅助函数k，将slice转为map对应的string类型的key，确保只有x和y相等时k(x) == k(y)才成立。
+2. 创建一个key为string类型的map，在每次对map操作时先用k辅助函数将slice转化为string类型。
+
+##### set
+
+Go语言中并没有提供一个set类型，但是map中的key也是不相同的，可以用map实现类似set的功能。如：
+
+```go
+seen := make(map[string]bool)
+set := make(map[interface{}]struct{})
+```
+
+#### len 函数
+
+用于计算数组（包括数组指针）、切片（slice）、map、channel、字符串等数据类型的长度。结构休（struct）、整型布尔等不能作为参数传给 len 函数。
+
+1. 数组或数组指针、slice：返回元素个数
+2. map：key/value元素对数
+3. channel：通道中未读的元素个数
+4. 字符串：字节数，并非字符串的字符数
+5. 参数为 nil 值，len返回0
+
+> 字符的个数可使用 `utf8.RuneCountInString(s string)` / `utf8.RuneCount(b []byte)` 
 
 #### 常量
 
@@ -269,6 +403,13 @@ readingIndex := reader1.Size() - int64(reader1.Len()) // 计算出的已读计�
       c = iota // 2
   )
   ```
+
+常量有分为弱类型和强类型常量。如下，其中Pi被定义为弱类型的浮点数常量，可以赋值给float32或float64为基础的其它变量。而E是被定义为float64的强类型常量，默认只能给接受float64类型的变量赋值。
+
+```go
+const Pi = 3.14
+const E float64 = 2.71828
+```
 
 常量的值必须是能够在编译时就能够确定的；你可以在其赋值表达式中涉及计算过程，但是所有用于计算的值必须在编译期间就能获得。
 
@@ -332,64 +473,97 @@ const (
 )
 ```
 
-### 复合数据类型
-
-- 如果一个数组的元素类型是可以相互比较的，那么数组类型也是可以相互比较的，这时候我们可以直接通过==比较运算符来比较两个数组，只有当两个数组的所有元素都是相等的时候数组才是相等的。
-
-  当调用一个函数的时候，函数的每个调用参数将会被赋值给函数内部的参数变量，所以函数参数变量接收的是一个复制的副本，并不是原始调用的变量。因为函数参数传递的机制导致传递大的数组类型将是低效的，并且对数组参数的任何的修改都是发生在复制的数组上，并不能直接修改调用时原始的数组变量。
-
-  当然，我们可以显式地传入一个数组指针，那样的话函数通过指针对数组的任何修改都可以直接反馈到调用者。
-
-- Slice（切片）代表变长的序列，序列中每个元素都有相同的类型。一个slice类型一般写作[]T，其中T代表slice中元素的类型；slice的语法和数组很像，只是没有固定长度而已。
-
-- make & new
-
-  - new(T) 为类型T分配一片内存，**返回一个指向类型为 T，值为 零值 的地址的指针**，它适用于值类型如数组和结构体；它相当于 `&T{}`。
-  - make(T) **返回一个类型为 T 的初始值**，它只适用于3种内建的引用类型：切片、map 和 channel。
-
-  1. slice、map以及channel都是golang内建的一种引用类型，三者在内存中存在多个组成部分， 需要对内存组成部分初始化后才能使用，而make就是对三者进行初始化的一种操作方式。
-
-  2. new 获取的是存储指定变量内存地址的一个变量，对于变量内部结构并不会执行相应的初始化操作，只是设置为零值，如int: 0，string: ""，对于结构体则是将结构体内的每个成员设置为零值，内部的结构体同理。而 slice、map、channel 需要make进行初始化并获取对应的内存地址，而非new简单的获取内存地址。
-
-  空切片 & nil切片：[深度解析 Go 语言「切片」的三种特殊状态 零切片、空切片和nil 切片](http://www.meirixz.com/archives/80658.html)
-
-  ```go
-  newArr := *new([]int) //能用于append
-  newArrPointer := new([]int)
-  arr := *newArrPointer // 与newArr性质不一样，不能用于append
-  ```
-
-- 数组 & 切片
-
-- `copy` 函数的目标对象需确保其长度（len）与想拷贝的数据一致。
-
-- 结构体匿名成员可以通过简短形式访问匿名成员嵌套的成员。
-
-- 对于能为 `nil` 的类型 `append` 会给分组添加个空对象，若不能为`nil`，则会（编译）报错。
-
-- `append` 方法的参数同样也是值传递。
-
-### 函数
-
-- 虽然Go的垃圾回收机制会回收不被使用的内存，但是这不包括操作系统层面的资源，比如打开的文件、网络连接。
+### 结构体与函数
 
 - 注意，不能定义非本地类型（如，内置类型）的方法。
 
 - defer 后跟的必须是函数调用。若其后跟者“多重“函数调用，会先运行前面的，只有”最后一层“函数在程序结束时才调用。
 
+- 当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出）。
+
 - 注意，在方法里修改方法的接收器变量（如，切片操作）不会影响调用方法的接收器本身。
 
-- go中函数的参数传递采用的是：值传递。
+- 如果类型定义了 `String()` 方法，它会被用在 `fmt.Print()`等方法 中生成默认的输出：等同于使用格式化描述符 `%v` 产生的输出。（注意，不要在 `String()` 方法里面调用涉及 `String()` 方法的方法，它会导致意料之外的错误）
 
-  传递的类型如果是int、string、struct等这些，那在函数中无法修改原参数内容数据；如果是指针、map、slice、chan等这些内置结构的数据时，其实处理的是一个指针类型的数据，在函数中可以修改原参数内容数据。
+- go中函数的**参数传递**采用的是：值传递。
+
+  `=` **赋值行为**同函数传参一样是**值传递**。
+
+  传递的类型如果是int、string、struct、数组等这些，那在函数中无法修改原参数内容数据；如果是指针、map、slice、chan等这些内置结构的数据时，其实处理的是一个指针类型的数据，在函数中可以修改原参数内容数据。
 
   参考：[说说不知道的Golang中参数传递 - 腾讯云+社区 - 博客园](https://www.cnblogs.com/qcloud1001/p/10276276.html)
 
-  **slice**数据部分由于是指针类型，在函数内部可以被修改，但len和cap均为int类型。因此函数内部通过append修改了len的数值，但却影响不到函数外部slice的len变量。
+  **数组**是值传递，传递一个大数组的代价非常大。在函数内部修改数组后不影响函数外部的值，如果要修改需传指针格式，如`*[x]int`。另外，数组和 slice 不能隐式转换。
 
+  **slice** 数据部分由于是指针类型（传递成本较小），在函数内部可以被修改，但 len 和 cap 均为 int 类型。因此函数内部通过 append 修改了 len 的数值，但却影响不到函数外部 slice 的 len 变量（可以将修改后的切片作为返回值））。
+  
+  ```go
+  func exchange(arr *[]int) {
+  	// 赋值操作同函数传参一样是值传递
+  	fmt.Printf("%p\n",*arr) // slice内部数据的地址
+  	fmt.Printf("%p\n", arr) // 指向的slice所在的地址
+  	con := *arr
+  	fmt.Printf("%p\n",con) // 和 *arr 相等，内部数据共用
+  	fmt.Printf("%p\n", &con) // con 是函数内临时变量，声明时在新地址上创建
+  	for k, v := range con {
+  		con[k] = v * 2 // 修改的是数据部分，对 con、 *arr 及实参都有影响
+  	}
+  	con = con[:len(con)-1]
+  	*arr = con // 将修改后的 con 内容赋值给形参指向的slice地址，以将变化应用到函数外
+  }
+  ```
+  
   **string**的底层是一个结构体，包括一个指针和一个长度，传参的时候把string的描述结构体复制了一次，所以两个结构体的指针不一样，同时把底层字节数组的指针也复制了，两个字节数组的指针指向同一段区域，也就是字符串字节数组存放的区域，没有发生字符串的整体复制。
-
+  
   但由于Go中string是immutable，位于只读区强制修改会报`segmentation violation`（除非对于堆中分配的string内容，通过转换为`[]byte`来进行强制修改），所以表现上和值类型没有区别。
+  
+- `...` 用途：
+
+  - 函数不定量参数。
+
+    ```go
+    func printall(args ... string) {
+    	for _,v := range args {
+    		fmt.Println(v)
+    	}
+    }
+    ```
+
+  - 函数调用时展开数组/切片。
+
+    ```go
+    	a := []int{1, 2, 3}
+        printall(a...)
+    ```
+
+  - 声明数组时隐式声明长度。
+
+    ```go
+    arr := [...]int{1, 2, 3} 
+    // 等价于 [3]int{1, 2, 3}
+    ```
+
+#### 垃圾回收
+
+虽然Go的垃圾回收机制会回收不被使用的内存，但是这不包括操作系统层面的资源，比如打开的文件、网络连接。
+
+通过调用 `runtime.GC()` 函数可以显式的触发 GC，但这只在某些罕见的场景下才有用，比如当内存资源不足时调用 `runtime.GC()`，它会在此函数执行的点上立即释放一大片内存，此时程序可能会有短时的性能下降（因为 `GC` 进程在执行）。
+
+查看当前的已分配内存的总量：
+
+```go
+var m runtime.MemStats
+runtime.ReadMemStats(&m)
+fmt.Printf("%d Kb\n", m.Alloc / 1024)
+```
+
+如果需要在一个对象 obj 被从内存移除前执行一些特殊操作，比如写到日志文件中，可以通过如下方式调用函数来实现：
+
+```go
+runtime.SetFinalizer(obj, func(obj *typeObj))
+```
+
+在对象被 GC 进程选中并从内存中移除以前，`SetFinalizer` 都不会执行，即使程序正常结束或者发生错误。
 
 ### 接口
 
@@ -405,6 +579,8 @@ const (
   }
   ```
 
+  [golang: 详解interface和nil - 陈亦的个人页面 - OSCHINA - 中文开源技术交流社区](https://my.oschina.net/goal/blog/194233)
+
 - 利用强制类型转换，将空值 nil 转换为 *Student 类型，再转换为 Person 接口，可以确保该 struct 实现了对应接口。
 
   如果实现不完整，编译期将会报错。
@@ -415,13 +591,69 @@ const (
   var _ Person = (*Student)(nil)
   ```
 
+- 接口 `interface{}` 的转换遵循以下规则：
+
+  1. 普通类型向接口类型的转换是隐式的。
+  2. 接口类型向普通类型转换需要类型断言（Comma-ok断言和switch测试）。
+
+- Comma-ok 断言 ：`value, ok := element.(T)`
+
+  element 必须是接口类型的变量，T 是普通类型。如果断言失败，ok 为 false，否则 ok 为 true 并且 value 为变量的值。
+
+- switch 测试：
+
+  ```go
+  switch value := element.(type) {
+  case string:
+      fmt.Printf("this is a string and its value is %s\n", value)
+  case []byte:
+      fmt.Printf("this is a []byte and its value is %s\n", string(value))
+  case int:
+      fmt.Printf("this is a int and its value is %d\n", value)
+  default:
+      fmt.Printf("unknown type\n")
+  }
+  ```
+
 ### 错误处理
 
 - 这是所有自定义包实现者应该遵守的最佳实践：
 
   1）在包内部，总是应该从 panic 中 recover：不允许显式的超出包范围的 panic()
 
-  2）向包的调用者返回错误值（而不是 panic）。
+  2）向包的调用者返回错误值 error（而不是 panic）。
+  
+- 一种用闭包处理错误的模式，用于所有的函数都是同一种签名的情况。
+
+  ```go
+  fType1 = func f(a type1, b type2)
+  
+  func check(err error) { if err != nil { panic(err) } }
+  
+  func errorHandler(fn fType1) fType1 {
+      return func(a type1, b type2) {
+          defer func() {
+              if err, ok := recover().(error); ok {
+                  log.Printf("run time panic: %v", err)
+              }
+          }()
+          fn(a, b)
+      }
+  }
+  
+  func f1(a type1, b type2) {
+      ...
+      f, _, err := // call function/method
+      check(err)
+      t, err := // call function/method
+      check(err)
+      _, err2 := // call function/method
+      check(err2)
+      ...
+  }
+  ```
+
+
 
 #### 错误类型体系
 
@@ -453,48 +685,426 @@ const (
 
    由于`uintptr`可以作为常量的类型，所以`syscall.Errno`自然也可以。`syscall`包中声明有大量的`Errno`类型的常量，每个常量都对应一种系统调用错误。`syscall`包外的代码可以拿到这些代表错误的常量，但却无法改变它们。
 
+### 包
+
+当写自己包的时候，要使用短小的不含有 `_`(下划线)的小写单词来为文件命名。
+
+#### 包导入
+
+```go
+import . "包的路径或 URL 地址" 
+```
+
+当使用`.`来做为包的别名时，你可以不通过包名来使用其中的项目。例如：`test := ReturnStr()`。
+
+```go
+import _ "包名"
+```
+
+只执行它的init函数并初始化其中的全局变量。
+
+#### 包的初始化
+
+程序的执行开始于导入包，初始化 main 包然后调用 main 函数。
+
+一个没有导入的包将通过分配初始值给所有的包级变量和调用源码中定义的包级 init 函数来初始化。一个包可能有多个 init 函数甚至在一个源码文件中。它们的执行是无序的。
+
+导入的包在包自身初始化前被初始化，而一个包在程序执行中只能初始化一次。
+
+init 函数是不能被显式调用的。
+
+#### 平台特定的代码
+
+通常可以使用如下代码实现在特定平台执行相应语句。
+
+```go
+if runtime.GOOS == "windows" {
+    ...
+}
+```
+
+此外，还可以利用平台特定的代码实现。
+
+在 `xxx_linux.go` 和 `xxx_windows.go` 两个文件分别定义各自的函数（通常是同名的）。如此，在`go build`时在 Linux 环境上会编译 `_linux` 后缀的文件而忽视其他平台后缀的文件。
 
 ## 并发
-
-- `ch := make(chan struct{})`
-
-- 箭头`<-`和关键字chan的相对位置表明了channel的方向。
-
-- 并不需要关闭每一个channel。只有当需要告诉接收者goroutine，所有的数据已经全部发送时才需要关闭channel。不管一个channel是否被关闭，当它没有被引用时将会被Go语言的垃圾自动回收器回收。（不要将关闭一个打开文件的操作和关闭一个channel操作混淆。对于每个打开的文件，都需要在不使用的时候调用对应的Close方法来关闭文件。）
-
-- 任何双向channel向单向channel变量的赋值操作都将导致该隐式转换。这里并没有反向转换的语法。
-
-- goroutines可能会因为没有人接收而被永远卡住。这种情况，称为goroutines泄漏，这将是一个BUG。和垃圾变量不同，泄漏的goroutines并不会被自动回收，因此确保每个不再需要的goroutine能正常退出是重要的。
-
-- 不要使用共享数据来通信；使用通信来共享数据
 
 - go里没有重入锁。也就是说没法对一个已经锁上的mutex来再次上锁——这会导致程序死锁。
 
   关于Go的mutex不能重入这一点我们有很充分的理由。mutex的目的是确保共享变量在程序执行时的关键点上能够保证不变性。不变性的一层含义是“没有goroutine访问共享变量”，但实际上这里对于mutex保护的变量来说，不变性还包含更深层含义：当一个goroutine获得了一个互斥锁时，它能断定被互斥锁保护的变量正处于不变状态（译注：即没有其他代码块正在读写共享变量），在其获取并保持锁期间，可能会去更新共享变量，这样不变性只是短暂地被破坏，然而当其释放锁之后，锁必须保证共享变量重获不变性并且多个goroutine按顺序访问共享变量。尽管一个可以重入的mutex也可以保证没有其它的goroutine在访问共享变量，但它不具备不变性更深层含义。（译注：[更详细的解释](https://stackoverflow.com/questions/14670979/recursive-locking-in-go/14671462#14671462)，Russ Cox认为可重入锁是bug的温床，是一个失败的设计）
-  
+
+- goroutines可能会因为没有人接收而被永远卡住。这种情况，称为goroutines泄漏，这将是一个BUG。和垃圾变量不同，泄漏的goroutines并不会被自动回收，因此确保每个不再需要的goroutine能正常退出是重要的。
+
+- 协程可以通过调用`runtime.Goexit()`来停止，尽管这样做几乎没有必要。
+
+-  `runtime.Goexit()` 可以退出当前正在执行的协程。而 `os.exit()` 是退出主进程。
+
+### 通道
+
+- `ch := make(chan struct{})`
+- 箭头`<-`和关键字chan的相对位置表明了channel的方向。
+- 任何双向channel向单向channel变量的赋值操作都将导致该隐式转换。这里并没有反向转换的语法。
+- 不要使用共享数据来通信；使用通信来共享数据。
 - 使用锁的情景：
 
   - 访问共享数据结构中的缓存信息
   - 保存应用程序上下文和状态信息数据
-
 - 使用通道的情景：
 
-  - 与异步操作的结果进行交互
+  - 与异步操作的结果进行交互（Futures 模式）
   - 分发任务
   - 传递数据所有权
+- `for` 循环的 `range` 语句可以用在通道 `ch` 上，它从指定通道中读取数据（无数据则阻塞）直到通道关闭，才继续执行下边的代码。
+  - 使用 for-range 时，通常在发送完数据后显式关闭通道，可搭配 `sync.WaitGroup` 使用。
+
+#### close
+
+并不需要关闭每一个channel。只有当需要告诉接收者goroutine，所有的数据已经全部发送时才需要关闭channel。不管一个channel是否被关闭，当它没有被引用时将会被Go语言的垃圾自动回收器回收。
+
+只有发送者需要关闭通道，接收者永远不会需要。
+
+给已经关闭的通道发送或者再次关闭都会导致运行时的 panic。通道关闭后可以继续将通道缓存中的数据读出，若无数据则返回 false，for-range 在读取完所有已发送的数据后将跳出 for 循环。
+
+可以使用逗号，ok 操作符，用来检测通道是否被关闭。
+
+- 通道没关闭：阻塞或读取缓存的数据
+- 通道关闭：读取缓存的数据或返回 false
+
+```go
+if v, ok := <-ch; ok { // ok is true if v received value
+  process(v)
+}
+```
+
+如果通道关闭前有通道阻塞在写入操作，再次读取该通道数据若有缓存数据则读取缓存数据否则读取到 false，而阻塞的写入操作将会报错 panic: send on closed channel（在非主协程中报的错可能会因主协程结束执行后来不及输出错误信息）。
+
+> 对于每个打开的文件，都需要在不使用的时候调用对应的Close方法来关闭文件。
+
+### GOMAXPROCS 
+
+在 gc 编译器下（6g 或者 8g）你必须设置 GOMAXPROCS 为一个大于默认值 1 的数值来允许运行时支持使用多于 1 个的操作系统线程，所有的协程都会共享同一个线程除非将 GOMAXPROCS 设置为一个大于 1 的数。
+
+假设 n 是机器上处理器或者核心的数量。如果你设置环境变量 GOMAXPROCS>=n，或者执行 `runtime.GOMAXPROCS(n)`，接下来协程会被分割（分散）到 n 个处理器上。更多的处理器并不意味着性能的线性提升。有这样一个经验法则，对于 n 个核心的情况设置 GOMAXPROCS 为 n-1 以获得最佳性能，也同样需要遵守这条规则：协程的数量 > 1 + GOMAXPROCS > 1。
+
+所以如果在某一时间只有一个协程在执行，不要设置 GOMAXPROCS！
+
+### select 语句
+
+`select` 选择处理列出的多个通信情况中的一个。
+
+- 如果都阻塞了，会等待直到其中一个可以处理；
+- 如果多个可以处理，随机选择一个；
+- 如果没有通道操作可以处理并且写了 `default` 语句，它就会执行：`default` 永远是可运行的。
+  - 用于不想阻塞等待chan的场景，chan能执行就处理，没有就走default。
+
+#### reflect.Select
+
+```go
+type (
+    product struct {
+        id  int // 生产者序号
+        val int // 产品
+    }
+    producer struct {
+        id   int // 序号
+        chnl chan *product
+    }
+)
+var (
+    producerList []*producer
+    notifynew    chan int
+    updatedone   chan int
+)
+func main() {
+    rand.Seed(time.Now().Unix())
+    notifynew = make(chan int, 1)
+    updatedone = make(chan int, 1)
+    ticker := time.NewTicker(time.Second)
+    cases := update(ticker)
+    for {
+        chose, value, _ := reflect.Select(cases)
+        switch chose {
+        case 0: // 有新的生产者
+            cases = update(ticker)
+            updatedone <- 1
+        case 1:
+            // 创建新的生产者
+            if len(producerList) < 5 {
+                go newproducer()
+            }
+        default:
+            item := value.Interface().(*product)
+            fmt.Printf("消费: 值=%d 生产者=%d\n", item.val, item.id)
+        }
+    }
+}
+func update(ticker *time.Ticker) (cases []reflect.SelectCase) {
+    // 新生产者通知
+    selectcase := reflect.SelectCase{
+        Dir:  reflect.SelectRecv,
+        Chan: reflect.ValueOf(notifynew),
+    }
+    cases = append(cases, selectcase)
+    // 定时器
+    selectcase = reflect.SelectCase{
+        Dir:  reflect.SelectRecv,
+        Chan: reflect.ValueOf(ticker.C),
+    }
+    cases = append(cases, selectcase)
+    // 每个生产者
+    for _, item := range producerList {
+        selectcase = reflect.SelectCase{
+            Dir:  reflect.SelectRecv,
+            Chan: reflect.ValueOf(item.chnl),
+        }
+        cases = append(cases, selectcase)
+    }
+    return
+}
+func newproducer() {
+    newitem := &producer{
+        id:   len(producerList) + 1,
+        chnl: make(chan *product, 100),
+    }
+    producerList = append(producerList, newitem)
+    notifynew <- 1
+    <-updatedone
+    go newitem.run()
+}
+func (this *producer) run() {
+    for {
+        time.Sleep(time.Duration(int(time.Millisecond) * (rand.Intn(1000) + 1)))
+        item := &product{
+            id:  this.id,
+            val: rand.Intn(1000),
+        }
+        fmt.Printf("生产: 值=%d 生产者=%d\n", item.val, item.id)
+        this.chnl <- item
+    }
+}
+```
+
+### 示例
+
+同步worker
+
+```go
+func Worker(in, out chan *Task) {
+    for {
+        t := <-in
+        process(t)
+        out <- t
+    }
+}
+```
+
+惰性生成器
+
+```go
+type Any interface{}
+type EvalFunc func(Any) (Any, Any)
+
+func main() {
+    evenFunc := func(state Any) (Any, Any) {
+        os := state.(int)
+        ns := os + 2
+        return os, ns
+    }
+
+    even := BuildLazyIntEvaluator(evenFunc, 0)
+
+    for i := 0; i < 10; i++ {
+        fmt.Printf("%vth even: %v\n", i, even())
+    }
+}
+
+func BuildLazyEvaluator(evalFunc EvalFunc, initState Any) func() Any {
+    retValChan := make(chan Any)
+    loopFunc := func() {
+        var actState Any = initState
+        var retVal Any
+        for {
+            retVal, actState = evalFunc(actState)
+            retValChan <- retVal
+        }
+    }
+    retFunc := func() Any {
+        return <- retValChan
+    }
+    go loopFunc()
+    return retFunc
+}
+
+func BuildLazyIntEvaluator(evalFunc EvalFunc, initState Any) func() int {
+    ef := BuildLazyEvaluator(evalFunc, initState)
+    return func() int {
+        return ef().(int)
+    }
+}
+```
+
+链式协程
+
+```go
+var ngoroutine = flag.Int("n", 100000, "how many goroutines")
+
+func f(left, right chan int) { left <- 1 + <-right }
+
+func main() {
+    flag.Parse()
+    leftmost := make(chan int)
+    var left, right chan int = nil, leftmost
+    for i := 0; i < *ngoroutine; i++ {
+        left, right = right, make(chan int)
+        go f(left, right)
+    }
+    right <- 0      // bang!
+    x := <-leftmost // wait for completion
+    fmt.Println(x)  // 100000, ongeveer 1,5 s
+}
+```
+
+使用通道并发访问对象
+
+```go
+type Person struct {
+    Name   string
+    salary float64
+    chF    chan func()
+}
+
+func NewPerson(name string, salary float64) *Person {
+    p := &Person{name, salary, make(chan func())}
+    go p.backend()
+    return p
+}
+
+func (p *Person) backend() {
+    for f := range p.chF {
+        f()
+    }
+}
+
+// Set salary.
+func (p *Person) SetSalary(sal float64) {
+    p.chF <- func() { p.salary = sal }
+}
+
+// Retrieve salary.
+func (p *Person) Salary() float64 {
+    fChan := make(chan float64)
+    p.chF <- func() { fChan <- p.salary }
+    return <-fChan
+}
+
+func (p *Person) String() string {
+    return "Person - name is: " + p.Name + " - salary is: " + strconv.FormatFloat(p.Salary(), 'f', 2, 64)
+}
+
+func main() {
+    bs := NewPerson("Smith Bill", 2500.5)
+    fmt.Println(bs)
+    bs.SetSalary(4000.25)
+    fmt.Println("Salary changed:")
+    fmt.Println(bs)
+}
+```
 
 ## 文件处理
 
 [（十二）Go文件处理_taokexia的博客-CSDN博客_go 文件处理](https://blog.csdn.net/taokexia/article/details/106248135)
 
+#### OpenFile
+
+```go
+// os.OpenFile
+func OpenFile(name string, flag int, perm FileMode) (*File, error)
+```
+
+- 文件名
+
+- 标志（使用逻辑运算符“|”连接）
+  - `os.O_RDONLY`：只读
+  - `os.O_WRONLY`：只写
+  - `os.O_CREATE`：创建：如果指定文件不存在，就创建该文件。
+  - `os.O_TRUNC`：截断：如果指定文件已存在，就将该文件的长度截为0。
+  - 等。。。
+
+- 文件权限
+  - 在读文件的时候，文件的权限是被忽略的，所以在使用 `OpenFile` 时传入的第三个参数可以用0。而在写文件时，不管是 Unix 还是 Windows，都需要使用 0666。
+  - Windows 环境文件的权限使用 0 创建的文件权限是 `-r--r--r-- `（再次open时，访问拒绝），使用 0666 创建的文件权限是 `-rw-r--r-- `。
+
+
 ## 网络编程
 
 [（十三）Go网络编程_taokexia的博客-CSDN博客](https://blog.csdn.net/taokexia/article/details/106306290)
+
+### Server
+
+```go
+// package http
+func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
+func Handle(pattern string, handler Handler)
+```
+
+#### 路由匹配
+
+> http 默认重定向返回301，然后浏览器自动跳转并返回200
+
+##### ServeMux
+
+HTTP请求多路复用器。
+
+```go
+type ServeMux struct {
+	mu    sync.RWMutex
+	m     map[string]muxEntry // pattern - handler
+	es    []muxEntry // slice of entries sorted from longest to shortest.
+	hosts bool       // whether any patterns contain hostnames
+}
+```
+
+- 增加的路由模式如果带 `/` 后缀，将可以匹配所有以其为前缀的 url（存入 es 切片中），并且较长的模式优先于较短的模式。
+- 路由规则不支持通配符。
+
+路由匹配
+
+```go
+func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
+```
+
+- 请求 url 如果不带 `/` 后缀，并且没有完全匹配的 handler 时，如果存在完全匹配的带 `/` 后缀路由，将重定向到带 `/` 后缀的路由，否则继续进行匹配。
+```go
+// Find a handler on a handler map given a path string.
+// Most-specific (longest) pattern wins.
+func (mux *ServeMux) match(path string) (h Handler, pattern string) {
+	// Check for exact match first.
+	v, ok := mux.m[path]
+	if ok {
+		return v.h, v.pattern
+	}
+
+	// Check for longest valid match.  mux.es contains all patterns
+	// that end in / sorted from longest to shortest.
+	for _, e := range mux.es {
+		if strings.HasPrefix(path, e.pattern) {
+			return e.h, e.pattern
+		}
+	}
+	return nil, ""
+}
+```
+
+## 注意事项
+
+
 
 ## 参考
 
 - [gopl-zh](https://github.com/gopl-zh/gopl-zh.github.com)
 - [Go入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN)
-- [GitHub - unknwon/go-fundamental-programming: 《Go 编程基础》是一套针对 Google 出品的 Go 语言的视频语音教程，主要面向新手级别的学习者。](https://github.com/Unknwon/go-fundamental-programming)
+- [GitHub - unknwon/go-study-index: Go 语言学习资料索引](https://github.com/unknwon/go-study-index)
 - [实效Go编程 - Go 编程语言](https://go-zh.org/doc/effective_go.html)
 - [Go_taokexia的博客-CSDN博客](https://blog.csdn.net/taokexia/category_9940384.html)
+
+> go version go1.16 windows/amd64

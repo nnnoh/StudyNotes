@@ -87,6 +87,8 @@ href="#id"
 
 > " ' ' "
 
+`<input>` 标签的 autocomplete 属性，autocomplete 属性适用于 `<form>`，以及下面的 `<input>` 类型。
+
 w3school 知识补充
 
 实现技巧

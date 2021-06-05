@@ -271,33 +271,3 @@ MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，在 MyBatis 的�
 
 [mybatis plus](https://mp.baomidou.com/guide)
 
-## Mybatis Generater
-
-mybatis-generator-plugin
-
-mybatis-generator-plugin 通过该插件机制来强化Mybatis Generator本身，方便和减少我们平时的代码开发量。
-
-pom插件：
-
-```xml
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.7</version>
-                <configuration>
-                    <configurationFile>
-                        mybatis-generator/generatorConfig.xml
-                    </configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
-                </configuration>
-                <dependencies>
-                    <!- 数据库依赖及config中使用的包的依赖 ->
-                </dependencies>
-            </plugin>
-		</plugins>
-    </build>
-```
-
