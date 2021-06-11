@@ -130,7 +130,13 @@ Http请求时，URL中作为参数值的中文字符等会被编码
 
 URLEncode 每个字节前加 '%' 
 
+### MIME 类型
 
+MIME (**M**ultipurpose **I**nternet *8M**ail **E**xtensions) 是描述消息内容类型的因特网标准。
+
+- [MIME 参考手册](https://www.w3school.com.cn/media/media_mimeref.asp)
+
+- [MIME 类型 - HTTP | MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
 
 ### 浏览器同源政策
 

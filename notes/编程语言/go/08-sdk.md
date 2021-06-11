@@ -27,6 +27,8 @@
 
   如，结构体指针的方法仅能通过指针的 `Value` 的 `Method` 获得（或通过 `.Addr()`  获取结构体相应指针的 `Value`）。
 
+  值类型接收器的方法会自动生成对应指针类型接收器的方法。相反，指针类型接收器的方法不会自动生成对应值类型接收器的方法方法。
+
 - `interface{}`类型变量
 
   通过 `reflect` 的 `unpackEface` 函数可以推测变量传给 `interface{}` 参数后，会把参数信息存储到 `emptyInterface` 结构体中。
@@ -186,3 +188,8 @@ func Pipe() (r *File, w *File, err error)
 
 expvar 包提供了一种标准化接口用于**公共变量**，例如针对 server 中的操作计数器； expvar 以 JSON 格式通过 HTTP 的 `/debug/vars` 来暴露这些变量； 针对这些公共变量的 set 或 modify 操作具有原子性。
 
+## log
+
+- [Go语言Log使用 - 知乎](https://zhuanlan.zhihu.com/p/159482200)
+
+- [Go中的日志及第三方日志包logrus - rickiyang - 博客园](https://www.cnblogs.com/rickiyang/p/11074164.html)

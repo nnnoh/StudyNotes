@@ -520,3 +520,12 @@ uid=504(vbird1) gid=505(vbird1) groups=505(vbird1) ....
 testgroup:x:702:vbird1,vbird3
 ```
 
+## ACL
+
+ACL 是 Access Control List 的缩写，主要的目的是在提供传统的 owner,group,others 的 read,write,execute 权限之外的细部权限配置。ACL 可以针对单一使用者，单一文件或目录来进行 r,w,x 的权限规范，对于需要特殊权限的使用状况非常有帮助。
+
+ACL 主要可以针对以下方面来控制权限：
+
+- 使用者 (user)：可以针对使用者来配置权限；
+- 群组 (group)：针对群组为对象来配置其权限；
+- 默认属性 (mask)：还可以针对在该目录下在创建新文件/目录时，规范新数据的默认权限；

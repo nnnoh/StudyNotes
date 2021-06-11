@@ -27,7 +27,7 @@
 
 > q: connect: Network is unreachable.
 >
-> a:配置参数
+> a: 配置参数
 >
 > - BOOTPROTO选项设置为dhcp（动态获取）。如果想采用指定ip，则应该设置为static，另外IPADDR/NETMASK/BROADCAST几个参数也需要指定对应值。
 > - 设置HWADDR属性为网卡MAC地址。
@@ -61,6 +61,19 @@ IPV6INIT   IPV6是否有效（yes/no）
 GATEWAY    默认网关IP地址
 BROADCAST  广播地址
 NETWORK    网络地址
+
+`service network restart` 重启网络。
+
+> **Unit network.service not found**
+>
+> 通过输入 systemctl status net 使用tab键补全命令列出net开头的服务，可以确定系统中是存在 network.service。
+>
+> 在新版本的 centos 中 systemctl status network 的命令已经没有了。
+>
+> 如果是Centos 8，则需使用 `nmcli c reload` 命令。
+>
+> 如果还想使用 systemctl status network，那就x需要安装一下network-scripts。
+> 
 
 ## 服务
 
@@ -118,3 +131,54 @@ NETWORK    网络地址
 /proc/net/dev
 
 /sys/devices/virtual/net/
+
+## Issue
+
+### 文件描述符
+
+**获取系统打开的文件描述符数量**
+
+```bash
+[root@localhost ~]# cat /proc/sys/fs/file-nr 
+1216    0       197787
+// 第一列 1216   ：为已分配的FD数量
+// 第二列 0          ：为已分配但尚未使用的FD数量
+// 第三列197787：为系统可用的最大FD数量
+// 已用FD数量＝为已分配的FD数量 - 为已分配但尚未使用的FD数量。注意，这些数值是系统层面的。
+```
+
+**获取进程打开的文件描述符数量**
+
+```bash
+ll /proc/3253/fd | wc -l
+```
+
+**更改文件描述符限制**
+
+当碰到 “too many open files” 错误时，就需要增加文件描述符的限制数量，系统的默认文件描述符都比较大，一般来说，只需增加用户或进程的就可以。
+
+**查看文件描述符总量限制**
+
+```bash
+ulimit -n
+```
+
+**临时更改文件描述符总量限制**
+
+```bash
+ulimit -n 10240
+```
+
+**永久更改文件描述符总量限制**
+
+```bash
+vi /etc/security/limits.conf 
+#增加以下语句
+test hard nofile 10240
+```
+
+或者
+
+```bash
+echo "ulimit -n 10240" >> /home/abc/ .bash_profile
+```

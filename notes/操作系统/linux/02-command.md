@@ -10,6 +10,10 @@
 
 - yum install 软件包
 
+卸载
+
+- yum remove 安装包
+
 查询：
 
 - `yum search xxx`：搜寻某个软件名称或者是描述 (description) 的重要关键字。
@@ -17,6 +21,8 @@
 - `yum provides xxx`：根据文件去搜寻软件。
 - `yum whatprovides */xxx `：查找某个命令属于哪个包。
 - `yum info xxx`：查询软件信息。
+
+ yum 会把下载的软件包和 header 存储在 cache（/var/cache/yum）中，而不会自动删除，可以使用 yum clean 指令进行清除。
 
 ### apt-get & apt-cache
 
@@ -624,14 +630,30 @@ tunnel <地址>    建立隧道通信。
 
 ### sudo
 
-> q: xxx is not in the sudoers file.  This incident will be reported.
->
-> a: 添加当前用户到 sudoers 列表
->
-> 1. su -
-> 2. visudo ( open /etc/sudoers file)
-> 3. append "xxx ALL=(ALL) ALL"
-> 4. :wq
+**xxx is not in the sudoers file.  This incident will be reported.**
+
+在 /etc/sudoers 文件中配置权限
+
+1. su -
+2. visudo ( open /etc/sudoers file)
+3. append "xxx ALL=(ALL) ALL"
+4. or  "%wheel  ALL=(ALL)   ALL" （允许组内用户使用sudo）
+   1. usermod -G wheel xxx
+5. :wq
+
+**sudo: go: command not found**
+
+配置 /etc/sudoers 文件中的 Defaults secure_path 这一项，增加命令所在位置的绝对路径。
+
+```bash
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/go/bin
+```
+
+设置 /etc/sudoers 文件中的 Defaults env_keep 项，加入 GOPATH 环境变量。
+
+```bash
+Defaults     env_keep += “GOPATH”
+```
 
 ### useradd
 

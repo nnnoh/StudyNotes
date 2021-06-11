@@ -150,6 +150,37 @@ fmt.Printf("本地时间是 %d-%d-%d %02d:%02d:%02d %s\n",
 
 scan
 
+## 文件目录操作
+
+os.Open 可打开文件或目录，可以通过 File.State() 返回的 FileInfo 判断文件是否是目录。
+
+获取到文件夹中的所有文件列表：
+
+- filepath.Walk
+- ioutil.ReadDir
+- os.File.Readdir
+
+判断文件或目录是否存在：
+
+```go
+func PathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}
+```
+
+`os.Stat(name string)` 函数返回的错误值：
+
+1. 如果返回的错误为nil，说明文件或文件夹存在；
+2. 如果返回的错误类型使用 `os.IsNotExist()` 判断为true，说明文件或文件夹不存在；
+3. 如果返回的错误为其它类型，则不确定是否在存在。
+
 ## Plugin
 
 - [golang plugin插件的使用 - 运维之路](http://www.361way.com/go-plugin/5925.html)

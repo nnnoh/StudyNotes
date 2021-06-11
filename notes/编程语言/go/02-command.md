@@ -86,7 +86,7 @@ $ godoc -http=:8080
 
 ### get
 
-`go get`下载并安装第三方包。从指定源上面**下载或者更新**指定的**代码和依赖**，并对他们进行**编译和安装**。
+`go get`下载并安装第三方包。从指定源上面**下载或者更新**指定的**代码和依赖**（src 目录），并对他们进行**编译和安装**（pkg 或 bin 目录）。
 
 ```bash
 $ go get github.com/astaxie/beego
@@ -162,6 +162,14 @@ go module主要由三部分组成：
 
 一般 go.mod 文件和 go.sum 文件都是在项目的根目录下面，而且都是通过命令来修改里面的内容。
 
+`GO111MODULE` 有三个值：`off`, `on`和`auto（默认值）`。
+
+- `GO111MODULE=off`，go 命令行将不会支持 module 功能，寻找依赖包的方式将会沿用旧版本那种通过 vendor 目录或者 GOPATH 模式来查找。
+- `GO111MODULE=on`，go 命令行会使用 modules，而不会去 GOPATH 目录下查找。
+- `GO111MODULE=auto`，默认值，go 命令行将会根据当前目录来决定是否启用 module 功能。这种情况下可以分为两种情形：
+  - 当前目录在 GOPATH/src 之外且该目录包含 go.mod文 件
+  - 当前文件在包含 go.mod 文件的目录下面。
+
 ### go mod
 
 `go mod init moduleName` 在**项目根目录下**初始化工程项目。
@@ -172,7 +180,9 @@ go module主要由三部分组成：
 
 `go mod download `下载指定的模块到本地缓存。
 
-go module所管理的一些依赖库文件依然存放在`GOPATH`下面。download所下载的依赖储存在 `$GOPATH/src/mod` 中，而缓存路径是 `$GOPATH/pkg/mod/cache`。
+go module所管理的一些依赖库文件依然存放在`GOPATH`下面。download所下载的依赖储存在 `$GOPATH/pkg/mod` 中，而缓存路径是 `$GOPATH/pkg/mod/cache`，多个项目可以共享缓存的 module。
+
+> 开启了 module 后，go get 下载的依赖存放位置也在 `$GOPATH/pkg/mod`。
 
 `go mod tidy`把不需要的依赖给删除掉。
 
@@ -185,6 +195,39 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
 使用vendor后，可以将依赖和gopath全部独立开来。
 
  执行`go mod vendor`命令后，就会在当前目录生成一个vendor目录，该文件夹下将会放置`go.mod`文件描述的依赖包，和gopath路径下mod目录一样，同时文件夹下同时还有一个文件`modules.txt`，它是整个工程的所有模块。在执行这条命令之前，如果工程之前有vendor目录，应该先删除。
+
+### 创建一个项目
+
+1. `go mod init [模块名，可选]` 在**项目根目录下**初始化工程项目，生成 `go.mod` 文件。
+
+   go.mod 提供了`module`、`require`、`replace`和`exclude` 四个命令
+
+   - `module` 语句指定包的名字（路径）
+   - `require` 语句指定的依赖项模块
+   - `replace` 语句可以替换依赖项模块
+   - `exclude` 语句可以忽略依赖项模块
+
+2. `go run xxx.go` 运行代码时，go mod 会自动查找依赖并下载。
+
+   go module 安装 package 的原則是先拉最新的 release tag，若无tag则拉最新的 commit。
+
+3. `go list -m -u all` 检查可以升级的package，使用`go get -u need-upgrade-package` 升级后会将新的依赖版本更新到 go.mod。
+
+   - 运行 `go get package@version` 将会升级到指定的版本号version
+
+4. 使用 replace 替换无法直接获取的 package
+
+   modules 可以通过在 go.mod 文件中使用 replace 指令替换成github上对应的库，比如：
+
+   ```
+   replace (
+       golang.org/x/crypto v0.0.0-20190313024323-a1f597ede03a => github.com/golang/crypto v0.0.0-20190313024323-a1f597ede03a
+   )
+   ```
+
+### 外部依赖包查找位置
+
+- [Go外部依赖包从vendor、\$GOPATH和\$GOPATH/pkg/mod下的查找顺序_benben的博客-CSDN博客_gopath pkg](https://blog.csdn.net/benben_2015/article/details/91455497)
 
 ## Go Install
 
@@ -200,7 +243,7 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
    tar -zxf go1.14.4.linux-amd64.tar.gz -C /usr/local
    ```
 
-3、创建配置文件
+3. 创建配置文件
    ```bash
    vim /etc/profile.d/go.sh
    ```
@@ -212,7 +255,12 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
    export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
    ```
 
+   GOPATH 目录可自行建立 src 目录放置源码。
+   
+   GOROOT 中存储的是随 go 一起发布的标准 package，而 GOPATH 中存储的是用户自己下载的 package。
+   
 5. 使配置生效，查看golang的版本
+
    ```bash
    source /etc/profile.d/go.sh
    go version
