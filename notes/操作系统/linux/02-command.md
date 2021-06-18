@@ -24,6 +24,8 @@
 
  yum 会把下载的软件包和 header 存储在 cache（/var/cache/yum）中，而不会自动删除，可以使用 yum clean 指令进行清除。
 
+- `yum list installed`：列出所有已安装的软件包信息。
+
 ### apt-get & apt-cache
 
 apt-get 和 apt-cache 是 Ubuntu Linux 中的命令行下的包管理工具。
@@ -552,6 +554,17 @@ $ tee file1 file2  > /dev/null
 
 ```bash
 $ free -h | tee mem.txt
+```
+
+EOF 结合 cat、tee 命令可用于向文件输入多行文本。
+
+```bash
+$ cat << EOF > fileA
+>AAA
+>EOF
+$ tee fileB <<'EOF'
+>BBB
+>EOF
 ```
 
 ### vim

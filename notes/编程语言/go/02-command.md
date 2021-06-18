@@ -244,6 +244,7 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
    ```
 
 3. 创建配置文件
+
    ```bash
    vim /etc/profile.d/go.sh
    ```
@@ -256,9 +257,9 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
    ```
 
    GOPATH 目录可自行建立 src 目录放置源码。
-   
+
    GOROOT 中存储的是随 go 一起发布的标准 package，而 GOPATH 中存储的是用户自己下载的 package。
-   
+
 5. 使配置生效，查看golang的版本
 
    ```bash
@@ -271,3 +272,41 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
 > 如果之前已经安装过go的版本，先清空下go下面src，不然可能会报一些 previous declaration at /usr/local/go/src/runtime/internal/atomic/atomic_amd64.go:16:24 的错误
 >
 > rm -rf /usr/local/go
+
+## Debug
+
+Goland 配合 dlv 命令进行远程调试。
+
+安装 dlv：
+
+```bash
+go get -u github.com/go-delve/delve/cmd/dlv
+```
+
+dlv启动的三种模式：
+
+- attach
+  attach 模式可以直接附加到已存在的进程，但需要注意的是，如果源程序在编译时未加上 `-gcflags "all=-N -l"`，则无法生成断点信息；
+  
+  ```bash
+go build -gcflags "all=-N -l" -o juejin main.go  # 编译
+./juejin  # 运行
+dlv attach 19507 --headless=true --listen=:2345 --api-version=2 --accept-multiclient --log   # attach
+  ```
+
+- exec
+  exec为手动编译并执行调试的方式
+
+  ```bash
+go build -gcflags "all=-N -l" -o juejin main.go  # 编译
+dlv --listen=:2345 --headless=true --api-version=2 exec juejin
+  ```
+
+- debug
+  debug模式自动编译并运行调试
+
+  ```bash
+dlv debug --headless --listen=:2345 --api-version=2 main.go
+  ```
+
+注，dlv 启动并监听后处于阻塞状态，需 GoLand 启动 debug 才继续运行。

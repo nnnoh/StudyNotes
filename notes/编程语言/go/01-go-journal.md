@@ -722,10 +722,12 @@ import . "包的路径或 URL 地址"
 当使用`.`来做为包的别名时，你可以不通过包名来使用其中的项目。例如：`test := ReturnStr()`。
 
 ```go
-import _ "包名"
+import _ "包路径"
 ```
 
 只执行它的init函数并初始化其中的全局变量。
+
+注，导入时使用的路径不一定和包名一致，导入后使用包名调用包中导出的函数或结构体。
 
 #### 包的初始化
 
@@ -749,7 +751,38 @@ if runtime.GOOS == "windows" {
 
 此外，还可以利用平台特定的代码实现。
 
-在 `xxx_linux.go` 和 `xxx_windows.go` 两个文件分别定义各自的函数（通常是同名的）。如此，在`go build`时在 Linux 环境上会编译 `_linux` 后缀的文件而忽视其他平台后缀的文件。
+在 `xxx_linux.go` 和 `xxx_windows.go` 两个文件分别定义各自的函数（通常是同名的）。如此，在`go build`时在 Linux 环境上会编译 `_linux` 后缀的文件而忽视其他平台后缀的文件（由 GOOS 和 GOARCH 控制）。
+
+#### Go build constraints
+
+build constraints（构建约束）除了通过文件名来约束build，还可以在源码中通过注释的方式指定编译选项。
+
+构建约束可以在很多文件中使用，不单单是GO文件。
+
+通过注释实施构建约束时，约束注释要放在文件的开头，要优先于空行或和其他注释之前。由于在 package 语句之前写的注释会被认为是包级别的注释，而构建约束又在所有注释之前，那么为了区分包级别的注释，就要在构建约束与包级别的注释之间添加空行进行区分。
+
+通过注释实施的构建约束还可以进行逻辑表达。如果构建约束中有空格，那么就是OR关系；如果是逗号分隔，那么就是AND关系；！表示not。比如：
+
+```go
+// +build linux,386 darwin,!cgo
+```
+
+表示(linux AND 386) OR (darwin AND (NOT cgo))
+
+GO官方还定义了常用的一些约束
+
+- 限制目标操作系统，也就是要和runtime.GOOS一致
+- 限制目标架构平台，也就是要和runtime.GOARCH一致
+- GC或者GCCGO等编译器支持的约束
+- cgo约束，也就是说如果支持cgo的话，就可以参与编译
+- go1.1，表示从go1.1开始向前兼容
+- go1.2，表示从1.2开始向前兼容
+- go.13，表示从1.3开始向前兼容
+- 自定义的约束
+
+如果想临时让某个文件不参与编译，可以添加注释约束：`// +build ignore`
+
+**自定义约束**示例：go test 默认就是运行最基本的单元测试。那么当想要只执行集成测试的代码时，就可以通过构建约束来实施。比如在集成测试的GO文件中加上 `// +build integration`，然后运行命令 `go test –tags="integration"` 就可以运行集成测试代码。
 
 ## 并发
 
@@ -820,10 +853,18 @@ if v, ok := <-ch; ok { // ok is true if v received value
 
 `select` 选择处理列出的多个通信情况中的一个。
 
-- 如果都阻塞了，会等待直到其中一个可以处理；
-- 如果多个可以处理，随机选择一个；
+- 如果都阻塞了，会**阻塞**等待直到其中一个可以处理；
+- 如果多个可以处理，**随机**选择一个；
 - 如果没有通道操作可以处理并且写了 `default` 语句，它就会执行：`default` 永远是可运行的。
   - 用于不想阻塞等待chan的场景，chan能执行就处理，没有就走default。
+
+`select{}` 将一直阻塞。
+
+跳出 `for-select` 循环：
+
+- 在 case 内， 使用 return 结束协程；
+- 在 select 外 for 内使用 break 跳出；
+- 适当使用 goto。
 
 #### reflect.Select
 
@@ -1225,6 +1266,10 @@ func (mux *ServeMux) match(path string) (h Handler, pattern string) {
   - 可能在需要分配大量内存时使用缓存；
 
   - 使用缓存模板；
+
+## 其他
+
+[7.2 Go 语言中边界检查 — Go编程时光 1.0.0 documentation](http://golang.iswbm.com/en/latest/c07/c07_02.html)
 
 ## 参考
 

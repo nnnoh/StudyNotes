@@ -128,7 +128,7 @@ sequenceDiagram
 配置用户名称和电子邮箱地址，每次 Git 提交时都会引用这两条信息，说明是谁提交了更新，所以会随更新内容一起被永久纳入历史记录。
 
 ```shell
-git config --global user.name "xxx xxx"
+git config --global user.name "xxxxxx"
 git config --global user.email xxxxxx@example.com
 ```
 
@@ -671,6 +671,14 @@ git config receive.denyCurrentBranch ignore
 [[Git使用] warning: LF will be replaced by CRLF](https://www.jianshu.com/p/d8e84e8b5b0c)
 
 [为什么我应该在Git中使用core.autocrlf = true？](https://cloud.tencent.com/developer/ask/60586)
+
+### 推送至自建git仓库
+
+- [本地git仓库推送到服务器自建的git仓库实现目录文件同步教程[自整理]_wuliZs_的博客-CSDN博客](https://blog.csdn.net/qq_34284638/article/details/70154557)
+
+- [bash: git-upload-pack: command not found fatal: Could not read from remote repository._小志的博客-CSDN博客](https://wwwxz.blog.csdn.net/article/details/111874292)
+- [git仓库与项目源码分离_宇臾的博客-CSDN博客](https://blog.csdn.net/sinat_34349564/article/details/52442526)
+- [Git push error '[remote rejected] master -> master (branch is currently checked out)' - Stack Overflow](https://stackoverflow.com/questions/2816369/git-push-error-remote-rejected-master-master-branch-is-currently-checked)
 
 ### 注意
 

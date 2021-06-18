@@ -226,6 +226,18 @@ $ tee fileB <<'EOF'
 $ command > /dev/null 2>&1
 ```
 
+### Question
+
+#### Linux报错：“/bin/bash^M: 坏的解释器
+
+在win下编辑的时候，换行结尾是\n\r ， 而在linux下 是\n。
+
+解决方法，将文件里面的内容做替换即可
+
+```bash
+sed -i 's/\r$//' filename.sh
+```
+
 ### 参考
 
 - [Bash Reference Manual](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)

@@ -182,3 +182,4 @@ test hard nofile 10240
 ```bash
 echo "ulimit -n 10240" >> /home/abc/ .bash_profile
 ```
+
