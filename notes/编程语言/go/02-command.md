@@ -229,6 +229,14 @@ go module所管理的一些依赖库文件依然存放在`GOPATH`下面。downlo
 
 - [Go外部依赖包从vendor、\$GOPATH和\$GOPATH/pkg/mod下的查找顺序_benben的博客-CSDN博客_gopath pkg](https://blog.csdn.net/benben_2015/article/details/91455497)
 
+### 引用本地mod依赖包
+
+1. `go mod edit -require="[github.com/]xxxx@v0.0.0"`
+2. `go mod edit -replace=[github.com/]xxxx[@v0.0.0]=(本地路径)`
+3. `go mod vendor`，可选
+
+注，在 go1.13 中， go module 名称规范要求路径的第一部分必须满足域名规范，否则可能会报 malformed module path "xxxx": missing dot in first path element 错误信息。
+
 ## Go Install
 
 ### CentOS

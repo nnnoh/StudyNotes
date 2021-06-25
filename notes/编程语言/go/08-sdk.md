@@ -84,10 +84,17 @@
 - 上层任务取消后，所有的下层任务都会被取消；
 - 中间某一层的任务取消后，只会将当前任务的下层任务取消，而不会影响上层的任务以及同级任务。
 
+`context` 对于多个 goroutine 是线程安全的。
+
+如果未调用 `cancel` 函数，则主 `context` 将始终保持与它创建的 `context` 的链接，从而导致可能的内存泄漏。可以用 `go vet` 命令来检查是否存在内存泄漏。
+
+`context` 包还有另外两个利用 cancel 函数的函数：`WithTimeout` 和 `WithDeadline`。在定义的超时/截止时间后，它们都会自动触发 cancel 函数。
+
 参考：
 
 - [深入理解Golang之context - 知乎](https://zhuanlan.zhihu.com/p/110085652)
-- [理解Go Context机制 - 张伯雨 - 博客园](https://www.cnblogs.com/zhangboyu/p/7456606.html)
+- [Week03: Go并发编程(九) 深入理解 Context - 知乎](https://zhuanlan.zhihu.com/p/342886943)
+- [Go context详解_稻草人技术博客-CSDN博客](https://blog.csdn.net/u013474436/article/details/108410246)
 - [go context之WithCancel的使用_papaya的博客-CSDN博客](https://blog.csdn.net/yzf279533105/article/details/107290645)
 
 ## encoding
@@ -191,5 +198,19 @@ expvar 包提供了一种标准化接口用于**公共变量**，例如针对 se
 ## log
 
 - [Go语言Log使用 - 知乎](https://zhuanlan.zhihu.com/p/159482200)
-
 - [Go中的日志及第三方日志包logrus - rickiyang - 博客园](https://www.cnblogs.com/rickiyang/p/11074164.html)
+
+log.Fatal 函数：
+
+1. 打印输出内容
+2. 退出应用程序
+3. defe r函数不会执行
+
+log.Panic 函数：
+
+1. 函数停止执行
+2. defer 被执行
+3. 返回给函数调用者
+4. 调用者收到 panic 函数，重复执行以上步骤，直到返回最上层函数
+5. 输出 panic
+6. 程序被停止
